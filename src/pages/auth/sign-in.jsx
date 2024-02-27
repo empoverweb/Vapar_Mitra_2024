@@ -21,7 +21,7 @@ export const SignIn = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
 
   const handleSignUpClick = () => {
-    navigate('/sign-up');
+    navigate('/auth/sign-up');
   };
 
   ////form submit data
