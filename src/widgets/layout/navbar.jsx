@@ -56,19 +56,7 @@ export function Navbar({ brandName, routes, action }) {
         <div className="hidden lg:block">{navList}</div>
         {React.cloneElement(action, {
           className: "hidden lg:inline-block",
-        })}
-        <IconButton
-          variant="text"
-          size="sm"
-          className="ml-auto text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
-          onClick={() => setOpenNav(!openNav)}
-        >
-          {openNav ? (
-            <XMarkIcon strokeWidth={2} className="h-6 w-6" />
-          ) : (
-            <Bars3Icon strokeWidth={2} className="h-6 w-6" />
-          )}
-        </IconButton>
+        })} 
       </div>
       <Collapse open={openNav}>
         <div className="container mx-auto">

@@ -133,6 +133,20 @@ export function Configurator() {
             </Button>
           </div>
         </div> 
+        <div className="mb-12">
+          <hr />
+          <div className="flex items-center justify-between py-5">
+            <Typography variant="h6" color="blue-gray">
+              Navbar Fixed
+            </Typography>
+            <Switch
+              id="navbar-fixed"
+              value={fixedNavbar}
+              onChange={() => setFixedNavbar(dispatch, !fixedNavbar)}
+            />
+          </div>
+          <hr />
+          </div>
       </div>
     </aside>
   );

@@ -23,7 +23,7 @@ export function Dashboard() {
         }
       /> 
       <DashboardNavbar />
-      <div className="xl:ml-80">
+      <div className="p-6 xl:ml-80">
         <Configurator /> 
         <Routes>
           {routes.map(
