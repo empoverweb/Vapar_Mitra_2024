@@ -27,12 +27,14 @@ import {AddCategory,AddCrop,AddHybrid,AddProduct,AddPromotions,AddSubCategory} f
 import {AddCoupon} from "@/pages/coupons"; 
 import Stocks from "@/pages/stocks";
 import Reports from '@/pages/reports'
+import { SignIn, SignUp } from "./pages/auth";
 
 const icon = {
   className: "w-5 h-5 text-inherit",
 };
+ 
 
-export const routes = [
+export const routes = [ 
   {
     layout: "dashboard",
     pages: [
@@ -45,13 +47,11 @@ export const routes = [
     ]
   },
   { 
-    layout: "usermangment",
+    layout: "usermanagement",
     pages: [
       {
         icon: <UserCircleIcon {...icon} />,
-        name: "User Mangement",
-        path: "/user",
-        element: <AddUser />,
+        name: "User Mangement", 
         subitems:[  
           {
             icon: <UserPlusIcon {...icon} />,
@@ -74,9 +74,7 @@ export const routes = [
     pages: [
       {
         icon: <RectangleStackIcon {...icon} />,
-        name: "Masters",
-        path: "/masters",
-        element: <AddCategory />,
+        name: "Masters", 
         subitems:[  
           {
             icon: <ClipboardIcon {...icon} />,
@@ -163,5 +161,6 @@ export const routes = [
     ]
   }, 
 ];
+ 
 
 export default routes;

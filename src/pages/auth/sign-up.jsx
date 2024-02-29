@@ -21,7 +21,7 @@ export const SignUp = () => {
 
   
   const handleLoginClick = () => {
-    navigate('/login');
+    navigate('/');
   };
 
   const onSubmit = (data) => {
