@@ -22,30 +22,27 @@ export function Masters() {
         brandImg={
           sidenavType === "dark" ? "/img/logo-ct.png" : "/img/logo-ct-dark.png"
         }
-      /> 
+      />
       <DashboardNavbar />
       <div className="p-6 xl:ml-80">
-        <Configurator /> 
+        <Configurator />
         <Routes>
-            {routes.map(({ layout, pages }) =>
+          {routes.map(({ layout, pages }) =>
             layout === "masters" && (
-            pages.map(({ path, element, subitems }) => { 
-            return (
-            <React.Fragment key={path}>
-              {/* Render the main page route */}
-              <Route exact path={path} element={element} />
-              
-              {/* Check for subitems and render their routes */}
-              {subitems && subitems.map(({ icon, name, path: subitemPath , element}) => { 
+              pages.map(({ path, element, subitems }) => {
                 return (
-                  <Route key={subitemPath} exact path={subitemPath} element={element} />
+                  <React.Fragment key={path}>
+                    <Route exact path={path} element={element} />
+                    {subitems && subitems.map(({ icon, name, path: subitemPath, element }) => {
+                      return (
+                        <Route key={subitemPath} exact path={subitemPath} element={element} />
+                      );
+                    })}
+                  </React.Fragment>
                 );
-              })}
-            </React.Fragment>
-            );
-            })
+              })
             )
-            )}
+          )}
         </Routes>
         <div className="text-blue-gray-600">
           <Footer />
