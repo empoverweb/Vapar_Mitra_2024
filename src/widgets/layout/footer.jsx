@@ -6,9 +6,9 @@ export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="py-2">
-      <div className="flex w-full flex-wrap items-center justify-center gap-6 px-2 md:justify-between">
-        <Typography variant="small" className="font-normal text-inherit">
+    <footer className="mt-4">
+      <div className="flex w-full flex-wrap items-center justify-center bg-blue-gray text-black opacity-50">
+        <Typography variant="small" className="font-normal text-inherit p-2 ">
           &copy; {year} NSL.
         </Typography> 
       </div>

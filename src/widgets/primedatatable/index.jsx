@@ -11,10 +11,10 @@ import { Toolbar } from 'primereact/toolbar';
 import { InputTextarea } from 'primereact/inputtextarea';
 import { RadioButton } from 'primereact/radiobutton';
 import { InputNumber } from 'primereact/inputnumber';
- import { InputText } from 'primereact/inputtext';
-import { Tag } from 'primereact/tag'; 
+import { InputText } from 'primereact/inputtext';
+import { Tag } from 'primereact/tag';
 import Modal from '../modal';
-import { TrashIcon } from '@heroicons/react/24/solid';
+import { DocumentArrowDownIcon, PencilSquareIcon, TrashIcon } from '@heroicons/react/24/solid';
 
 export default function PrimeDataTable() {
     let emptyProduct = {
@@ -179,82 +179,47 @@ export default function PrimeDataTable() {
 
     const leftToolbarTemplate = () => {
         return (
-            <div className="flex flex-wrap gap-2"> 
-               <button
+            <div className="flex flex-wrap gap-2">
+            <button
                 class="flex select-none items-center gap-1 rounded-lg bg-gray-900 py-2 px-4 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
                 type="button" onClick={openNew} >
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"
-                  stroke-width="2" class="w-4 h-4">
-                  <path
-                    d="M6.25 6.375a4.125 4.125 0 118.25 0 4.125 4.125 0 01-8.25 0zM3.25 19.125a7.125 7.125 0 0114.25 0v.003l-.001.119a.75.75 0 01-.363.63 13.067 13.067 0 01-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 01-.364-.63l-.001-.122zM19.75 7.5a.75.75 0 00-1.5 0v2.25H16a.75.75 0 000 1.5h2.25v2.25a.75.75 0 001.5 0v-2.25H22a.75.75 0 000-1.5h-2.25V7.5z">
-                  </path>
+                    stroke-width="2" class="w-4 h-4">
+                    <path
+                        d="M6.25 6.375a4.125 4.125 0 118.25 0 4.125 4.125 0 01-8.25 0zM3.25 19.125a7.125 7.125 0 0114.25 0v.003l-.001.119a.75.75 0 01-.363.63 13.067 13.067 0 01-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 01-.364-.63l-.001-.122zM19.75 7.5a.75.75 0 00-1.5 0v2.25H16a.75.75 0 000 1.5h2.25v2.25a.75.75 0 001.5 0v-2.25H22a.75.75 0 000-1.5h-2.25V7.5z">
+                    </path>
                 </svg>
                 Add User
-              </button>   
-              <button
-                class="flex select-none items-center gap-1 rounded-lg bg-red-500 py-2 px-4 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-                type="button" onClick={confirmDeleteSelected} disabled={!selectedProducts || !selectedProducts.length} >
-                 <TrashIcon className='w-4 h-4'/>
-               Delete
-              </button>  
-             </div>
-        );
-    };
+            </button> 
+            <button
+                class="flex select-none items-center gap-1 rounded-lg bg-green-800 py-2 px-4 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                type="button" onClick={exportCSV} >
+                <DocumentArrowDownIcon className='w-4 h-4' />
+                Export CSV
+            </button>
+        </div>
+        )
+    }
 
     const rightToolbarTemplate = () => {
-        return <Button label="Export" icon="pi pi-upload" className="p-button-help" onClick={exportCSV} />;
-    };
-
-    const imageBodyTemplate = (rowData) => {
-        return <img src={`https://primefaces.org/cdn/primereact/images/product/${rowData.image}`} alt={rowData.image} className="shadow-2 border-round" style={{ width: '64px' }} />;
-    };
-
-    const priceBodyTemplate = (rowData) => {
-        return formatCurrency(rowData.price);
-    };
-
-    const ratingBodyTemplate = (rowData) => {
-        return <Rating value={rowData.rating} readOnly cancel={false} />;
-    };
-
-    const statusBodyTemplate = (rowData) => {
-        return <Tag value={rowData.inventoryStatus} severity={getSeverity(rowData)}></Tag>;
-    };
-
-    const actionBodyTemplate = (rowData) => {
         return (
-            <React.Fragment>
-                <Button icon="pi pi-pencil" rounded outlined className="mr-2" onClick={() => editProduct(rowData)} />
-                <Button icon="pi pi-trash" rounded outlined severity="danger" onClick={() => confirmDeleteProduct(rowData)} />
-            </React.Fragment>
+            <span className="p-input-icon-left">
+            <i className="pi pi-search" />
+            <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Search..." />
+        </span>
         );
     };
 
-    const getSeverity = (product) => {
-        switch (product.inventoryStatus) {
-            case 'INSTOCK':
-                return 'success';
-
-            case 'LOWSTOCK':
-                return 'warning';
-
-            case 'OUTOFSTOCK':
-                return 'danger';
-
-            default:
-                return null;
-        }
+  
+    const actionBodyTemplate = (rowData) => {
+        return (
+            <div className='flex gap-2'>
+                <PencilSquareIcon  onClick={() => editProduct(rowData)} color='blue' className="w-5 h-5 cursor-pointer" /> 
+                <TrashIcon  onClick={() => confirmDeleteProduct(rowData)} color='red'  className="w-5 h-5 cursor-pointer" /> 
+            </div>
+        );
     };
-
-    const header = (
-        <div className="flex flex-wrap gap-2 align-items-center justify-content-between">
-            <h4 className="m-0">Manage Products</h4>
-            <span className="p-input-icon-left">
-                <i className="pi pi-search" />
-                <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Search..." />
-            </span>
-        </div>
-    );
+  
     const productDialogFooter = (
         <React.Fragment>
             <Button label="Cancel" icon="pi pi-times" outlined onClick={hideDialog} />
@@ -274,26 +239,35 @@ export default function PrimeDataTable() {
         </React.Fragment>
     );
 
+     
+
     return (
         <div>
             <Toast ref={toast} />
-            <div className="card">
-                <Toolbar className="mb-4" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>
-
-                <DataTable ref={dt} value={products} selection={selectedProducts} onSelectionChange={(e) => setSelectedProducts(e.value)}
-                        dataKey="id"  paginator rows={10} rowsPerPageOptions={[5, 10, 25]}
-                        paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products" globalFilter={globalFilter} header={header}>
-                    <Column selectionMode="multiple" exportable={false}></Column>
-                    <Column field="code" header="Code" sortable style={{ minWidth: '12rem' }}></Column>
-                    <Column field="name" header="Name" sortable style={{ minWidth: '16rem' }}></Column>
-                    <Column field="image" header="Image" body={imageBodyTemplate}></Column>
-                    <Column field="price" header="Price" body={priceBodyTemplate} sortable style={{ minWidth: '8rem' }}></Column>
-                    <Column field="category" header="Category" sortable style={{ minWidth: '10rem' }}></Column>
-                    <Column field="rating" header="Reviews" body={ratingBodyTemplate} sortable style={{ minWidth: '12rem' }}></Column>
-                    <Column field="inventoryStatus" header="Status" body={statusBodyTemplate} sortable style={{ minWidth: '12rem' }}></Column>
-                    <Column body={actionBodyTemplate} exportable={false} style={{ minWidth: '12rem' }}></Column>
+            <div className="card"> 
+                <h5
+                    class="block font-sans bg-[#fafafa] p-4 pb-0 text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
+                    Users list
+                </h5>
+                <Toolbar  className="mb-1" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar> 
+                <div className='p-4'>
+                <DataTable 
+                 value={products}
+                 resizableColumns 
+                 showGridlines 
+                 tableStyle={{ minWidth: '50rem' }} 
+                 dataKey="id"  
+                 paginator rows={10} 
+                 rowsPerPageOptions={[5, 10, 25]} 
+                 globalFilter={globalFilter}  
+                  >
+                    <Column field="code" header="Code"></Column>
+                    <Column field="name" header="Name"></Column>
+                    <Column field="category" header="Category"></Column>
+                    <Column field="quantity" header="Quantity"></Column>
+                    <Column header="Action" body={actionBodyTemplate} exportable={false} style={{ minWidth: '6rem' }}></Column>
                 </DataTable>
+                </div>
             </div>
 
             <Modal visible={productDialog} style={{ width: '32rem' }} breakpoints={{ '960px': '75vw', '641px': '90vw' }} header="Product Details" modal className="p-fluid" footer={productDialogFooter} onHide={hideDialog}>
@@ -366,8 +340,7 @@ export default function PrimeDataTable() {
                     <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
                     {product && <span>Are you sure you want to delete the selected products?</span>}
                 </div>
-            </Modal> 
+            </Modal>
         </div>
     );
 }
-        

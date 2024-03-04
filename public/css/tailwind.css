@@ -19,3 +19,96 @@
     border-radius: 10px;
     background: #eee; 
 }
+
+.p-datatable .p-datatable-thead > tr > th {
+    text-align: left;
+    padding: 1rem 1rem;
+    border: 1px solid #6da47c4f;
+    font-weight: 700;
+    color: #374151;
+    background: #bfd9c1;
+    transition: box-shadow 0.2s;
+}
+.p-datatable .p-datatable-tbody > tr > td {
+    text-align: left;
+    border: 1px solid #e5e7eb;
+    padding: 0.3rem 1rem;
+    font-size: 0.9rem;
+}
+.p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+    background: #d73237;
+    border-color: #e72027;
+    color: #ffffff;
+} 
+.p-paginator .p-paginator-pages .p-paginator-page {
+    border: 0 none;
+    min-width: 2rem;
+    height: 2rem;
+    margin: 0.143rem;
+    transition: box-shadow 0.2s;
+    border-radius: 50%;
+}
+.p-input-icon-left > .p-inputtext {
+    padding-left: 2.5rem;
+}
+.p-inputtext {
+    margin: 0;
+}
+.p-input-icon-left > i:first-of-type, .p-input-icon-left > svg:first-of-type, .p-input-icon-left > .p-input-prefix {
+    left: 0.75rem;
+    color: #6b7280;
+    top: 1.5rem;
+}
+.p-inputtext {
+    font-family: var(--font-family);
+    font-feature-settings: var(--font-feature-settings, normal);
+    font-size: 1rem;
+    color: #4b5563;
+    background: #ffffff;
+    padding: 0.4rem;
+    border: 1px solid #d1d5db;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+    appearance: none;
+    border-radius: 6px;
+    height: 35px;
+    margin-top: 0.5rem;
+} 
+.p-datatable-wrapper{
+    border-radius: 10px;
+}
+.p-dialog .p-dialog-footer {
+    border-top: 0 none;
+    background: #ffffff;
+    color: #4b5563;
+    padding: 0 1.5rem 1.5rem 1.5rem;
+    text-align: right;
+    border-bottom-right-radius: 6px;
+    border-bottom-left-radius: 6px;
+  }
+   
+  .p-dialog .p-dialog-content {
+    background: #ffffff;
+    color: #4b5563;
+    padding: 0 1.5rem 2rem 1.5rem;
+  }
+   
+  .p-dialog .p-dialog-header {
+    border-bottom: 0 none;
+    background: #ffffff;
+    color: #374151;
+    padding: 1.5rem;
+    border-top-right-radius: 6px;
+    border-top-left-radius: 6px;
+  }
+  .p-dialog-content {
+    overflow-y: auto;
+    flex-grow: 1;
+  }
+  .p-dialog-mask {
+    background-color: transparent;
+    transition-property: background-color;
+  }
+  .p-component-overlay {
+    background-color: rgba(0, 0, 0, 0.4);
+    transition-duration: 0.2s;
+}
