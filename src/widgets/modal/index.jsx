@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Dialog } from 'primereact/dialog';
 
-const Modal = ({ visible, header, footer, onHide, children }) => {
+const Modal = ({ visible, header,onHide, footer, children }) => {
+ 
     return (
-        <Dialog visible={visible} onHide={onHide} header={header} footer={footer}>
+        <Dialog visible={visible} header={header} footer={footer} onHide={onHide}>
             {children}
         </Dialog>
     );
