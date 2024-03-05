@@ -24,7 +24,7 @@ export function Masters() {
         }
       />
       <DashboardNavbar />
-      <div className="p-6 xl:ml-80">
+      <div className="p-6 xl:ml-72">
         <Configurator />
         <Routes>
           {routes.map(({ layout, pages }) =>
