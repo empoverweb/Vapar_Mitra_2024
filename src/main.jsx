@@ -9,14 +9,12 @@ import 'primeicons/primeicons.css';
 import 'primereact/resources/primereact.css';
 import 'primereact/resources/themes/tailwind-light/theme.css'; 
 
-ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
+ReactDOM.createRoot(document.getElementById("root")).render( 
     <BrowserRouter>
       <ThemeProvider>  
         <MaterialTailwindControllerProvider> 
             <App />
         </MaterialTailwindControllerProvider> 
       </ThemeProvider>
-    </BrowserRouter>
-  </React.StrictMode>
+    </BrowserRouter> 
 );

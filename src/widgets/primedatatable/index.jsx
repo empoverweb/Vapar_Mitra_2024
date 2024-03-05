@@ -4,10 +4,23 @@ import { Column } from 'primereact/column';
 import { Toolbar } from 'primereact/toolbar'; 
 import { InputText } from 'primereact/inputtext'; 
 import { DocumentArrowDownIcon, PencilSquareIcon, TrashIcon } from '@heroicons/react/24/solid';
+import { Tag } from 'primereact/tag';
 
 export default function PrimeDataTable({tableHeading, tableColumns, tableData, handleAddNew, handleEdit, handleDelete, handleExport, showActions}) {
      
     const [globalFilter, setGlobalFilter] = useState(null); 
+
+    const getStatus = (rowData) => {
+        return rowData.status ? 'success' : 'danger';
+    };
+
+    const getStatusText = (status) => {
+        return status ? 'Active' : 'Inactive';
+    };
+
+    const statusBodyTemplate = (rowData) => {
+        return <Tag value={getStatusText(rowData.status)} severity={getStatus(rowData)}></Tag>;
+    };
   
     const leftToolbarTemplate = () => {
         return (
@@ -75,9 +88,18 @@ export default function PrimeDataTable({tableHeading, tableColumns, tableData, h
                         rowsPerPageOptions={[5, 10, 25]} 
                         globalFilter={globalFilter}  
                      >
-                        <Column key="sno" header="#" style={{ width: '3rem' }} body={(tableData, rowIndex) => rowIndex + 1} />
-                        {tableColumns.map((column, index) => (
-                            <Column key={index} field={column.field} header={column.header}></Column>
+                    <Column 
+                        key="sno" 
+                        header="Sno" 
+                        style={{ width: '3rem' }} 
+                        body={(rowData, rowIndex) => tableData.indexOf(rowData) + 1} 
+                     />
+                    {tableColumns.map((column, index) => (
+                        column.field === "status" ? (
+                        <Column key={index} field={column.field} header={column.header} body={statusBodyTemplate}></Column>
+                        ) : (
+                        <Column key={index} field={column.field} header={column.header}></Column>
+                        )
                         ))}
                         {showActions && (
                             <Column header="Action" body={actionBodyTemplate} exportable={false} style={{ minWidth: '6rem' }}></Column>

@@ -5,7 +5,7 @@ const Modal = ({ visible, header,onHide, footer, children }) => {
  
     return (
         <Dialog visible={visible} header={header} footer={footer} onHide={onHide}>
-            {children}
+           <div>{children}</div>
         </Dialog>
     );
 };
