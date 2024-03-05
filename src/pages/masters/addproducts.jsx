@@ -14,7 +14,7 @@ export function AddProduct() {
   const [showPopup, setShowPopup] = useState(false)
   const [product, setproduct] = useState(null);
   const [submitted, setSubmitted] = useState(false);
-  const [statusValue, setstatusValue] = useState();
+  const [statusValue, setstatusValue] = useState('');
   const toast = useRef(null);
   const { register, handleSubmit, formState: { errors } } = useForm();
 
@@ -66,26 +66,18 @@ export function AddProduct() {
 
 
   // add new record
-
-  let emptyProduct = {
-    id: 0,
-    productName: '',
-    packSize: '',
-    packUnit: '',
-    status: true
-  };
+  
+  const handleAddNew = () => { 
+    setShowPopup(true)
+  }
 
   const onSubmit = (data) => {
-    setproduct(emptyProduct);
-    setSubmitted(false);
-    setShowPopup(true)
-  }
+    alert();
+    console.log(data); // This will log the form data to the console
+    // Handle form data as needed
+  };
+   
 
-  const handleAddNew = () => {
-    setproduct(emptyProduct);
-    setSubmitted(false);
-    setShowPopup(true)
-  }
 
 
   //On Edit/ update
@@ -130,33 +122,18 @@ export function AddProduct() {
           <Modal visible={showPopup} onHide={() => setShowPopup(false)} header={"Add New Product"}>
             <form onSubmit={handleSubmit(onSubmit)}>
 
-              <div className="my-4 flex sm:flex-row flex-col items-center gap-4">
+              <div className="my-4 flex sm:flex-row flex-col items-center gap-4 mb-8">
 
-                <FormFields type="text" id="productName" label="Product Name" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter First name'} />
+                <FormFields type="text" id="productName" label="Product Name" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter Product name'} />
 
-                <FormFields type="number" id="packSize" label="Pack Size" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter Last Name'} />
+                <FormFields type="number" id="packSize" label="Pack Size" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter Pack Size'} />
 
               </div>
 
-              <div className="my-4 flex sm:flex-row flex-col items-center gap-4">
+              <div className="my-4 flex sm:flex-row flex-col items-center gap-4 mb-8">
 
-                <FormFields type="number" id="packUnit" label="Pack Unit" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter First name'} />
-
-                <FormFields
-                  label="Status"
-                  type="statusDropdown"
-                  size="lg"
-                  color="teal"
-                  id="status"
-                  placeholder="status"
-                  error={true}
-                  register={register}
-                  errors={errors}
-                  RequiredErrorMsg={"slect status"}
-                  onChange={handleStatusChange}
-                  selectedValue={statusValue}
-                />
-
+                <FormFields type="number" id="packUnit" label="Pack Unit" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter Pack Unit'} />
+               
  
               </div>
 

@@ -4,7 +4,7 @@ import { Dialog } from 'primereact/dialog';
 const Modal = ({ visible, header,onHide, footer, children }) => {
  
     return (
-        <Dialog visible={visible} header={header} footer={footer} onHide={onHide}>
+        <Dialog visible={visible} header={header} footer={footer} onHide={onHide} resizable={false} draggable={false}>
            <div>{children}</div>
         </Dialog>
     );
