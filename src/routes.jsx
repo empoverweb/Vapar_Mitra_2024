@@ -27,7 +27,7 @@ import {AddCategory,AddCrop,AddHybrid,AddProduct,AddPromotions,AddSubCategory} f
 import {AddCoupon} from "@/pages/coupons"; 
 import Stocks from "@/pages/stocks";
 import Reports from '@/pages/reports'
-import { SignIn, SignUp } from "./pages/auth";
+import AddRegion from "./pages/masters/addRegion";
 
 const icon = {
   className: "w-5 h-5 text-inherit",
@@ -111,6 +111,12 @@ export const routes = [
             name: "Promotions",
             path: "/add-promotions",
             element: <AddPromotions />,
+          },
+          {
+            icon: <GiftIcon {...icon} />,
+            name: "Regions",
+            path: "/add-Regions",
+            element: <AddRegion />,
           }
         ]
       }

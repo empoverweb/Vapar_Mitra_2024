@@ -7,4 +7,6 @@ export const addProduct = `${BASE_URL}masters/addProducts`;
 export const getSeasons = `${BASE_URL}masters/getSeasons`
 
 
+export const getRegions = `${BASE_URL}masters/getRegions`;
+export const getZones = `${BASE_URL}masters/getZones`;
 
