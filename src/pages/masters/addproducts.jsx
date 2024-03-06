@@ -32,7 +32,7 @@ export function AddProduct() {
   const [seasonsOptionsData, fetchSeasondMasters] = useGetSeasons();
   const toast = useRef(null);
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
-  
+
   //tabel columns
 
   const tableColumns = [
@@ -128,16 +128,14 @@ export function AddProduct() {
     };
 
     setproduct(updatedProduct);
-
-    console.log("updatedProduct" + JSON.stringify(updatedProduct));
+ ;
 
     // Set the delete modal visible
     setDeleteProductsDialogVisible(true);
 
   }
 
-  const handleDeleteProduct = async () => {
-    debugger;
+  const handleDeleteProduct = async () => { 
     const postData = product;
     const apiUrl = addProduct;
     const response = await ApiService.postData(apiUrl, postData);
