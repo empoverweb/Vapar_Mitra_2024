@@ -2,9 +2,7 @@ import { useState } from "react";
 import { getSeasons } from "./constants";
 import { ApiService } from "@/service";
 export * from "@/utils/constants";
-import { getCrops } from "@/utils";
-import { ApiService } from "@/service";
-import { useState } from "react";
+import { getCrops } from "@/utils"; 
 
 
 export const statusDropdown = () => {

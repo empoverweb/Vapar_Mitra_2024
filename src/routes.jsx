@@ -23,7 +23,7 @@ import {
 } from "@heroicons/react/24/solid";
 import { Home} from "@/pages/dashboard"; 
 import {AddRole,AddUser} from "@/pages/usermangment"; 
-import {AddCategory,AddCrop,AddHybrid,AddProduct,AddPromotions,AddSubCategory,AddState,AddTerritory,AddDistrict,AddProductionPlants} from "@/pages/masters";
+import {AddCategory,AddCrop,AddHybrid,AddProduct,AddPromotions,AddSubCategory,AddState,AddTerritory,AddDistrict,AddProductionPlants,AddSeasons,AddHeadQuarters,AddCountry} from "@/pages/masters";
 import {AddCoupon} from "@/pages/coupons"; 
 import Stocks from "@/pages/stocks";
 import Reports from '@/pages/reports'
@@ -144,6 +144,23 @@ export const routes = [
             path: "/add-productionplants",
             element: <AddProductionPlants/>,
           },
+          {
+            name: "Seasons",
+            path: "/add-seasons",
+            element: <AddSeasons/>,
+          },
+          {
+            icon: <GiftIcon {...icon} />,
+            name: "Head Quarters",
+            path: "/add-headQuarters",
+            element: <AddHeadQuarters/>,
+          },
+          {
+            icon: <GiftIcon {...icon} />,
+            name: "Countries",
+            path: "/add-country",
+            element: <AddCountry/>,
+          }
         ]
       }
     ]

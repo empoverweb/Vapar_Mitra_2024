@@ -2,12 +2,13 @@ import PrimeDataTable from "@/widgets/primedatatable";
 import React, { useState, useEffect, useRef } from 'react';
 import Modal from "@/widgets/modal";
 import { Button } from "@material-tailwind/react";
-import { getRoles } from "@/utils";
+import { getHeadQuarters } from "@/utils";
 import { ApiService } from "@/service";
 import { Toast } from 'primereact/toast';
 import { FormFields } from '@/widgets/FormFields';
 import { useForm } from 'react-hook-form';
-export function AddRole() {
+
+export function AddHeadQuarters() {
 
   const [tableData, setTableData] = useState(null);
   const [previousData, setPreviousData] = useState([]);
@@ -18,42 +19,49 @@ export function AddRole() {
   const toast = useRef(null);
   const { register, handleSubmit, formState: { errors } } = useForm();
 
-
-  /////API CALL TO GET ALL THE ROLES
+  /////API CALL TO GET ALL THE HEAD QUARTERS
 
   const tableColumns = [
     {
-      'field': 'roleName',
-      'header': "Role Name"
+      'field': 'headquarterName',
+      'header': "Head Quarter Name"
+    },
+    {
+      'field': 'territory.territoryName',
+      'header': "Territory Name"
+    },
+    {
+      'field': 'territory.region.regionName',
+      'header': "Region Name"
+    },
+    {
+      'field': 'territory.region.zone.zoneName',
+      'header': "Zone Name"
     },
     {
       'field': 'remarks',
       'header': "Remarks"
     },
     {
-      'field': 'description',
-      'header': "Description"
-    },
-    {
       'field': 'status',
       'header': "Status"
     }
   ]
-
+  
   useEffect(() => {
 
-    const fetchRolesData = async () => {
+    const fetchHeadQuartersData = async () => {
       try {
-        const fetchUrl = getRoles;
-        const response = await ApiService.getData(fetchUrl);
-        setTableData(response.response.rolesList);
+        const apiUrl = getHeadQuarters;
+        const response = await ApiService.getData(apiUrl);
+        setTableData(response.response.headQuartorsList);
       } catch (error) {
-        console.error("Error fetching roles master data:", error);
+        console.error("Error fetching HeadQuarters Master data:", error);
       }
     };
 
     if (JSON.stringify(previousData) !== JSON.stringify(tableData)) {
-      fetchRolesData();
+      fetchHeadQuartersData();
       setPreviousData(tableData);
     }
   }, [tableData, previousData]);
@@ -61,24 +69,23 @@ export function AddRole() {
 
   // add new record
 
-  let emptyRole = {
+  let emptyHeadQuarters = {
     id: 0,
-    roleName: '',
-    description: '',
+    headquarterName: '',
     remarks: '',
     status: true
   };
 
   const onSubmit = (data) => {
-    setproduct(emptyRole);
+    setproduct(emptyHeadQuarters);
     setSubmitted(false);
     setShowPopup(true)
   }
 
   const handleAddNew = () => {
-    setproduct(emptyRole);
+    setproduct(emptyHeadQuarters);
     setSubmitted(false);
-    setShowPopup(true)
+    setShowPopup(true);
   }
 
 
@@ -120,16 +127,14 @@ export function AddRole() {
       <div class="relative flex flex-col w-full h-full text-gray-700 shadow-md rounded-xl bg-clip-border">
         <div class="p-0 px-0">
           <Toast ref={toast} />
-          <PrimeDataTable tableHeading={'Add Role'} tableData={tableData} tableColumns={tableColumns} showActions={true} handleAddNew={handleAddNew} handleEdit={handleEdit} handleDelete={handleDelete} handleExport={true} />
-          <Modal visible={showPopup} onHide={() => setShowPopup(false)} header={"Add New Role"}>
+          <PrimeDataTable tableHeading={'Head Quarters'} tableData={tableData} tableColumns={tableColumns} showActions={true} handleAddNew={handleAddNew} handleEdit={handleEdit} handleDelete={handleDelete} handleExport={true} />
+          <Modal visible={showPopup} onHide={() => setShowPopup(false)} header={"Add New Head Quarter Master"}>
             <form onSubmit={handleSubmit(onSubmit)}>
 
               <div className="my-4 flex sm:flex-row flex-col items-center gap-4">
 
-                <FormFields type="text" id="roleName" label="Role Name" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter Role name'} />
-                <FormFields type="text" id="description" label="Description" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter Description'} />
+                <FormFields type="text" id="headquarterName" label="Head Quarter Name" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter Head Quarter Name'} />
                 <FormFields type="text" id="remarks" label="Remarks" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter Remarks'} />
-
               </div>
 
               <div className="my-4 flex sm:flex-row flex-col items-center gap-4">
@@ -148,7 +153,9 @@ export function AddRole() {
                   onChange={handleStatusChange}
                   selectedValue={statusValue}
                 />
+ 
               </div>
+
               {/* //formfields */}
               <div className='flex justify-center items-center'>
                 <Button type='submit' variant="filled" size="md" className='bg-primaryColor'>Save</Button>
@@ -161,5 +168,5 @@ export function AddRole() {
   );
 }
 
-export default AddRole;
+export default AddHeadQuarters;
 
