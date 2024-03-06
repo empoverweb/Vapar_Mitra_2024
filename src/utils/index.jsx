@@ -67,44 +67,27 @@ export const useGetSeasons = () =>{
 
     return [seasonsOptionsData,fetchSeasondMasters]
 }
-export const useGetZones = () => {
-    const [zoneMasters, setZoneMasters] = useState([]);
-    const fetchZoneMasters = async () => {
-      try {
-        const apiUrl = getZones;
-        const response = await ApiService.getData(apiUrl);
-        console.log(response,"zones data ")
-        setZoneMasters(response.response.zoneList);
-      } catch (error) {
-        console.error("Error fetching regions data:", error);
-      }
-    };
-    const zoneOptionsData = zoneMasters.filter((status) => (!status === false)).map(zone => ({
-        id: zone.id,
-        name: zone.zoneName,
-      }));
-    return [zoneOptionsData, fetchZoneMasters];
-  };
-  
 
 
-
-  export const useGetCrops = () => {
-      const [cropMasters, setCropMasters] = useState([]);
-      const fetchCropMasters = async () => {
-        try {
-          const apiUrl = getCrops;
-          const response = await ApiService.getData(apiUrl);
-          console.log(response,"crops data ")
-          setCropMasters(response.response.cropsList);
-        } catch (error) {
-          console.error("Error fetching regions data:", error);
+//Zone dropdwon master data Done By Nagendra
+export const useGetZones = () =>{
+    const [zonesMaster,setZonesMasters] = useState([])
+    const fetchZonesMasters = async() =>{
+        try{
+            const apiUrl = getSeasons;
+            const response = await ApiService.getData(apiUrl);
+           console.log(response,"Zone data");
+           setZonesMasters(response.response.zoneList);
+        } catch(error){
+            console.error("Error fetching zone data",error)
         }
-      };
-      const cropOptionsData = cropMasters.filter((status) => (!status === false)).map(crop => ({
-          id: crop.id,
-          name: crop.cropName,
-        }));
-      return [cropOptionsData, fetchCropMasters];
-    };
-   
+    }
+   const zonesOptionsData = zonesMaster.filter((status) => (!status === false)).map((zone) => ({
+    id: zone.id,
+    name:zone.zoneName
+}))
+
+    console.log("seasonsOptionsData"+JSON.stringify(zonesOptionsData))
+
+    return [zonesOptionsData,fetchZonesMasters]
+}

@@ -2,6 +2,7 @@ import PrimeDataTable from "@/widgets/primedatatable";
 import React, { useState, useEffect, useRef } from 'react';
 import Modal from "@/widgets/modal"; 
 import { Button } from "@material-tailwind/react";
+import { getRegions, useGetZones } from "@/utils";
 import { getRegions, getZones } from "@/utils";
 import { ApiService } from "@/service";
 import { Toast } from 'primereact/toast';
@@ -10,12 +11,21 @@ import { useForm } from 'react-hook-form';
 
 
 export function AddRegion() { 
+
+  let emptyRegion = {
+    id: 0,
+    regionName: '',
+    zoneId: '',
+    status: true
+  };
   
   const [tableData, setTableData] = useState(null);
   const [showPopup,setShowPopup] = useState(false)
   const [previousData, setPreviousData] = useState([]);
   const [regionName, setRegionName] = useState();
-  const [submitted, setSubmitted] = useState(false);
+  const [region, setRegion] = useState(emptyRegion);
+  const [zonesOptionsData, fetchZonesMasters] = useGetZones();
+  
   const [statusValue, setstatusValue] = useState('');
   const [zoneMaster, setZoneMaster] = useState(false);
   const toast = useRef(null);
@@ -26,6 +36,10 @@ export function AddRegion() {
     {
       'field': 'regionName',
       'header': "Region Name"
+    },
+    {
+      'field': 'zone.zoneName',
+      'header': "Zone Name"
     },
     ,
     {
@@ -54,31 +68,13 @@ export function AddRegion() {
   }, [tableData, previousData]);
 
 
-  const fetchZoneData = async () => {
-    try {
-      const apiUrl = getZones;
-      const response = await ApiService.getData(apiUrl);
+   ///add new recrod 
 
-      const result = JSON.stringify(response)
-      // console.log("Zones Data"+result)
-
-      setZoneMaster(response.response.zoneList);
-    } catch (error) {
-      console.error("Error fetching product master data:", error);
-    }
-  };
-  useEffect(()=>{
-    fetchZoneData()
-  },[])
-
-console.log(zoneMaster,"api response")
-
-
-    // add new record
-  
-  const handleAddNew = () => { 
-    setShowPopup(true)
-
+   const handleAddNew = () => {
+    setRegion(emptyRegion);
+    fetchZonesMasters();
+    setmodalHeading('Add Product');
+    setShowPopup(true);
   }
 
   const onSubmit = () => {
@@ -142,9 +138,10 @@ return (
 
             <div className="my-4 flex sm:flex-row flex-col items-center gap-4 mb-8">
 
-              <FormFields type="text" onChange={handleRegionName} id="regionName" label="Region Name" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter Region name'} />
+            <FormFields type="dropdown" id="zoneId" label="Zone Name" size="md" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Select Zone'} selectedValue={region.zoneId} optionsData={zonesOptionsData} onChange={e => handleChange("seasonId", e.target.value)} />
 
-              <FormFields type="select" id="zoneId" optionsData={zoneMaster} label="Zone Id" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Select Zone Id'} />
+            <FormFields type="text" onChange={handleRegionName} id="regionName" label="Region Name" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter Region name'} />
+
 
             </div>
 
