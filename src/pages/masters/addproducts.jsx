@@ -32,6 +32,8 @@ export function AddProduct() {
   const [seasonsOptionsData, fetchSeasondMasters] = useGetSeasons();
   const toast = useRef(null);
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
+  
+  //tabel columns
 
   const tableColumns = [
     {
