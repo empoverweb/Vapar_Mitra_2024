@@ -23,7 +23,7 @@ import {
 } from "@heroicons/react/24/solid";
 import { Home} from "@/pages/dashboard"; 
 import {AddRole,AddUser} from "@/pages/usermangment"; 
-import {AddCategory,AddCrop,AddHybrid,AddProduct,AddPromotions,AddSubCategory} from "@/pages/masters"; 
+import {AddCategory,AddCrop,AddHybrid,AddProduct,AddPromotions,AddSubCategory,AddState} from "@/pages/masters"; 
 import {AddCoupon} from "@/pages/coupons"; 
 import Stocks from "@/pages/stocks";
 import Reports from '@/pages/reports'
@@ -117,6 +117,10 @@ export const routes = [
             name: "Regions",
             path: "/add-Regions",
             element: <AddRegion />,
+            icon: <PlusCircleIcon {...icon} />,
+            name: "States",
+            path: "/add-states",
+            element: <AddState />,
           }
         ]
       }

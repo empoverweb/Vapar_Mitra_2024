@@ -2,17 +2,17 @@ import PrimeDataTable from "@/widgets/primedatatable";
 import React, { useState, useEffect, useRef } from 'react';
 import Modal from "@/widgets/modal";
 import { Button } from "@material-tailwind/react";
-import { getCrops } from "@/utils";
+import { getStates } from "@/utils";
 import { ApiService } from "@/service";
 import { Toast } from 'primereact/toast';
 import { FormFields } from '@/widgets/FormFields';
 import { useForm } from 'react-hook-form';
   
-  export function AddCrop() {
+  export function AddState() {
     const [tableData, setTableData] = useState(null);
     const [previousData, setPreviousData] = useState([]);
     const [showPopup, setShowPopup] = useState(false)
-    const [crop, setCrop] = useState(null);
+    const [state, setState] = useState(null);
     const [submitted, setSubmitted] = useState(false);
     const [statusValue, setstatusValue] = useState();
     const toast = useRef(null);
@@ -23,13 +23,21 @@ import { useForm } from 'react-hook-form';
   
     const tableColumns = [
       {
-        'field': 'cropName',
-        'header': "Crop Name"
+        'field': 'stateName',
+        'header': "State Name"
       },
       {
-        'field': 'cropCode',
-        'header': "Crop Code"
+        'field': 'stateCode',
+        'header': "State Code"
       },
+      {
+        'field': 'zone.zoneName',
+        'header': "Zone Name"
+      },
+      {
+        'field': 'country.countryName',
+        'header': "Country Name"
+      },  
       {
         'field': 'remarks',
         'header': "Remarks"
@@ -44,18 +52,18 @@ import { useForm } from 'react-hook-form';
   
     useEffect(() => {
   
-      const fetchCropsData = async () => {
+      const fetchStatesData = async () => {
         try {
-          const apiUrl = getCrops;
+          const apiUrl = getStates;
           const response = await ApiService.getData(apiUrl);
-          setTableData(response.response.cropsList);
+          setTableData(response.response.stateList);
         } catch (error) {
-          console.error("Error fetching Crop master data:", error);
+          console.error("Error fetching StateName master data:", error);
         }
       };
   
       if (JSON.stringify(previousData) !== JSON.stringify(tableData)) {
-        fetchCropsData();
+        fetchStatesData();
         setPreviousData(tableData);
       }
     }, [tableData, previousData]);
@@ -63,22 +71,24 @@ import { useForm } from 'react-hook-form';
   
     // add new record
   
-    let emptyCrop = {
+    let emptyState = {
       id: 0,
-      cropName: '',
-      cropCode: '',
+      stateName: '',
+      stateCode: '',
+      country: '',
+      zone: '',
       remarks: '',
       status: true
     };
   
     const onSubmit = (data) => {
-      setCrop(emptyCrop);
+      setState(emptyState);
       setSubmitted(false);
       setShowPopup(true)
     }
   
     const handleAddNew = () => {
-      setCrop(emptyCrop);
+      setState(emptyState);
       setSubmitted(false);
       setShowPopup(true)
     }
@@ -118,21 +128,27 @@ import { useForm } from 'react-hook-form';
     }
     return (
       <>
-        <div class="relative flex flex-col w-full h-full text-gray-700 shadow-md rounded-xl bg-clip-border">
-        <div class="p-0 px-0">
+        <div className="relative flex flex-col w-full h-full text-gray-700 shadow-md rounded-xl bg-clip-border">
+        <div className="p-0 px-0">
           <Toast ref={toast} />
-          <PrimeDataTable tableHeading={'Add Crop'} tableData={tableData} tableColumns={tableColumns} showActions={true} handleAddNew={handleAddNew} handleEdit={handleEdit} handleDelete={handleDelete} handleExport={true} />
-          <Modal visible={showPopup} onHide={() => setShowPopup(false)} header={"Add New Crop"}>
+          <PrimeDataTable tableHeading={'Add State'} tableData={tableData} tableColumns={tableColumns} showActions={true} handleAddNew={handleAddNew} handleEdit={handleEdit} handleDelete={handleDelete} handleExport={true} />
+          <Modal visible={showPopup} onHide={() => setShowPopup(false)} header={"Add New state"}>
             <form onSubmit={handleSubmit(onSubmit)}>
 
               <div className="my-4 flex sm:flex-row flex-col items-center gap-4">
 
-                <FormFields type="text" id="cropName" label="Crop Name" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter Crop name'} />
+                <FormFields type="select" id="country" label="country Name" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter country name'} />
 
-                <FormFields type="number" id="cropCode" label="Crop Code" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter Crop Code'} />
+                <FormFields type="number" id="zone" label="zone Name" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter zone Code'} />
 
-              </div>
+              </div>  
+              <div className="my-4 flex sm:flex-row flex-col items-center gap-4">
 
+                <FormFields type="text" id="stateName" label="state Name" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter State name'} />
+
+                <FormFields type="number" id="stateCode" label="State Code" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter State Code'} />
+
+              </div>          
               <div className="my-4 flex sm:flex-row flex-col items-center gap-4">
 
                 <FormFields type="text" id="remarks" label="Remarks" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter Remarks'} />
@@ -151,8 +167,6 @@ import { useForm } from 'react-hook-form';
                   onChange={handleStatusChange}
                   selectedValue={statusValue}
                 />
-
- 
               </div>
 
               {/* //formfields */}
@@ -167,5 +181,5 @@ import { useForm } from 'react-hook-form';
     );
   }
   
-  export default AddCrop;
+  export default AddState;
   
