@@ -10,6 +10,7 @@ export * from "@/pages/masters/addproductionplants";
 export * from "@/pages/masters/addSeasons"; 
 export * from "@/pages/masters/addHeadQuarters"; 
 export * from "@/pages/masters/AddCountry"; 
+export * from "@/pages/masters/AddState"; 
 
 
 
