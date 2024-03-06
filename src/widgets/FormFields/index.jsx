@@ -9,10 +9,10 @@ import {
 import { format } from "date-fns";
 import { DayPicker } from "react-day-picker";
 import { ChevronRightIcon, ChevronLeftIcon } from "@heroicons/react/24/outline";
-import { statusDropdown } from '@/utils';
+import { statusDropdown,packUnits} from '@/utils';
 
-const FormFields = ({ label, type, size, color, error, register, errors, id, placeholder, RequiredErrorMsg, selectedValue, onChange, optionsData , selectedDate , onSelectDate}) => {
-
+const FormFields = ({ label, type, size, color, error, register, errors, id, value, placeholder, RequiredErrorMsg, selectedValue, onChange, optionsData , selectedDate , onSelectDate ,isRequired}) => {
+ 
   switch (type) {
     case 'text':
       return (
@@ -22,11 +22,14 @@ const FormFields = ({ label, type, size, color, error, register, errors, id, pla
             label={label}
             size={size}
             color={color}
-            maxLength="100"
+            maxLength="100" 
+            value={value}
+            name={id} 
             {...register(`${id}`, { required: true, pattern: /^[A-Za-z]+$/ })}
+            onChange={onChange}
             onKeyDown={(e) => {
-              const regex = /^[A-Za-z]+$/;
-              if (!regex.test(e.key)) {
+              const regex = /^[A-Za-z\s]+$/; // Modify the regex to allow spaces
+              if (!regex.test(e.key) && e.key !== 'Backspace') { // Allow backspace
                 e.preventDefault();
               }
             }}
@@ -43,8 +46,11 @@ const FormFields = ({ label, type, size, color, error, register, errors, id, pla
             size={size}
             color={color}
             label={label}
-            placeholder={placeholder}
+            name={id}
+            value={value}
+            placeholder={placeholder} 
             {...register(`${id}`, { required: true, pattern: /^\S+@\S+\.\S+$/ })}
+            onChange={onChange}
             onKeyDown={(e) => {
               const allowedCharacters = /^[a-zA-Z0-9@.]+$/;
               if (!allowedCharacters.test(e.key)) {
@@ -62,10 +68,13 @@ const FormFields = ({ label, type, size, color, error, register, errors, id, pla
             type="tel"
             maxLength="10"
             label={label}
+            name={id}
             size={size}
-            color={color}
-            placeholder={placeholder}
+            value={value}
+            color={color} 
             {...register(`${id}`, { required: true, pattern: /^[0-9]{10}$/ })}
+            placeholder={placeholder}
+            onChange={onChange}
             onKeyDown={(e) => {
               // Allow backspace (key 'Backspace') and numbers (key '0' to '9')
               if (!(e.key === 'Backspace' || (e.key >= '0' && e.key <= '9'))) {
@@ -80,13 +89,16 @@ const FormFields = ({ label, type, size, color, error, register, errors, id, pla
       return (
         <div className='w-full'>
           <Input
-            type="tel"
-            maxLength="10"
+            type="text" 
+            maxLength="4"
             label={label}
+            name={id}
             size={size}
             color={color}
-            placeholder={placeholder}
-            {...register(`${id}`, { required: true, pattern: /^[0-9]{10}$/ })}
+            value={value}
+            placeholder={placeholder} 
+            {...register(`${id}`, { required: true})}
+            onChange={onChange}
             onKeyDown={(e) => {
               // Allow backspace (key 'Backspace') and numbers (key '0' to '9')
               if (!(e.key === 'Backspace' || (e.key >= '0' && e.key <= '9'))) {
@@ -103,11 +115,14 @@ const FormFields = ({ label, type, size, color, error, register, errors, id, pla
           <Input
             type="tel"
             label={label}
+            name={id}
             maxLength="6"
             size={size}
+            value={value}
             color={color}
-            placeholder={placeholder}
-            {...register(`${id}`, { required: true, pattern: /^[0-9]{6}$/ })}
+            placeholder={placeholder} 
+            {...register(`${id}`, { required: true, pattern: /^[0-9]{6}$/ })} 
+            onChange={onChange}
             onKeyDown={(e) => {
               const regex = /^[0-9]+$/;
               if (!regex.test(e.key)) {
@@ -125,26 +140,31 @@ const FormFields = ({ label, type, size, color, error, register, errors, id, pla
             type="password"
             label={label}
             size={size}
+            name={id}
+            value={value}
             color={color}
-            {...register(`${id}`, { required: true, minLength: 8 })}
+            {...register(`${id}`, { required: true, minLength: 8 })} 
+            onChange={onChange}
           />
           {error && errors[`${id}`]?.type === 'required' && <RequiredError message={RequiredErrorMsg} />}
         </div>
       );
-    case "select":
+    case "dropdown":
       return (
         <div className="relative h-10 w-72 min-w-[200px]">
           <select
             className="peer h-full w-full rounded-[7px] border border-blue-gray-200 border-t-transparent bg-transparent px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 empty:!bg-gray-900 focus:border-2 focus:border-gray-900 focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
             value={selectedValue}
+            name={id} 
+            {...register(`${id}`, { required: true })}
             onChange={onChange}
           >
-            <option value="" disabled>
-              Select
+          <option value="" selected hidden>
+              Select {label}
             </option>
             {optionsData.map((option) => (
               <option key={option.id} value={option.id}>
-                {option.value}
+                {option.name}
               </option>
             ))}
           </select>
@@ -155,10 +175,12 @@ const FormFields = ({ label, type, size, color, error, register, errors, id, pla
       );
     case "statusDropdown":
       return (
-        <div className="relative h-10 w-full">
+        <div className="relative w-full">
           <select
             className="peer h-full w-full rounded-[7px] border border-blue-gray-200 border-t-transparent bg-transparent px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 empty:!bg-gray-900 focus:border-2 focus:border-gray-900 focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
             value={selectedValue}
+            name={id} 
+            {...register(`${id}`, { required: true })}
             onChange={onChange}
           >
             <option value="" selected hidden>
@@ -175,8 +197,32 @@ const FormFields = ({ label, type, size, color, error, register, errors, id, pla
           </label>
           {error && errors[`${id}`]?.type === 'required' && <RequiredError message={RequiredErrorMsg} />}
         </div>
-      );
-
+      ); 
+      case "packUnit":
+        return (
+          <div className="relative w-full">
+            <select
+              className="peer h-full w-full rounded-[7px] border border-blue-gray-200 border-t-transparent bg-transparent px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 empty:!bg-gray-900 focus:border-2 focus:border-gray-900 focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
+              value={selectedValue} 
+              {...register(`${id}`, { required: true })}
+              onChange={onChange}
+              name={id}
+            >
+              <option value="" selected hidden>
+                Select Pack Unit
+              </option>
+              {packUnits().map((option) => (
+                <option key={option.id} value={option.value}>
+                  {option.name}
+                </option>
+              ))}
+            </select>
+            <label className="before:content[' '] after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none text-[11px] font-normal leading-tight text-blue-gray-400 transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-t before:border-l before:border-blue-gray-200 before:transition-all after:pointer-events-none after:mt-[6.5px] after:ml-1 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-t after:border-r after:border-blue-gray-200 after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[3.75] peer-placeholder-shown:text-blue-gray-500 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-gray-900 peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:before:border-gray-900 peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:after:border-gray-900 peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500">
+              {label}
+            </label>
+            {error && errors[`${id}`]?.type === 'required' && <RequiredError message={RequiredErrorMsg} />}
+          </div>
+        ); 
     case "Date":
       return (
         <div className="p-24">
@@ -185,13 +231,16 @@ const FormFields = ({ label, type, size, color, error, register, errors, id, pla
               <Input
                 label="Select a Date"
                 value={selectedDate ? format(selectedDate, "PPP") : ""}
+                name={id}
               />
             </PopoverHandler>
             <PopoverContent>
               <DayPicker
                 mode="single"
-                selected={selectedDate}
+                selected={selectedDate} 
+                {...register(`${id}`, { required: true })}
                 onSelect={onSelectDate}
+                onChange={onChange}
                 showOutsideDays
                 className="border-0"
                 classNames={{
@@ -235,6 +284,10 @@ const FormFields = ({ label, type, size, color, error, register, errors, id, pla
       return (
         <div class="relative w-full min-w-[200px]">
           <textarea
+            value={value}
+             name={id}
+            {...register(`${id}`, { required: isRequired })}
+            onChange={onChange}
             class="peer h-full min-h-[100px] w-full resize-none rounded-[7px] border border-blue-gray-200 border-t-transparent bg-transparent px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-primaryColor focus:border-t-transparent focus:outline-0 disabled:resize-none disabled:border-0 disabled:bg-blue-gray-50"
             placeholder=" "></textarea>
           <label
