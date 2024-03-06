@@ -15,3 +15,8 @@ export const getHybrids = `${BASE_URL}masters/getHybrids`;
 export const getTerritory = `${BASE_URL}masters/getTerritories`;
 export const getDistricts = `${BASE_URL}masters/getDistricts`;
 
+export const getCategories = `${BASE_URL}masters/getCategories`;
+
+export const getSubCategories = `${BASE_URL}masters/getSubCategories`;
+
+export const getProductionPlants = `${BASE_URL}masters/getProductionPlants`;

@@ -2,35 +2,45 @@ import PrimeDataTable from "@/widgets/primedatatable";
 import React, { useState, useEffect, useRef } from 'react';
 import Modal from "@/widgets/modal";
 import { Button } from "@material-tailwind/react";
-import { getCategories } from "@/utils";
+import { getProductionPlants } from "@/utils";
 import { ApiService } from "@/service";
 import { Toast } from 'primereact/toast';
 import { FormFields } from '@/widgets/FormFields';
 import { useForm } from 'react-hook-form';
-export function AddCategory() {
+
+export function AddProductionPlants() {
 
   const [tableData, setTableData] = useState(null);
   const [previousData, setPreviousData] = useState([]);
   const [showPopup, setShowPopup] = useState(false)
-  const [category, setcategory] = useState(null);
+  const [productionPlants, setproductionPlants] = useState(null);
   const [submitted, setSubmitted] = useState(false);
   const [statusValue, setstatusValue] = useState();
   const toast = useRef(null);
   const { register, handleSubmit, formState: { errors } } = useForm();
 
 
-  /////API CALL TO GET ALL THE CATEGORIES
+  /////API CALL TO GET ALL THE PRODUCTIONPLANTS
 
   const tableColumns = [
     {
-      'field': 'categoryName',
-      'header': "CategoryName"
+      'field': 'productionName',
+      'header': "ProductionName"
     },
  
     {
-      'field': 'remarks',
-      'header': "Remarks"
+      'field': 'productionCode',
+      'header': "ProductionCode"
     },
+    {
+      'field': 'location',
+      'header': "Location"
+    },
+
+    {
+        'field': 'address',
+        'header': "Address"
+      },
     {
       'field': 'status',
       'header': "Status"
@@ -41,18 +51,18 @@ export function AddCategory() {
 
   useEffect(() => {
 
-    const fetchCategoriesData = async () => {
+    const fetchproductionPlantData = async () => {
       try {
-        const apiUrl = getCategories;
+        const apiUrl = getProductionPlants;
         const response = await ApiService.getData(apiUrl);
-        setTableData(response.response.categoryList);
+        setTableData(response.response.productionPlantList);
       } catch (error) {
-        console.error("Error fetching category master data:", error);
+        console.error("Error fetching productionplant master data:", error);
       }
     };
 
     if (JSON.stringify(previousData) !== JSON.stringify(tableData)) {
-      fetchCategoriesData();
+        fetchproductionPlantData();
       setPreviousData(tableData);
     }
   }, [tableData, previousData]);
@@ -60,21 +70,24 @@ export function AddCategory() {
 
   // add new record
 
-  let emptyCategory = {
+  let emptyProductionPlants = {
     id: 0,
-    categoryName: '',
+    productionPlants: '',
+    productionCode:'',
+    location:'',
+    address:'',
     remarks:'',
     status: true
   };
 
   const onSubmit = (data) => {
-    setcategory(emptyCategory);
+    setproductionPlants(emptyProductionPlants);
     setSubmitted(false);
     setShowPopup(true)
   }
 
   const handleAddNew = () => {
-    setcategory(emptyCategory);
+    setproductionPlants(emptyProductionPlants);
     setSubmitted(false);
     setShowPopup(true)
   }
@@ -118,13 +131,16 @@ export function AddCategory() {
       <div class="relative flex flex-col w-full h-full text-gray-700 shadow-md rounded-xl bg-clip-border">
         <div class="p-0 px-0">
           <Toast ref={toast} />
-          <PrimeDataTable tableHeading={'Add Category'} tableData={tableData} tableColumns={tableColumns} showActions={true} handleAddNew={handleAddNew} handleEdit={handleEdit} handleDelete={handleDelete} handleExport={true} />
-          <Modal visible={showPopup} onHide={() => setShowPopup(false)} header={"Add New Category"}>
+          <PrimeDataTable tableHeading={'Add ProductionPlants'} tableData={tableData} tableColumns={tableColumns} showActions={true} handleAddNew={handleAddNew} handleEdit={handleEdit} handleDelete={handleDelete} handleExport={true} />
+          <Modal visible={showPopup} onHide={() => setShowPopup(false)} header={"Add New ProductionPlants"}>
             <form onSubmit={handleSubmit(onSubmit)}>
 
               <div className="my-4 flex sm:flex-row flex-col items-center gap-4">
 
-                <FormFields type="text" id="categoryName" label="Category Name" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter  Name'} />
+                <FormFields type="text" id="productionName" label="production Name" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter  Name'} />
+                <FormFields type="text" id="productionCode" label="production Code" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter  Code'} />
+                <FormFields type="text" id="location" label="Location" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter  Name'} />
+                <FormFields type="text" id="address" label="Address" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter  Name'} />
                 <FormFields type="text" id="remarks" label="Remarks" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter  Remarks'} />
 
 
@@ -163,5 +179,5 @@ export function AddCategory() {
   );
 }
 
-export default AddCategory;
+export default AddProductionPlants;
 
