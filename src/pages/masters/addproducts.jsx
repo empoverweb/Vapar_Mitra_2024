@@ -1,6 +1,7 @@
 import PrimeDataTable from "@/widgets/primedatatable";
 import React, { useState, useEffect, useRef } from 'react';
 import Modal from "@/widgets/modal";
+import { DeleteModal } from "@/widgets/modal/deleteModal";
 import { Button } from "@material-tailwind/react";
 import { getProducts, addProduct, useGetSeasons } from "@/utils";
 import { ApiService } from "@/service";
@@ -27,6 +28,7 @@ export function AddProduct() {
   const [submitted, setSubmitted] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [modalHeading, setmodalHeading] = useState('');
+  const [deleteProductsDialogVisible, setDeleteProductsDialogVisible] = useState(false);
   const [seasonsOptionsData, fetchSeasondMasters] = useGetSeasons();
   const toast = useRef(null);
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
@@ -95,12 +97,12 @@ export function AddProduct() {
 
   //On Edit/ update
 
-  const handleEdit = (rowData) => { 
+  const handleEdit = (rowData) => {
     const updatedProduct = {
       ...emptyProduct,
       ...rowData,
-      seasonId: rowData.seasonId.id  
-    }; 
+      seasonId: rowData.seasonId.id
+    };
     setproduct(updatedProduct);
     fetchSeasondMasters();
     setIsEditMode(true);
@@ -108,12 +110,44 @@ export function AddProduct() {
   }
 
 
-  //on delete 
+  //on delete product
 
   const handleDelete = (rowData) => {
-    alert("delete clicked")
-    setShowPopup(true)
+
+    // Create a new object with the relevant fields and set the status to false
+    const updatedProduct = {
+      id: rowData.id,
+      productName: rowData.productName,
+      packSize: rowData.packSize,
+      packUnit: rowData.packUnit,
+      remarks: rowData.remarks,
+      seasonId: rowData.seasonId.id,
+      status: false
+    };
+
+    setproduct(updatedProduct);
+
+    console.log("updatedProduct" + JSON.stringify(updatedProduct));
+
+    // Set the delete modal visible
+    setDeleteProductsDialogVisible(true);
+
   }
+
+  const handleDeleteProduct = async () => {
+    debugger;
+    const postData = product;
+    const apiUrl = addProduct;
+    const response = await ApiService.postData(apiUrl, postData);
+    response.statusCode == 200 ? setShowPopup(false) : null;
+    ApiService.handleResponse(response, toast);
+    setDeleteProductsDialogVisible(false);
+    fetchProductsData();
+  };
+
+  const hideDeleteProductsDialog = () => {
+    setDeleteProductsDialogVisible(false);
+  };
 
   ///onchange to update the new value
 
@@ -121,7 +155,7 @@ export function AddProduct() {
     setproduct(prevProduct => ({
       ...prevProduct,
       [fieldName]: value
-    })); 
+    }));
   };
 
   return (
@@ -175,10 +209,28 @@ export function AddProduct() {
 
               {/* //formfields */}
               <div className='flex justify-center items-center'>
-                <Button type='submit' variant="filled" size="md" className='bg-primaryColor'>Save</Button>
+                <Button type='submit' variant="filled" size="md" className='bg-primaryColor'>
+                {isEditMode ? 'Update': 'Save'}
+                </Button>
               </div>
             </form>
           </Modal>
+
+
+          {/* ///delete modal component loading */}
+
+          <DeleteModal
+            visible={deleteProductsDialogVisible}
+            header="Confirm"
+            hideDeleteProductsDialog={hideDeleteProductsDialog}
+            handleDelete={handleDeleteProduct}
+            item={product.productName}
+          />
+
+
+
+          {/* ///delete modal component loading */}
+
         </div>
       </div>
     </>
