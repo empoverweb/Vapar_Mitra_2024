@@ -2,44 +2,41 @@ import PrimeDataTable from "@/widgets/primedatatable";
 import React, { useState, useEffect, useRef } from 'react';
 import Modal from "@/widgets/modal";
 import { Button } from "@material-tailwind/react";
-import { getHybrids } from "@/utils";
+import { getTerritory } from "@/utils";
 import { ApiService } from "@/service";
 import { Toast } from 'primereact/toast';
 import { FormFields } from '@/widgets/FormFields';
 import { useForm } from 'react-hook-form';
-import { useGetCrops } from "@/utils";
-
-export function AddHybrid() {
+export function AddTerritory() {
 
   const [tableData, setTableData] = useState(null);
   const [previousData, setPreviousData] = useState([]);
   const [showPopup, setShowPopup] = useState(false)
-  const [product, sethybrid] = useState(null);
+  const [territory, setterritory] = useState(null);
   const [submitted, setSubmitted] = useState(false);
   const [statusValue, setstatusValue] = useState();
   const toast = useRef(null);
   const { register, handleSubmit, formState: { errors } } = useForm();
-  const [cropOptionsData,fetchCropMasters] = useGetCrops()
 
 
-  /////API CALL TO GET ALL THE HYBRIDS
+  /////API CALL TO GET ALL THE PRODUCTS
 
   const tableColumns = [
     {
-      'field': 'hybridName',
-      'header': "Hybrid Name"
+      'field': 'territoryName',
+      'header': "Territory Name"
     },
     {
-      'field': 'hybridCode',
-      'header': "Hybrid Code"
+      'field': 'region.regionName',
+      'header': "Region Name"
+    },
+    {
+      'field': 'region.zone.zoneName',
+      'header': "zone Name"
     },
     {
       'field': 'remarks',
       'header': "Remarks"
-    },
-    {
-      'field': 'crop.cropName',
-      'header': "Crop Name"
     },
     {
       'field': 'status',
@@ -47,20 +44,22 @@ export function AddHybrid() {
     }
   ]
 
+
+
   useEffect(() => {
 
-    const fetchProductsData = async () => {
+    const fetchTerritoryData = async () => {
       try {
-        const apiUrl = getHybrids;
+        const apiUrl = getTerritory;
         const response = await ApiService.getData(apiUrl);
-        setTableData(response.response.hybridsList);
+        setTableData(response.response.territoryList);
       } catch (error) {
-        console.error("Error fetching hybrid master data:", error);
+        console.error("Error fetching product master data:", error);
       }
     };
 
     if (JSON.stringify(previousData) !== JSON.stringify(tableData)) {
-      fetchProductsData();
+      fetchTerritoryData();
       setPreviousData(tableData);
     }
   }, [tableData, previousData]);
@@ -68,25 +67,24 @@ export function AddHybrid() {
 
   // add new record
 
-  let emptyHybrid = {
+  let emptyTerritory = {
     id: 0,
-    hybridName: '',
-    hybridCode: '',
+    productName: '',
+    packSize: '',
+    packUnit: '',
     status: true
   };
 
   const onSubmit = (data) => {
-    sethybrid(emptyHybrid);
+    setterritory(emptyTerritory);
     setSubmitted(false);
     setShowPopup(true)
   }
 
-
-  const handleAddNew  = () => {
-    sethybrid(emptyHybrid);
+  const handleAddNew = () => {
+    setterritory(emptyTerritory);
     setSubmitted(false);
-    setShowPopup(true);
-    fetchCropMasters();
+    setShowPopup(true)
   }
 
 
@@ -128,37 +126,21 @@ export function AddHybrid() {
       <div class="relative flex flex-col w-full h-full text-gray-700 shadow-md rounded-xl bg-clip-border">
         <div class="p-0 px-0">
           <Toast ref={toast} />
-          <PrimeDataTable tableHeading={'Add Hybrid'} tableData={tableData} tableColumns={tableColumns} showActions={true} handleAddNew={handleAddNew} handleEdit={handleEdit} handleDelete={handleDelete} handleExport={true} />
-          <Modal visible={showPopup} onHide={() => setShowPopup(false)} header={"Add New Product"}>
+          <PrimeDataTable tableHeading={'Add Territory'} tableData={tableData} tableColumns={tableColumns} showActions={true} handleAddNew={handleAddNew} handleEdit={handleEdit} handleDelete={handleDelete} handleExport={true} />
+          <Modal visible={showPopup} onHide={() => setShowPopup(false)} header={"Add New Territory"}>
             <form onSubmit={handleSubmit(onSubmit)}>
 
               <div className="my-4 flex sm:flex-row flex-col items-center gap-4">
-              <FormFields
-                  label="Dropdown"
-                  type="select"
-                  size="lg"
-                  color="teal"
-                  id="status"
-                  placeholder="status"
-                  error={true}
-                  register={register}
-                  errors={errors}
-                  optionsData={cropOptionsData}
-                  RequiredErrorMsg={"slect status"}
-                  onChange={handleStatusChange}
-                  selectedValue={statusValue}
-                 
-                />
-                <FormFields type="text" id="hybridName" label="Hybrid Name" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter First name'} />
 
-                {/* <FormFields type="text" id="hybridCode" label="Hybrid Code" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter Last Name'} /> */}
+                <FormFields type="text" id="territoryName" label="Territory Name" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter First name'} />
+                <FormFields type="text" id="regionName" label="Region Name" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter First name'} />
+
 
               </div>
 
               <div className="my-4 flex sm:flex-row flex-col items-center gap-4">
 
-                {/* <FormFields type="number" id="packUnit" label="Pack Unit" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter First name'} /> */}
-                <FormFields type="text" id="hybridCode" label="Hybrid Code" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter Last Name'} />
+              <FormFields type="text" id="zoneName" label="Zone Name" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter First name'} />
 
                 <FormFields
                   label="Status"
@@ -190,5 +172,5 @@ export function AddHybrid() {
   );
 }
 
-export default AddHybrid;
+export default AddTerritory;
 

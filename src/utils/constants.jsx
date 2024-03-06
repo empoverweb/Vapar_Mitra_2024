@@ -11,4 +11,7 @@ export const getRegions = `${BASE_URL}masters/getRegions`;
 export const getZones = `${BASE_URL}masters/getZones`;
 export const getCrops = `${BASE_URL}masters/getCrops`;//this api is for get cropMaster done by ravi.e
 export const getStates = `${BASE_URL}masters/getStates`;//this api is for get cropMaster done by ravi.e
+export const getHybrids = `${BASE_URL}masters/getHybrids`;
+export const getTerritory = `${BASE_URL}masters/getTerritories`;
+export const getDistricts = `${BASE_URL}masters/getDistricts`;
 

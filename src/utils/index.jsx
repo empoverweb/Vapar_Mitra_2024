@@ -2,6 +2,10 @@ import { useState } from "react";
 import { getSeasons } from "./constants";
 import { ApiService } from "@/service";
 export * from "@/utils/constants";
+import { getCrops } from "@/utils";
+import { ApiService } from "@/service";
+import { useState } from "react";
+
 
 export const statusDropdown = () => {
     return [
@@ -65,3 +69,44 @@ export const useGetSeasons = () =>{
 
     return [seasonsOptionsData,fetchSeasondMasters]
 }
+export const useGetZones = () => {
+    const [zoneMasters, setZoneMasters] = useState([]);
+    const fetchZoneMasters = async () => {
+      try {
+        const apiUrl = getZones;
+        const response = await ApiService.getData(apiUrl);
+        console.log(response,"zones data ")
+        setZoneMasters(response.response.zoneList);
+      } catch (error) {
+        console.error("Error fetching regions data:", error);
+      }
+    };
+    const zoneOptionsData = zoneMasters.filter((status) => (!status === false)).map(zone => ({
+        id: zone.id,
+        name: zone.zoneName,
+      }));
+    return [zoneOptionsData, fetchZoneMasters];
+  };
+  
+
+
+
+  export const useGetCrops = () => {
+      const [cropMasters, setCropMasters] = useState([]);
+      const fetchCropMasters = async () => {
+        try {
+          const apiUrl = getCrops;
+          const response = await ApiService.getData(apiUrl);
+          console.log(response,"crops data ")
+          setCropMasters(response.response.cropsList);
+        } catch (error) {
+          console.error("Error fetching regions data:", error);
+        }
+      };
+      const cropOptionsData = cropMasters.filter((status) => (!status === false)).map(crop => ({
+          id: crop.id,
+          name: crop.cropName,
+        }));
+      return [cropOptionsData, fetchCropMasters];
+    };
+   
