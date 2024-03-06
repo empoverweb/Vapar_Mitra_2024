@@ -23,11 +23,10 @@ import {
 } from "@heroicons/react/24/solid";
 import { Home} from "@/pages/dashboard"; 
 import {AddRole,AddUser} from "@/pages/usermangment"; 
-import {AddCategory,AddCrop,AddHybrid,AddProduct,AddPromotions,AddSubCategory,AddState,AddTerritory,AddDistrict,AddProductionPlants,AddSeasons,AddHeadQuarters,AddCountry} from "@/pages/masters";
+import {AddCategory,AddCrop,AddHybrid,AddProduct,AddPromotions,AddSubCategory,AddState,AddTerritory,AddDistrict,AddProductionPlants,AddSeasons,AddHeadQuarters,AddCountry,AddRegion} from "@/pages/masters";
 import {AddCoupon} from "@/pages/coupons"; 
 import Stocks from "@/pages/stocks";
-import Reports from '@/pages/reports'
-import AddRegion from "./pages/masters/addRegion";
+import Reports from '@/pages/reports' 
 
 const icon = {
   className: "w-5 h-5 text-inherit",
@@ -117,6 +116,8 @@ export const routes = [
             name: "Regions",
             path: "/add-Regions",
             element: <AddRegion />,
+          },
+          {
             icon: <PlusCircleIcon {...icon} />,
             name: "States",
             path: "/add-states",
