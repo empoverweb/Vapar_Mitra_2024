@@ -25,7 +25,7 @@ const FormFields = ({ label, type, size, color, error, register, errors, id, val
             maxLength="100" 
             value={value}
             name={id} 
-            {...register(`${id}`, { required: true, pattern: /^[A-Za-z]+$/ })}
+            {...register(`${id}`, { required: true})}
             onChange={onChange}
             onKeyDown={(e) => {
               const regex = /^[A-Za-z\s]+$/; // Modify the regex to allow spaces

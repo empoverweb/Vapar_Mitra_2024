@@ -14,20 +14,20 @@ export default function PrimeDataTable({tableHeading, tableColumns, tableData, h
         return rowData.status ? 'success' : 'danger';
     };
 
-    const getStatusText = (status) => {
+    const getStatusText = (status) => { 
         return status ? 'Active' : 'Inactive';
     };
 
     const statusBodyTemplate = (rowData) => {
         return <Tag value={getStatusText(rowData.status)} severity={getStatus(rowData)}></Tag>;
     };
-  
-    const leftToolbarTemplate = () => {
+    
+    const rightToolbarTemplate  = () => {
         return (
             <div className="flex flex-wrap gap-2">
                 {handleAddNew && (
                     <button
-                        className="flex select-none items-center gap-1 rounded-lg bg-gray-900 py-2 px-4 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                        className="flex select-none items-center gap-1 rounded-lg bg-blue-800 py-2 px-4 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
                         type="button"
                         onClick={handleAddNew}
                     >
@@ -39,7 +39,7 @@ export default function PrimeDataTable({tableHeading, tableColumns, tableData, h
                 )}
                 {handleExport && (
                     <button
-                        className="flex select-none items-center gap-1 rounded-lg bg-green-800 py-2 px-4 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                        className="flex select-none items-center gap-1 rounded-lg bg-yellow-800 py-2 px-4 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
                         type="button"
                         onClick={handleExport}
                     >
@@ -51,7 +51,7 @@ export default function PrimeDataTable({tableHeading, tableColumns, tableData, h
         );
     };
 
-    const rightToolbarTemplate = () => {
+    const leftToolbarTemplate = () => {
         return (
             <span className="p-input-icon-left">
                 <i className="pi pi-search" />
@@ -86,6 +86,8 @@ export default function PrimeDataTable({tableHeading, tableColumns, tableData, h
                         dataKey="id"  
                         paginator rows={10} 
                         rowsPerPageOptions={[5, 10, 25]} 
+                        paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
                         globalFilter={globalFilter}  
                      >
                     <Column 

@@ -10,6 +10,10 @@ module.exports = withMT({
         primaryColor: '#00873F',
         secondaryColor: '#E46722',
       },
+      backgroundColor: {
+         "yellow-800": '#DB710E',
+         "blue-800" : '#4B49AC'
+      },
     },
   },
   plugins: [],

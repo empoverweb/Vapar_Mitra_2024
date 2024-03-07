@@ -115,7 +115,6 @@ export function AddProduct() {
   //on delete product
 
   const handleDelete = (rowData) => {
-
     // Create a new object with the relevant fields and set the status to false
     const updatedProduct = {
       id: rowData.id,
@@ -126,10 +125,7 @@ export function AddProduct() {
       seasonId: rowData.seasonId.id,
       status: false
     };
-
     setproduct(updatedProduct);
- ;
-
     // Set the delete modal visible
     setDeleteProductsDialogVisible(true);
 
@@ -225,6 +221,7 @@ export function AddProduct() {
             hideDeleteProductsDialog={hideDeleteProductsDialog}
             handleDelete={handleDeleteProduct}
             item={product.productName}
+            onHide={() => setDeleteProductsDialogVisible(false)}
           />
 
 

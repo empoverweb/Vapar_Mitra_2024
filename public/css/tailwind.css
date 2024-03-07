@@ -23,21 +23,33 @@
 .p-datatable .p-datatable-thead > tr > th {
     text-align: left;
     padding: 1rem 1rem;
-    border: 1px solid #6da47c4f;
-    font-weight: 700;
-    color: #374151;
-    background: #bfd9c1;
+    border: 2px solid #6da47c4f;
+    color:#181760;
+    background-color: rgba(75, 73, 172, .1);
+    font-weight: 500;
+    font-size: 18px;
     transition: box-shadow 0.2s;
 }
 .p-datatable .p-datatable-tbody > tr > td {
     text-align: left;
-    border: 1px solid #e5e7eb;
+    border: 2px solid #e5e7eb;
     padding: 0.3rem 1rem;
     font-size: 0.9rem;
 }
+.p-paginator {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    border: 2px solid #e5e7eb ;
+    border-top: none;
+    border-bottom-left-radius: 25px;
+    border-bottom-right-radius: 25px;
+}
+
 .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
-    background: #d73237;
-    border-color: #e72027;
+    background: #4B49AC;
+    border-color: #4B49AC;
     color: #ffffff;
 } 
 .p-paginator .p-paginator-pages .p-paginator-page {
