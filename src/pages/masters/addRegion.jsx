@@ -115,6 +115,7 @@ export function AddRegion() {
     const updatedRegion = {
       id: rowData.id,
       regionName: rowData.regionName,
+      remarks: rowData.remarks,
       zoneId: rowData.zone.id,
       status: false
     };
