@@ -51,13 +51,7 @@ export const routes = [
       {
         icon: <UserCircleIcon {...icon} />,
         name: "User Mangement", 
-        subitems:[  
-          {
-            icon: <UserPlusIcon {...icon} />,
-            name: "Add User",
-            path: "/add-user",
-            element: <AddUser />,
-          },
+        subitems:[   
           {
             icon: <UserPlusIcon {...icon} />,
             name: "Add Role",
@@ -121,11 +115,7 @@ export const routes = [
             icon: <PlusCircleIcon {...icon} />,
             name: "States",
             path: "/add-states",
-            element: <AddState />,
-            icon: <PlusCircleIcon {...icon} />,
-            name: "Products",
-            path: "/add-product",
-            element: <AddProduct />,
+            element: <AddState /> 
           },
           {
             icon: <PlusCircleIcon {...icon} />,
@@ -146,6 +136,7 @@ export const routes = [
             element: <AddProductionPlants/>,
           },
           {
+            icon: <DocumentIcon {...icon} />,
             name: "Seasons",
             path: "/add-seasons",
             element: <AddSeasons/>,
