@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { getSeasons } from "./constants";
+import { getSeasons, getZones } from "./constants";
 import { ApiService } from "@/service";
 export * from "@/utils/constants"; 
 
@@ -67,26 +67,45 @@ export const useGetSeasons = () =>{
     return [seasonsOptionsData,fetchSeasondMasters]
 }
 
+export const useGetZones = () => {
+    const [zoneMasters, setZoneMasters] = useState([]);
+    const fetchZoneMasters = async () => {
+      try {
+        const apiUrl = getZones;
+        const response = await ApiService.getData(apiUrl);
+        console.log(response,"zones data ")
+        setZoneMasters(response.response.zoneList);
+      } catch (error) {
+        console.error("Error fetching regions data:", error);
+      }
+    };
+    const zoneOptionsData = zoneMasters.map(zone => ({
+        id: zone.id,
+        name: zone.zoneName,
+      }));
+    return [zoneOptionsData, fetchZoneMasters];
+  };
 
-//Zone dropdwon master data Done By Nagendra
-export const useGetZones = () =>{
-    const [zonesMaster,setZonesMasters] = useState([])
-    const fetchZonesMasters = async() =>{
-        try{
-            const apiUrl = getSeasons;
-            const response = await ApiService.getData(apiUrl);
-           console.log(response,"Zone data");
-           setZonesMasters(response.response.zoneList);
-        } catch(error){
-            console.error("Error fetching zone data",error)
-        }
-    }
-   const zonesOptionsData = zonesMaster.filter((status) => (!status === false)).map((zone) => ({
-    id: zone.id,
-    name:zone.zoneName
-}))
+// //Zone dropdwon master data Done By Nagendra
+// export const useGetZones = () =>{
+//     debugger;
+//     const [zonesMaster,setZonesMasters] = useState([])
+//     const fetchZonesMasters = async() =>{
+//         try{
+//             const apiUrl = getZones;
+//             const response = await ApiService.getData(apiUrl);
+//            console.log(response,"Zone data");
+//            setZonesMasters(response.response.zoneList);
+//         } catch(error){
+//             console.error("Error fetching zone data",error)
+//         }
+//     }
+//    const zonesOptionsData = zonesMaster.filter((status) => (!status === false)).map((zone) => ({
+//     id: zone.id,
+//     name:zone.zoneName
+// }))
 
-    console.log("seasonsOptionsData"+JSON.stringify(zonesOptionsData))
+//     console.log("seasonsOptionsData"+JSON.stringify(zonesOptionsData))
 
-    return [zonesOptionsData,fetchZonesMasters]
-}
+//     return [zonesOptionsData,fetchZonesMasters]
+// }

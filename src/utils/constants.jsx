@@ -20,4 +20,6 @@ export const getRoles = `${BASE_URL}masters/getRoles`;
 export const getCountries = `${BASE_URL}masters/getCountries`;
 export const getUsers = `${BASE_URL}getUsers`; 
 export const login = `${BASE_URL}login`; 
+export const addRegion = `${BASE_URL}masters/addRegion`;  
+
 
