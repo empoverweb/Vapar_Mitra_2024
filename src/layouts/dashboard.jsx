@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import { Cog6ToothIcon } from "@heroicons/react/24/solid";
-import { IconButton } from "@material-tailwind/react";
+import { IconButton, Typography } from "@material-tailwind/react";
 import {
   Sidenav,
   DashboardNavbar,
@@ -22,8 +22,10 @@ export function Dashboard() {
           sidenavType === "dark" ? "/img/logo-ct.png" : "/img/logo-ct-dark.png"
         }
       /> 
-      <DashboardNavbar />
-      <div className="p-6 xl:ml-80">
+      <DashboardNavbar /> 
+      <div className="p-6 xl:ml-56 bg-bodyColor">
+        <Typography variant="h4" className="pl-4">Welcome <span className="text-primaryColor">Kumar</span></Typography>
+        <Typography variant="paragraph" className="pl-4 font-medium">Dashaboard</Typography>
         <Configurator /> 
         <Routes>
           {routes.map(

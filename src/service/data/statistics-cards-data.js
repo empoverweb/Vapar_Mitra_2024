@@ -1,55 +1,47 @@
-import {
-  BanknotesIcon,
-  UserPlusIcon,
-  UsersIcon,
-  ChartBarIcon,
-} from "@heroicons/react/24/solid";
-
 export const statisticsCardsData = [
   {
-    color: "gray",
-    icon: BanknotesIcon,
-    title: "Today's Money",
-    value: "$53k",
-    footer: {
-      color: "text-green-500",
-      value: "+55%",
-      label: "than last week",
-    },
+    color: "white", 
+    title: "Total Sales",
+    value: "4006", 
+    percentageDays:"10.00% (30 days)",
+    bgColor:"#5881EB" 
   },
   {
-    color: "gray",
-    icon: UsersIcon,
-    title: "Today's Users",
-    value: "2,300",
-    footer: {
-      color: "text-green-500",
-      value: "+3%",
-      label: "than last month",
-    },
+    color: "white", 
+    title: "Total Points",
+    value: "61344", 
+    percentageDays:"22.00% (30 days)",
+    bgColor:"#4747A1" 
   },
   {
-    color: "gray",
-    icon: UserPlusIcon,
-    title: "New Clients",
-    value: "3,462",
-    footer: {
-      color: "text-red-500",
-      value: "-2%",
-      label: "than yesterday",
-    },
+    color: "white", 
+    title: "Total Coupon Count",
+    value: "3404", 
+    percentageDays:"2.00% (30 days)",
+    bgColor:"#6766DD" 
   },
   {
-    color: "gray",
-    icon: ChartBarIcon,
-    title: "Sales",
-    value: "$103,430",
-    footer: {
-      color: "text-green-500",
-      value: "+5%",
-      label: "than yesterday",
-    },
-  },
+    color: "white", 
+    title: "Total redeemed Points",
+    value: "61344", 
+    percentageDays:"0.22% (30 days)",
+    bgColor:"#EE7176" 
+  }
 ];
 
-export default statisticsCardsData;
+
+export const promotionsSliderData = [
+  {
+    tittle: "1",
+    img: '../public/img/people.png' 
+  },
+  {
+    tittle: "2",
+    img: '../public/img/people.png' 
+  },
+  {
+    tittle: "3",
+    img: '../public/img/people.png' 
+  } 
+];
+ 

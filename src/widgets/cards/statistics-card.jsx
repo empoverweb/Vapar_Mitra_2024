@@ -6,32 +6,23 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import PropTypes from "prop-types";
+import LineImg from '../../../public/img/line.png';
 
-export function StatisticsCard({ color, icon, title, value, footer }) {
+export function StatisticsCard({ title, value, percentageDays,bgColor }) {
   return (
-    <Card className="border border-blue-gray-100 shadow-sm">
-      <CardHeader
-        variant="gradient"
-        color={color}
-        floated={false}
-        shadow={false}
-        className="absolute grid h-12 w-12 place-items-center"
-      >
-        {icon}
-      </CardHeader>
-      <CardBody className="p-4 text-right">
-        <Typography variant="small" className="font-normal text-blue-gray-600">
+    <Card className="border border-blue-gray-100 shadow-sm" style={{ backgroundColor: bgColor }}> 
+      <CardBody className="p-4 text-left">
+        <Typography variant="small" className="font-medium text-white ">
           {title}
         </Typography>
-        <Typography variant="h4" color="blue-gray">
+        <Typography variant="h2" color="white">
           {value}
         </Typography>
-      </CardBody>
-      {footer && (
-        <CardFooter className="border-t border-blue-gray-50 p-4">
-          {footer}
-        </CardFooter>
-      )}
+        <Typography variant="small" color="white">
+          {percentageDays}
+        </Typography>
+          <img src={LineImg}/>
+      </CardBody> 
     </Card>
   );
 }

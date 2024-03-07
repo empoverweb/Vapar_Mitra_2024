@@ -24,7 +24,7 @@ export function Masters() {
         }
       />
       <DashboardNavbar />
-      <div className="p-6 xl:ml-72">
+      <div className="p-6 xl:ml-56 bg-bodyColor">
         <Configurator />
         <Routes>
           {routes.map(({ layout, pages }) =>

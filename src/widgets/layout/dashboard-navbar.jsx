@@ -47,10 +47,10 @@ export function DashboardNavbar() {
   return (
     <Navbar
     color={fixedNavbar ? "white" : "transparent"}
-    className={`bg-primaryColor transition-all ${
+    className={`bg-white h-11 py-0 transition-all ${
       fixedNavbar
-        ? "sticky top-4 z-40 py-3 shadow-md shadow-blue-gray-500/5"
-        : "px-0 py-1"
+        ? "sticky top-0 z-40 shadow-md shadow-blue-gray-500/5"
+        : "px-0 " 
     }`}
     fullWidth
     blurred={fixedNavbar}
@@ -60,8 +60,7 @@ export function DashboardNavbar() {
            
           
         </div>
-        <div className="flex items-center">
-          
+        <div className="flex items-center"> 
           <IconButton
             variant="text"
             color="blue-gray"
@@ -78,7 +77,7 @@ export function DashboardNavbar() {
           >
             <MenuHandler>
               <IconButton variant="text" color="white">
-                <UserCircleIcon className="h-5 w-5 text-white" />
+                <UserCircleIcon className="h-5 w-5 text-primaryColor" />
               </IconButton>
             </MenuHandler>
             <MenuList className="p-1">
@@ -111,7 +110,7 @@ export function DashboardNavbar() {
             color="blue-gray"
             onClick={() => setOpenConfigurator(dispatch, true)}
           >
-            <Cog6ToothIcon className="h-5 w-5 text-white" />
+            <Cog6ToothIcon className="h-5 w-5 text-primaryColor" />
           </IconButton>
         </div>
       </div>

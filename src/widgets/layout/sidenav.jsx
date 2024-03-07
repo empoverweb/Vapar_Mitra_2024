@@ -35,7 +35,7 @@ export function Sidenav({ brandImg, brandName, routes }) {
   return (
     <aside
     className={`${sidenavTypes[sidenavType]} ${openSidenav ? "translate-x-0" : "-translate-x-80"
-      } fixed right-0 scroll-smooth inset-0 z-50 h-screen overflow-y-auto  w-72 scrollbar:w-4 transition-transform duration-300 xl:translate-x-0 border border-blue-gray-100 bg-white scrollbar-thin scrollbar-thumb-blue-gray-300 scrollbar-track-blue-gray-100`}
+      } fixed right-0 scroll-smooth inset-0 z-50 h-screen overflow-y-auto  w-[235px] scrollbar:w-4 transition-transform duration-300 xl:translate-x-0 border border-blue-gray-100 bg-white scrollbar-thin scrollbar-thumb-blue-gray-300 scrollbar-track-blue-gray-100`}
       
   >
   
@@ -44,12 +44,12 @@ export function Sidenav({ brandImg, brandName, routes }) {
       >
         <div className="flex">
           <Link to="/" className="py-2 px-2 text-center">
-            <Typography
-              variant="h6"
-              color={sidenavType === "dark" ? "white" : "blue-gray"}
+            <span
+              className="flex"
             >
-              <img src={brandImg} className="w-1/3 rounded-xl ml-20" />
-            </Typography>
+              <img src={brandImg} className="w-1/3 rounded-xl" />
+              <span className="pt-4 text-primaryColor font-bold">Nuziveedu Seeds</span>
+            </span>
           </Link>
         </div>
         <IconButton
@@ -65,11 +65,12 @@ export function Sidenav({ brandImg, brandName, routes }) {
       </div>
       <div className="m-1 mt-4">
         {routes.map(({ layout, title, pages }, key) => ( 
-          <List>
+          <List> 
             {pages.map(({ icon, name, path, subitems }) => (
               <React.Fragment key={name}>
                 {subitems ? (
                   <Accordion
+                    className="w-[200px]"
                     open={open === name}
                     icon={
                       <ChevronRightIcon
@@ -79,26 +80,26 @@ export function Sidenav({ brandImg, brandName, routes }) {
                       />
                     }
                   >
-                    <ListItem className="p-0" selected={open === name}>
-                      <AccordionHeader onClick={() => handleOpen(name)} className="border-b-0 p-3">
+                    <ListItem className="p-0 rounded-b" selected={open === name}>
+                      <AccordionHeader onClick={() => handleOpen(name)} className="border-b-0 p-3 ">
                         <ListItemPrefix>
                           {icon} {/* Icon goes here */}
                         </ListItemPrefix>
-                        <Typography color="gradient" className="mr-auto font-normal">
+                        <Typography color="gradient" className="mr-auto text-sm font-normal">
                           {name}
                         </Typography>
                       </AccordionHeader>
                     </ListItem>
-                    <AccordionBody className="py-1">
+                    <AccordionBody className="py-1 bg-gray-300 w-[200px]  border-gray-500 rounded-b">
                       <List className="p-3">
                         {subitems.map(({ icon, name, path }) => (
                           <NavLink key={name} to={`/${layout}${path}`}>
                             {({ isActive }) => (
-                              <ListItem>
+                              <ListItem className="w-[180px]">
                                 <ListItemPrefix>{icon}</ListItemPrefix>
                                 <Typography
                                   color="inherit"
-                                  className={`font-medium  capitalize ${isActive ? "text-gradient" : "text-blue-gray"
+                                  className={`font-medium text-sm capitalize ${isActive ? "text-gradient" : "text-blue-gray"
                                     }`}
                                 >
                                   {name}
@@ -122,11 +123,11 @@ export function Sidenav({ brandImg, brandName, routes }) {
                                 ? "white"
                                 : "blue-gray"
                           }
-                          className="flex items-center gap-4 px-4 capitalize"
+                          className="flex items-center gap-4 px-4  text-sm capitalize w-[200px]"
                           fullWidth
                         >
                           {icon}
-                          <Typography color="gradient" className="font-medium capitalize">
+                          <Typography color="gradient" className="font-medium text-sm capitalize">
                             {name}
                           </Typography>
                         </Button>

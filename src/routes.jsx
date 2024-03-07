@@ -19,7 +19,10 @@ import {
   DocumentPlusIcon,
   PlusCircleIcon,
   SpeakerWaveIcon,
-  ChartBarIcon
+  ChartBarIcon,
+  UserIcon,
+  Square2StackIcon,
+  Squares2X2Icon
 } from "@heroicons/react/24/solid";
 import { Home} from "@/pages/dashboard"; 
 import {AddRole,AddUser} from "@/pages/usermangment"; 
@@ -38,7 +41,7 @@ export const routes = [
     layout: "dashboard",
     pages: [
       {
-        icon: <HomeIcon {...icon} />,
+        icon: <Squares2X2Icon {...icon} />,
         name: "dashboard",
         path: "/home",
         element: <Home />,
@@ -49,7 +52,7 @@ export const routes = [
     layout: "usermanagement",
     pages: [
       {
-        icon: <UserCircleIcon {...icon} />,
+        icon: <UserIcon {...icon} />,
         name: "User Mangement", 
         subitems:[   
           {
