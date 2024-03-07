@@ -108,7 +108,9 @@ export function AddProduct() {
     setproduct(updatedProduct);
     fetchSeasondMasters();
     setIsEditMode(true);
+    setmodalHeading('Edit Product');
     setShowPopup(true);
+
   }
 
 

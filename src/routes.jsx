@@ -118,7 +118,7 @@ export const routes = [
             icon: <PlusCircleIcon {...icon} />,
             name: "States",
             path: "/add-states",
-            element: <AddState /> 
+            element: <AddState />,
           },
           {
             icon: <PlusCircleIcon {...icon} />,
