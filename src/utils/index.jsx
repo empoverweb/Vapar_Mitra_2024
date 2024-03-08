@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { getSeasons,getCountries,getZones} from "./constants";
+import { getSeasons,getCountries,getZones,getCrops} from "./constants";
 import { ApiService } from "@/service";
 export * from "@/utils/constants"; 
 
@@ -112,3 +112,23 @@ export const useGetCountries = () =>{
 
     return [countryOptionsData,fetchcountryMasters]
 }
+
+export const useGetCrops = () => {
+    const [cropMasters, setCropMasters] = useState([]);
+    const fetchCropMasters = async () => {
+      try {
+        const apiUrl = getCrops;
+        const response = await ApiService.getData(apiUrl);
+        console.log(response,"crops data ")
+        setCropMasters(response.response.cropsList);
+      } catch (error) {
+        console.error("Error fetching regions data:", error);
+      }
+    };
+    const cropOptionsData = cropMasters.filter((status) => (!status === false)).map(crop => ({
+        id: crop.id,
+        name: crop.cropName,
+      }));
+    return [cropOptionsData, fetchCropMasters];
+  };
+ 

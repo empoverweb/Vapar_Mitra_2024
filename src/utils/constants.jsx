@@ -10,9 +10,9 @@ export const getCrops = `${BASE_URL}masters/getCrops`;//this api is for get crop
 export const addCrops = `${BASE_URL}masters/addCrop`; //this api is for save cropMaster done by ravi.e
 export const getStates = `${BASE_URL}masters/getStates`;//this api is for get cropMaster done by ravi.e
 export const addStates = `${BASE_URL}masters/addState`;//this api is for get stateMaster done by ravi.e
-export const getHybrids = `${BASE_URL}masters/getHybrids`;
-export const getTerritory = `${BASE_URL}masters/getTerritories`;
-export const getDistricts = `${BASE_URL}masters/getDistricts`; 
+export const getHybrids = `${BASE_URL}masters/getHybrids`; // This API for get Hybrids done by ravikumar.m
+export const getTerritory = `${BASE_URL}masters/getTerritories`; // This API for get Territories done by ravikumar.m
+export const getDistricts = `${BASE_URL}masters/getDistricts`; // This API for get Districts done by ravikumar.m
 export const getCategories = `${BASE_URL}masters/getCategories`; 
 export const getSubCategories = `${BASE_URL}masters/getSubCategories`; 
 export const getProductionPlants = `${BASE_URL}masters/getProductionPlants`;
@@ -24,4 +24,5 @@ export const getUsers = `${BASE_URL}getUsers`;
 export const login = `${BASE_URL}login`; 
 export const addRegion = `${BASE_URL}masters/addRegion`;  
 
+export const addHybrid = `${BASE_URL}masters/addHybrid`; // This API for add Hybrids done by ravikumar.m
 
