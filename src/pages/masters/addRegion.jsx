@@ -1,17 +1,17 @@
 import PrimeDataTable from "@/widgets/primedatatable";
 import React, { useState, useEffect, useRef } from 'react';
-import Modal from "@/widgets/modal"; 
+import Modal from "@/widgets/modal";
 import { Button } from "@material-tailwind/react";
-import { addRegion, getRegions, useGetZones } from "@/utils"; 
+import { addRegion, getRegions, useGetZones } from "@/utils";
 import { ApiService } from "@/service";
 import { Toast } from 'primereact/toast';
 import { FormFields } from '@/widgets/FormFields';
 import { useForm } from 'react-hook-form';
 import { DeleteModal } from "@/widgets/modal/deleteModal";
 
-  
 
-export function AddRegion() { 
+
+export function AddRegion() {
 
   let emptyRegion = {
     id: 0,
@@ -20,9 +20,9 @@ export function AddRegion() {
     remarks: '',
     status: true
   };
-  
+
   const [tableData, setTableData] = useState(null);
-  const [showPopup,setShowPopup] = useState(false)
+  const [showPopup, setShowPopup] = useState(false)
   const [region, setRegion] = useState(emptyRegion);
   const [zonesOptionsData, fetchZoneMasters] = useGetZones();
   const [deleteRegionsDialogVisible, setDeleteRegionsDialogVisible] = useState(false);
@@ -53,29 +53,29 @@ export function AddRegion() {
   ]
 
 
-    //get all products api
-    useEffect(() => {
-      fetchRegionsData();
-    }, []);
+  //get all products api
+  useEffect(() => {
+    fetchRegionsData();
+  }, []);
 
-    const fetchRegionsData = async () => {
-      try {
-        const apiUrl = getRegions;
-        const response = await ApiService.getData(apiUrl);
-        setTableData(response.response.regionList);
-      } catch (error) {
-        console.error("Error fetching Region master data:", error);
-      }
-    };
-
-   ///add new recrod 
-
-    const handleAddNew = () => {
-      setRegion(emptyRegion);
-      fetchZoneMasters();
-      setmodalHeading('Add Region');
-      setShowPopup(true);
+  const fetchRegionsData = async () => {
+    try {
+      const apiUrl = getRegions;
+      const response = await ApiService.getData(apiUrl);
+      setTableData(response.response.regionList);
+    } catch (error) {
+      console.error("Error fetching Region master data:", error);
     }
+  };
+
+  ///add new recrod 
+
+  const handleAddNew = () => {
+    setRegion(emptyRegion);
+    fetchZoneMasters();
+    setmodalHeading('Add Region');
+    setShowPopup(true);
+  }
 
 
   const saveRegion = async () => {
@@ -88,19 +88,19 @@ export function AddRegion() {
     fetchRegionsData();
   }
 
-    //On Edit/ update
+  //On Edit/ update
 
-    const handleEdit = (rowData) => {
-      const updatedRegion = {
-        ...emptyRegion,
-        ...rowData,
-        zoneId: rowData.zone.id
-      };
-      setRegion(updatedRegion);
-      fetchZoneMasters();
-      setIsEditMode(true);
-      setShowPopup(true);
-    }
+  const handleEdit = (rowData) => {
+    const updatedRegion = {
+      ...emptyRegion,
+      ...rowData,
+      zoneId: rowData.zone.id
+    };
+    setRegion(updatedRegion);
+    fetchZoneMasters();
+    setIsEditMode(true);
+    setShowPopup(true);
+  }
 
   const [date, setDate] = useState();
   const handleSelectDate = (selectedDate) => {
@@ -121,7 +121,7 @@ export function AddRegion() {
     };
 
     setRegion(updatedRegion);
- ;
+    ;
 
     // Set the delete modal visible
     setDeleteRegionsDialogVisible(true);
@@ -129,7 +129,7 @@ export function AddRegion() {
   }
 
 
-  const handleDeleteRegion = async () => { 
+  const handleDeleteRegion = async () => {
     const postData = region;
     const apiUrl = addRegion;
     const response = await ApiService.postData(apiUrl, postData);
@@ -170,7 +170,7 @@ export function AddRegion() {
 
               <div className="my-4 flex sm:flex-row flex-col items-center gap-4 mb-8">
 
-              <FormFields type="dropdown" id="zoneId" label="Zone Name" size="md" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Select Zone'} selectedValue={region.zoneId} optionsData={zonesOptionsData} onChange={e => handleChange("zoneId", e.target.value)} />
+                <FormFields type="dropdown" id="zoneId" label="Zone Name" size="md" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Select Zone'} selectedValue={region.zoneId} optionsData={zonesOptionsData} onChange={e => handleChange("zoneId", e.target.value)} />
 
                 <FormFields type="text" id="regionName" label="Region Name" size="md" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter Product name'} value={region.regionName} onChange={e => handleChange("regionName", e.target.value)} />
 
@@ -201,13 +201,13 @@ export function AddRegion() {
 
               </div>
 
-              
+
 
 
               {/* //formfields */}
               <div className='flex justify-center items-center'>
                 <Button type='submit' variant="filled" size="md" className='bg-primaryColor'>
-                {isEditMode ? 'Update': 'Save'}
+                  {isEditMode ? 'Update' : 'Save'}
                 </Button>
               </div>
             </form>

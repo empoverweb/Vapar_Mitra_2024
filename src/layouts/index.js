@@ -6,3 +6,4 @@ export * from "@/layouts/coupons";
 export * from "@/layouts/promotions"; 
 export * from "@/layouts/stocks";
 export * from "@/layouts/reports";
+export * from "@/layouts/eKycBypassApproval";

@@ -6,6 +6,7 @@ export const getProducts = `${BASE_URL}masters/getProducts`;
 export const addProduct = `${BASE_URL}masters/addProducts`;  
 export const getRegions = `${BASE_URL}masters/getRegions`;
 export const getZones = `${BASE_URL}masters/getZones`;
+export const addZones = `${BASE_URL}masters/masters/addZone`;// Insertion API for Zones - Amlan
 export const getCrops = `${BASE_URL}masters/getCrops`;//this api is for get cropMaster done by ravi.e
 export const addCrops = `${BASE_URL}masters/addCrop`; //this api is for save cropMaster done by ravi.e
 export const getStates = `${BASE_URL}masters/getStates`;//this api is for get cropMaster done by ravi.e

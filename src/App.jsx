@@ -1,6 +1,8 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import { Dashboard,UserManagment,Masters,Coupons,Promotions,Stocks,Reports} from "@/layouts";  
+import { Dashboard,UserManagment,Masters,Coupons,Promotions,Stocks,Reports, EKycBypassApproval} from "@/layouts";  
 import { SignIn , SignUp} from "./pages/auth";
+import Retailers from "./layouts/retailers";
+//import EKycBypassApproval from "./layouts/eKycBypassApproval";
 
 function App() {
   return (
@@ -14,6 +16,8 @@ function App() {
       <Route path="/promotions/*" element={<Promotions/>} />  
       <Route path="/stocks/*" element={<Stocks/>} />  
       <Route path="/reports/*" element={<Reports/>} /> 
+      <Route path="/eKycBypassApproval/*" element={<EKycBypassApproval/>} /> 
+      <Route path="/retailers/*" element={<Retailers/>} /> 
     </Routes>
   );
 }

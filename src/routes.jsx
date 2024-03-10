@@ -25,11 +25,14 @@ import {
   Squares2X2Icon
 } from "@heroicons/react/24/solid";
 import { Home} from "@/pages/dashboard"; 
-import {AddRole,AddUser} from "@/pages/usermangment"; 
+import {AddRole,AddUser, AddUserMapping} from "@/pages/usermangment"; 
 import {AddCategory,AddCrop,AddHybrid,AddProduct,AddPromotions,AddSubCategory,AddState,AddTerritory,AddDistrict,AddProductionPlants,AddSeasons,AddHeadQuarters,AddCountry,AddRegion} from "@/pages/masters";
 import {AddCoupon} from "@/pages/coupons"; 
 import Stocks from "@/pages/stocks";
 import Reports from '@/pages/reports' 
+import AddEkycBypassApproval from "./pages/eKycBypassApproval/eKycBypassApproval";
+import AddRetailers from "./pages/retailers/retailers";
+import AddZones from "@/pages/masters/addzones";
 
 const icon = {
   className: "w-5 h-5 text-inherit",
@@ -60,7 +63,13 @@ export const routes = [
             name: "Add Role",
             path: "/add-role",
             element: <AddRole />,
-          } 
+          },
+          {
+            icon: <UserPlusIcon {...icon} />,
+            name: "User Mapping",
+            path: "/add-userMapping",
+            element: <AddUserMapping />,
+          }  
         ]
       }
     ]
@@ -110,6 +119,12 @@ export const routes = [
           },
           {
             icon: <GiftIcon {...icon} />,
+            name: "Zones",
+            path: "/add-Zones",
+            element: <AddZones />,
+          },
+          {
+            icon: <GiftIcon {...icon} />,
             name: "Regions",
             path: "/add-Regions",
             element: <AddRegion />,
@@ -119,7 +134,7 @@ export const routes = [
             name: "States",
             path: "/add-states",
             element: <AddState />,
-          },
+           },
           {
             icon: <PlusCircleIcon {...icon} />,
             name: "Territory",
@@ -157,6 +172,28 @@ export const routes = [
             element: <AddCountry/>,
           }
         ]
+      }
+    ]
+  },
+  {
+    layout: "eKycBypassApproval",
+    pages: [
+      {
+        icon: <ReceiptPercentIcon {...icon} />,
+        name: "eKYC Bypass Approval",
+        path: "/add-ekycBypassApproval",
+        element: <AddEkycBypassApproval />,
+      }
+    ]
+  },
+  {
+    layout: "retailers",
+    pages: [
+      {
+        icon: <ReceiptPercentIcon {...icon} />,
+        name: "Retailers",
+        path: "/add-retailers",
+        element: <AddRetailers />,
       }
     ]
   },
