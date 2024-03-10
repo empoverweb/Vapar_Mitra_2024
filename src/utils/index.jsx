@@ -85,7 +85,7 @@ export const useGetZones = () =>{
     name:zone.zoneName
 }))
 
-//     console.log("seasonsOptionsData"+JSON.stringify(zonesOptionsData))
+     console.log("seasonsOptionsData"+JSON.stringify(zonesOptionsData))
 
     return [zonesOptionsData,fetchZonesMasters]
 }
