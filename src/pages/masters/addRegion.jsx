@@ -213,6 +213,7 @@ export function AddRegion() {
             hideDeleteProductsDialog={hideDeleteRegionsDialog}
             handleDelete={handleDeleteRegion}
             item={region.name}
+            onHide={() => setDeleteRegionsDialogVisible(false)}
           />
 
 

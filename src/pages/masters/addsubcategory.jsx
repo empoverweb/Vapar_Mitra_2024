@@ -205,12 +205,13 @@ export function AddSubCategory() {
              {/* ///delete modal component loading */}
 
              <DeleteModal
+              onHide={() => setDeleteProductsDialogVisible(false)}
             visible={deleteProductsDialogVisible}
             header="Confirm"
             hideDeleteProductsDialog={hideDeleteProductsDialog}
             handleDelete={handleDeleteProduct}
             item={subCategory.name}
-            onHide={() => setDeleteProductsDialogVisible(false)}
+            
           />
         </div>
       </div>

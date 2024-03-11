@@ -218,6 +218,7 @@ export function AddState() {
           {/* ///delete modal component loading */}
 
           <DeleteModal
+          onHide={() => setDeleteStatesDialogVisible(false)}
             visible={deleteStatesDialogVisible}
             header="Confirm"
             hideDeleteStatesDialog={hideDeleteStatesDialog}

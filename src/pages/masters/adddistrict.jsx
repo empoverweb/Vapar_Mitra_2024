@@ -26,7 +26,7 @@ export function AddDistrict() {
   const [submitted, setSubmitted] = useState(false);
   const [statusValue, setstatusValue] = useState();
   const [countryOptionsData,fetchcountryMasters] = useGetCountries() 
-  const [deleteStatesDialogVisible, setDeleteStatesDialogVisible] = useState(false);
+  const [deleteStatesDialogVisible, setDeleteStatesDialogVisible] = useState(false); 
   const [stateMasterData,fetchStates] = UseStatesMaster()
   const [isEditMode, setIsEditMode] = useState(false);
   const [modalHeading, setmodalHeading] = useState('');
@@ -221,6 +221,7 @@ console.log('state Data', stateMasterData);
             hideDeleteStatesDialog={hideDeleteStatesDialog}
             handleDelete={handleDeleteState}
             item={district.name}
+            onHide={() => setDeleteStatesDialogVisible(false)}
           />
         </div>
       </div>
