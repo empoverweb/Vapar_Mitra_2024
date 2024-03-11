@@ -8,7 +8,7 @@ import { ApiService } from "@/service";
 import { Toast } from 'primereact/toast';
 import { FormFields } from '@/widgets/FormFields';
 import { useForm } from 'react-hook-form';
-import UploadModal from "@/widgets/modal/uploadModal";
+import {UploadModal} from "@/widgets/modal/uploadModal";
 
 export function AddRetailers() {
 

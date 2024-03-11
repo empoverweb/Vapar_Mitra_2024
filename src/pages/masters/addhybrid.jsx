@@ -57,10 +57,6 @@ export function AddHybrid() {
     }
   ]
   //get all Hybrids api
-  useEffect(() => {
-    fetchHybridsData();
-  }, [hybrid]);
-
   const fetchHybridsData = async () => {
     try {
       const apiUrl = getHybrids;
@@ -70,6 +66,10 @@ export function AddHybrid() {
       console.error("Error fetching hybrid master data:", error);
     }
   };
+
+  useEffect(() => {
+    fetchHybridsData();
+  }, [hybrid]);
 
     ///add new recrod 
 
@@ -97,7 +97,7 @@ export function AddHybrid() {
     const updatedHybrid = {
       ...emptyHybrid,
       ...rowData,
-      cropId: rowData.crop.name
+      cropId: rowData.crop.id
     };
     sethybrid(updatedHybrid);
     fetchCropMasters();
@@ -148,18 +148,13 @@ export function AddHybrid() {
       <div class="relative flex flex-col w-full h-full text-gray-700 shadow-md rounded-xl bg-clip-border">
         <div class="p-0 px-0">
           <Toast ref={toast} />
-          <PrimeDataTable tableHeading={'Add Hybrid'} tableData={tableData} tableColumns={tableColumns} showActions={true} handleAddNew={handleAddNew} handleEdit={handleEdit} handleDelete={handleDelete} handleExport={true} />
+          <PrimeDataTable tableHeading={'Add Hybrid'} tableData={tableData} tableColumns={tableColumns} showActions={true} handleAddNew={handleAddNew} handleEdit={handleEdit} handleDelete={handleDelete} handleExport={true} handleDownload={true} handleUpload={true} />
           <Modal visible={showPopup} onHide={() => setShowPopup(false)} header={modalHeading}>
             <form onSubmit={handleSubmit(saveHybrid)}>
-
               <div className="my-4 flex sm:flex-row flex-col items-center gap-4">
-           
-              <FormFields type="dropdown" id="cropId" label="Crop Name" size="md" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Select Crop'} value={hybrid.cropId}  optionsData={cropOptionsData} onChange={(e) =>handleChange("cropId", e.target.value)}  />
-
-                <FormFields type="text" id="name" label="Hybrid Name" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter First name'} value={hybrid.name} onChange={(e) =>handleChange("name", e.target.value)} />
-
+              <FormFields type="text" id="name" label="Hybrid Name" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter First name'} value={hybrid.name} onChange={(e) =>handleChange("name", e.target.value)} />
+              <FormFields type="dropdown" id="cropId" label="Crop Name" size="md" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Select Crop'} selectedValue={hybrid.cropId}  optionsData={cropOptionsData} onChange={(e) =>handleChange("cropId", e.target.value)}  />
               </div>
-
               <div className="my-4 flex sm:flex-row flex-col items-center gap-4">
 
                 <FormFields type="text" id="code" label="Hybrid Code" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter Last Name'} value={hybrid.code} onChange={(e) =>handleChange("code", e.target.value)} />

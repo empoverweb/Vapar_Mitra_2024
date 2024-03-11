@@ -165,7 +165,7 @@ export function AddProduct() {
 
   return (
     <>
-      <div class="relative flex flex-col w-full h-full text-gray-700">
+      <div class="relative flex flex-col w-full h-full text-gray-700 ">
         <div class="p-0 px-0">
           <Toast ref={toast} />
           <PrimeDataTable tableHeading={'Add Product'} tableData={tableData} tableColumns={tableColumns} showActions={true} handleAddNew={handleAddNew} handleEdit={handleEdit} handleDelete={handleDelete} handleExport={true} handleDownload={true} handleUpload={true} />

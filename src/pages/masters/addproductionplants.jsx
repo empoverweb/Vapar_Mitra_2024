@@ -151,7 +151,7 @@ useEffect (() =>{
       <div class="relative flex flex-col w-full h-full text-gray-700 shadow-md rounded-xl bg-clip-border">
         <div class="p-0 px-0">
           <Toast ref={toast} />
-          <PrimeDataTable tableHeading={'Add ProductionPlants'} tableData={tableData} tableColumns={tableColumns} showActions={true} handleAddNew={handleAddNew} handleEdit={handleEdit} handleDelete={handleDelete} handleExport={true} />
+          <PrimeDataTable tableHeading={'Add ProductionPlants'} tableData={tableData} tableColumns={tableColumns} showActions={true} handleAddNew={handleAddNew} handleEdit={handleEdit} handleDelete={handleDelete} handleExport={true} handleDownload={true} handleUpload={true}/>
           <Modal visible={showPopup} onHide={() => setShowPopup(false)} header={modalHeading}>
             <form onSubmit={handleSubmit(saveProduct)}>
               <div className="my-4 flex sm:flex-row flex-col items-center gap-4">

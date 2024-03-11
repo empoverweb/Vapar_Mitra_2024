@@ -88,18 +88,8 @@ export default function PrimeDataTable({ tableHeading, tableColumns, tableData, 
     const actionBodyTemplate = (rowData) => {
         return showActions ? (
             <div className='flex gap-2'>
-                {handleApproveButton && (
-                    <button
-                        className="flex select-none items-center gap-1 rounded-lg bg-primaryColor py-2 px-4 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-gray-900/10 transition-all hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-                        type="button"
-                        onClick={() => handleApproveButton(rowData)}
-                    >
-
-                        {buttonName}
-                    </button>
-                )}
-                {handleEdit && <PencilSquareIcon color='blue' className="w-5 h-5 cursor-pointer" onClick={() => handleEdit(rowData)} />}
-                {handleDelete && <TrashIcon color='red' className="w-5 h-5 cursor-pointer" onClick={() => handleDelete(rowData)} />}
+                 {handleEdit && <PencilSquareIcon className="bg-yellow-800 text-white w-6 h-6 cursor-pointer rounded-lg p-1" onClick={() => handleEdit(rowData)} />}
+                {handleDelete && <TrashIcon className="bg-red-600 w-6 h-6 text-white cursor-pointer rounded-lg p-1" onClick={() => handleDelete(rowData)} />}
             </div>
         ) : null;
     };
