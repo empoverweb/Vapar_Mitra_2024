@@ -10,6 +10,7 @@ import { PlusCircleIcon } from '@heroicons/react/24/outline';
 export default function PrimeDataTable({ tableHeading, tableColumns, tableData, handleAddNew, handleEdit, handleDelete, handleExport, showActions, handleDownload, handleUpload, buttonName, handleApproveButton }) {
     
     const [globalFilter, setGlobalFilter] = useState(null);
+    const [editButtonDisable,setEditButtonDisable]  = useState(true)
     const dt = useRef(null);
 
     const getStatus = (rowData) => {
@@ -49,7 +50,7 @@ export default function PrimeDataTable({ tableHeading, tableColumns, tableData, 
                     >
                         <CloudArrowUpIcon className='w-4 h-4' />
                         Upload
-                    </button>
+                    </button>   
                 )}
                 {handleExport && (
                     <button
@@ -85,15 +86,35 @@ export default function PrimeDataTable({ tableHeading, tableColumns, tableData, 
         );
     };
 
+    // const actionBodyTemplate = (rowData) => {
+    //     return showActions ? (
+    //         <div className='flex gap-2'>
+    //              {handleEdit && <PencilSquareIcon className="bg-yellow-800 text-white w-6 h-6 cursor-pointer rounded-lg p-1" onClick={() => handleEdit(rowData)} />}
+    //             {handleDelete && <TrashIcon className="bg-red-600 w-6 h-6 text-white cursor-pointer rounded-lg p-1" onClick={() => handleDelete(rowData)} />}
+    //         </div>
+    //     ) : null;
+    // };
+
     const actionBodyTemplate = (rowData) => {
         return showActions ? (
             <div className='flex gap-2'>
-                 {handleEdit && <PencilSquareIcon className="bg-yellow-800 text-white w-6 h-6 cursor-pointer rounded-lg p-1" onClick={() => handleEdit(rowData)} />}
-                {handleDelete && <TrashIcon className="bg-red-600 w-6 h-6 text-white cursor-pointer rounded-lg p-1" onClick={() => handleDelete(rowData)} />}
+                {handleEdit && (
+                    <PencilSquareIcon
+                        className="bg-yellow-800 text-white w-6 h-6 cursor-pointer rounded-lg p-1"
+                        onClick={() => handleEdit(rowData)}
+                    />
+                )}
+                {handleDelete && (
+                    <TrashIcon
+                        className={`w-6 h-6 rounded-lg p-1 ${rowData.status ? 'bg-red-600 text-white cursor-pointer' : 'bg-gray-400 text-gray-200 cursor-not-allowed'}`}
+                        onClick={() => rowData.status && handleDelete(rowData)}
+                    />
+                )}
             </div>
         ) : null;
     };
-
+    
+    
 
     return (
         <div>

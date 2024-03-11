@@ -55,7 +55,7 @@ export function AddProduct() {
       'header': "Remarks"
     },
     {
-      'field': 'seasonId.seasonName',
+      'field': 'seasonId.name',
       'header': "Season"
     },
     {
@@ -67,7 +67,7 @@ export function AddProduct() {
   //get all products api
   useEffect(() => {
     fetchProductsData();
-  }, [product]);
+  }, []);
 
 
   const fetchProductsData = async () => {
@@ -103,13 +103,13 @@ export function AddProduct() {
 
   const handleEdit = (rowData) => {
     console.log(rowData,"roww data of product")
+    fetchSeasondMasters();
     const updatedProduct = {
       ...emptyProduct,
       ...rowData,
       seasonId: rowData.seasonId.id
     };
     setproduct(updatedProduct);
-    fetchSeasondMasters();
     setIsEditMode(true);
     setmodalHeading('Edit Product');
     setShowPopup(true);
@@ -121,7 +121,6 @@ export function AddProduct() {
 
   const handleDelete = (rowData) => {
     // Create a new object with the relevant fields and set the status to false
-    alert("edited")
     const updatedProduct = {
       id: rowData.id,
       name: rowData.name,
@@ -161,6 +160,11 @@ export function AddProduct() {
 
     console.log(prevProduct,"onChange value")
   };
+
+  const handleClose = () =>{
+    setDeleteProductsDialogVisible(false);
+     setproduct(emptyProduct);
+  }
 
 
   return (
@@ -229,7 +233,7 @@ export function AddProduct() {
             hideDeleteProductsDialog={hideDeleteProductsDialog}
             handleDelete={handleDeleteProduct}
             item={product.productName}
-            onHide={() => setDeleteProductsDialogVisible(false)}
+            onHide={handleClose}
           />
 
 

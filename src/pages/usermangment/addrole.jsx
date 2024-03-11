@@ -23,7 +23,7 @@ export function AddRole() {
 
   const tableColumns = [
     {
-      'field': 'roleName',
+      'field': 'name',
       'header': "Role Name"
     },
     {
