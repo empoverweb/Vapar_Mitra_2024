@@ -20,11 +20,8 @@ export function AddDistrict() {
     status: true
   };
   const [tableData, setTableData] = useState(null);
-  const [previousData, setPreviousData] = useState([]);
   const [showPopup, setShowPopup] = useState(false)
   const [district, setdistrict] = useState(emptyDistrict);
-  const [submitted, setSubmitted] = useState(false);
-  const [statusValue, setstatusValue] = useState();
   const [countryOptionsData,fetchcountryMasters] = useGetCountries() 
   const [deleteStatesDialogVisible, setDeleteStatesDialogVisible] = useState(false); 
   const [stateMasterData,fetchStates] = UseStatesMaster()
@@ -57,8 +54,6 @@ export function AddDistrict() {
 
 console.log('state Data', stateMasterData);
 
-  useEffect(() => {
-
     const fetchDistrictsData = async () => {
       try {
         const apiUrl = getDistricts;
@@ -69,11 +64,9 @@ console.log('state Data', stateMasterData);
       }
     };
 
-    if (JSON.stringify(previousData) !== JSON.stringify(tableData)) {
-      fetchDistrictsData();
-      setPreviousData(tableData);
-    }
-  }, [tableData, previousData]);
+  useEffect(() =>{
+      fetchDistrictsData()
+  },[district])
 
 
   // add new record
@@ -84,14 +77,15 @@ console.log('state Data', stateMasterData);
     const response = await ApiService.postData(apiUrl,postData)
     response.statusCode == 200 ? setShowPopup(false) : null;
     ApiService.handleResponse(response, toast);
+    fetchDistrictsData()
   }
   const handleAddNew = () => {
     setdistrict(emptyDistrict);
+    setShowPopup(true)
     fetchcountryMasters()
     fetchStates()
     setSubmitted(false);
     setmodalHeading('Add District');
-    setShowPopup(true)
   }
 
 
@@ -112,11 +106,6 @@ console.log('state Data', stateMasterData);
     setmodalHeading('Edit District');
     setShowPopup(true)
   }
-
-  const [date, setDate] = useState();
-  const handleSelectDate = (selectedDate) => {
-    setDate(selectedDate);
-  };
 
 
   //on delete 
@@ -145,7 +134,7 @@ console.log('state Data', stateMasterData);
     response.statusCode == 200 ? setShowPopup(false) : null;
     ApiService.handleResponse(response, toast);
     setDeleteStatesDialogVisible(false);
-    fetchStatesData();
+    fetchDistrictsData();
   };
 
  

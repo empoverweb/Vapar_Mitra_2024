@@ -18,11 +18,8 @@ export function AddSubCategory() {
     status: true
   };
   const [tableData, setTableData] = useState(null);
-  const [previousData, setPreviousData] = useState([]);
   const [showPopup, setShowPopup] = useState(false)
   const [subCategory, setsubCategory] = useState(emptySubCategory);
-  const [submitted, setSubmitted] = useState(false);
-  const [statusValue, setstatusValue] = useState();
   const [isEditMode, setIsEditMode] = useState(false);
   const [modalHeading, setmodalHeading] = useState('');
   const [categoryMasterData,fetchCategoriesData] = UseCategoryMaster()
@@ -54,8 +51,6 @@ export function AddSubCategory() {
   ]
 
   
-
-  useEffect(() => {
     const fetchsubCategoriesData = async () => {
       try {
         const apiUrl = getSubCategories;
@@ -68,18 +63,16 @@ export function AddSubCategory() {
       }
     };
   
-    if (JSON.stringify(previousData) !== JSON.stringify(tableData)) {
-      fetchsubCategoriesData();
-      setPreviousData(tableData);
-    }
-  }, [tableData, previousData]);
-  
+   useEffect(() =>{
+    fetchsubCategoriesData()
+   },[subCategory])
  
   const handleAddNew = () => {
     setsubCategory(emptySubCategory);
+    setShowPopup(true)
     fetchCategoriesData()
     setSubmitted(false);
-    setShowPopup(true)
+
   }
   const saveProduct = async () => {
     const postData = subCategory;

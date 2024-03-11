@@ -61,11 +61,11 @@ export function AddTerritory() {
    },[territory])
 
 // add new record
-  const handleAddNew = () => {  
+  const handleAddNew = () => { 
+    setShowPopup(true) 
     fetchRegionMasters()
     setterritory(emptyTerritory);
     setSubmitted(false);
-    setShowPopup(true)
     setmodalHeading('Add Territory');
   }
 
@@ -162,7 +162,6 @@ export function AddTerritory() {
                 />
               )}
               </div>
-
               <div className="my-4 flex sm:flex-row flex-col items-center gap-4">
               <FormFields type="textarea" id="remarks" label="Remarks" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter First name'} onChange={e => handleChange("remarks", e.target.value)} />
               </div>

@@ -132,6 +132,8 @@ export function AddCategory() {
               <div className="my-4 flex sm:flex-row flex-col items-center gap-4">
 
                 <FormFields type="text" id="name" label="Category Name" size="sm" color="teal" error={true} register={register}  errors={errors} RequiredErrorMsg={'Enter  Name'}  value={category.name} onChange={e => handleChange("name", e.target.value)} />
+              </div>
+              <div className="my-4 flex sm:flex-row flex-col items-center gap-4">
                 <FormFields type="text" id="remarks" label="Remarks" size="sm" color="teal" error={true} register={register} errors={errors}  RequiredErrorMsg={'Enter  Remarks'} value={category.remarks} onChange={e => handleChange("remarks", e.target.value)} />
               </div>
               <div className="my-4 flex sm:flex-row flex-col items-center gap-4">

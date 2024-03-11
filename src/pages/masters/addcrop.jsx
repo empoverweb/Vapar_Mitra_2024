@@ -68,6 +68,7 @@ export function AddCrop() {
     setCrop(emptyCrop);
     setmodalHeading('Add Crop');
     setShowPopup(true);
+    setIsEditMode(false)
   }
   const saveCrop = async () => {
     const postData = crop;
@@ -98,14 +99,13 @@ export function AddCrop() {
     // Create a new object with the relevant fields and set the status to false
     const updatedCrop = {
       id: rowData.id,
-      crop: rowData.name,
+      name: rowData.name,
       code: rowData.code,
       remarks: rowData.remarks,
       status: false
     };
 
     setCrop(updatedCrop);
-    ;
     // Set the delete modal visible
     setDeleteCropsDialogVisible(true);
   }
@@ -139,14 +139,9 @@ export function AddCrop() {
           <PrimeDataTable tableHeading={'Add Crop'} tableData={tableData} tableColumns={tableColumns} showActions={true} handleAddNew={handleAddNew} handleEdit={handleEdit} handleDelete={handleDelete} handleExport={true} handleDownload={true} handleUpload={true}/>
           <Modal visible={showPopup} onHide={() => setShowPopup(false)} header={modalHeading}>
             <form onSubmit={handleSubmit(saveCrop)}>
-
-              <div className="my-4 flex sm:flex-row flex-col items-center gap-4 mb-8">
-
+              <div className="my-4 flex sm:flex-row flex-col items-center gap-4 mb-6">
                 <FormFields type="text" id = "name"  label="crop Name" size="md" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter crop name'} value={crop.name} onChange={(e) => handleChange("name", e.target.value)} />
-
                 <FormFields type="text" id="code" label="crop Code" size="md" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter Pack Size'} value={crop.code} onChange={(e)=> handleChange("code", e.target.value)} />
-              </div>
-              <div className="my-4 flex sm:flex-row flex-col items-center gap-4 mb-8">
                 {isEditMode && (
                   <FormFields
                     type="statusDropdown"
@@ -158,19 +153,14 @@ export function AddCrop() {
                     register={register}
                     errors={errors}
                     RequiredErrorMsg={'Select Status'}
-                    value={crop.status}
                     selectedValue={crop.status}
                     onChange={e => handleChange("status", e.target.value)}
                   />
                 )}
-
               </div>
-
-              <div className="my-4 flex sm:flex-row flex-col items-center gap-4 mb-8">
-
+              <div className="my-4 flex sm:flex-row flex-col items-center gap-4 mb-6">
                 <FormFields type="textarea" id="remarks" label="Remarks" size="md" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter Pack Unit'} value={crop.remarks} onChange={(e) => handleChange("remarks", e.target.value)} />
-
-              </div>  
+              </div>
               {/* //formfields */}
               <div className='flex justify-center items-center'>
                 <Button type='submit' variant="filled" size="md" className='bg-primaryColor'>

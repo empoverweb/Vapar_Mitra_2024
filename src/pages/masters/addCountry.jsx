@@ -89,7 +89,7 @@ export function AddCountry() {
     setCountry(emptyCountry);
     setIsEditMode(false)
     setSubmitted(false);
-    setModalHeading('Add Product');
+    setModalHeading('Add Country');
   }
 
 
@@ -111,9 +111,11 @@ export function AddCountry() {
  
   const handleDelete = (rowData) => {
     const updatedCountry = {
+      
       id: rowData.id,
       name: rowData.name,
       code: rowData.code,
+      currency:rowData.currency,
       remarks: rowData.remarks,
       status: false,
     };
@@ -154,10 +156,14 @@ export function AddCountry() {
             <form onSubmit={handleSubmit(saveProduct)}>
               <div className="my-4 flex sm:flex-row flex-col items-center gap-4">
                 <FormFields type="text" id="name" label="Country Name" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter Country name'} value={country.name} onChange={e => handleChange("name", e.target.value)}  />
-                <FormFields type="text" id="code" label="Country Code" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter Country code'} value={country.code} onChange={e => handleChange("code", e.target.value)}  />
+                <FormFields type="number" id="code" label="Country Code" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter Country code'} value={country.code} onChange={e => handleChange("code", e.target.value)}  />
+              </div>  
+              <div className="my-4 flex sm:flex-row flex-col items-center gap-4">
                 <FormFields type="number" id="currency" label="Currency" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter Currency'} value={country.currency} onChange={e => handleChange("currency", e.target.value)}  />
-                <FormFields type="text" id="remarks" label="Remarks" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter Remarks'} value={country.remarks} onChange={e => handleChange("remarks", e.target.value)}  />
               </div>
+              <div className="my-4 flex sm:flex-row flex-col items-center gap-4">   
+                <FormFields type="textarea" id="remarks" label="Remarks" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter Remarks'} value={country.remarks} onChange={e => handleChange("remarks", e.target.value)}  />
+              </div> 
               <div className="my-4 flex sm:flex-row flex-col items-center gap-4">
               {isEditMode && (
                 <FormFields

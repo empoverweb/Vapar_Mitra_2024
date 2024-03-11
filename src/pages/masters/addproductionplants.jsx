@@ -70,7 +70,7 @@ export function AddProductionPlants() {
 
 useEffect (() =>{
    fetchproductionPlantData()
-},[])
+},[productionPlants])
    
 
   // add new record
@@ -156,7 +156,9 @@ useEffect (() =>{
             <form onSubmit={handleSubmit(saveProduct)}>
               <div className="my-4 flex sm:flex-row flex-col items-center gap-4">
                 <FormFields type="text" id="name" label="production Name" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter  Name'} value={productionPlants.name} onChange={e => handleChange("name", e.target.value)}  /> 
-                <FormFields type="text" id="code" label="production Code" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter  Code'} value={productionPlants.code} onChange={e => handleChange("code", e.target.value)} /> 
+                <FormFields type="number" id="code" label="production Code" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter  Code'} value={productionPlants.code} onChange={e => handleChange("code", e.target.value)} /> 
+              </div>
+              <div className="my-4 flex sm:flex-row flex-col items-center gap-4">
                 <FormFields type="text" id="location" label="Location" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter  Name'} value={productionPlants.location} onChange={e => handleChange("location", e.target.value)} /> 
                 <FormFields type="text" id="address" label="Address" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter  Name'} value={productionPlants.address} onChange={e => handleChange("address", e.target.value)} /> 
               </div>
@@ -173,7 +175,7 @@ useEffect (() =>{
                   register={register}
                   errors={errors}
                   RequiredErrorMsg={"slect status"}
-                  selectedValue={statusValue}
+                  selectedValue={productionPlants.status}
                   onChange={e => handleChange("status", e.target.value)}
                 />
                 )}

@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { ApiService } from "@/service";
-import { getZones } from "@/utils";
+import { addZones, getZones } from "@/utils";
 import PrimeDataTable from '@/widgets/primedatatable';
 import { useForm } from 'react-hook-form';
 import { Toast } from 'primereact/toast';
@@ -9,16 +9,21 @@ import Modal from "@/widgets/modal";
 import { FormFields } from '@/widgets/FormFields';
 import { Button } from "@material-tailwind/react";
 export function AddZones() {
-
+  
+  let emptyZones = {
+    id: 0,
+    name: '',
+    remarks: '',
+    status: true
+  };
 
 
   const [tableData, setTableData] = useState(null);
   const [previousData, setPreviousData] = useState([]);
   const [showPopup, setShowPopup] = useState(false)
-  const [zone, setZone] = useState(null);
-  const [submitted, setSubmitted] = useState(false);
-  const [statusValue, setstatusValue] = useState('');
+  const [zone, setZone] = useState(emptyZones);
   const [isEditMode, setIsEditMode] = useState(false);
+  const [modalHeading, setmodalHeading] = useState('');
   const toast = useRef(null);
   const { register, handleSubmit, formState: { errors } } = useForm();
 
@@ -27,8 +32,12 @@ export function AddZones() {
 
   const tableColumns = [
     {
-      'field': 'zoneName',
+      'field': 'name',
       'header': "Zone Name"
+    },
+    {
+      'field': 'remarks',
+      'header': "Remarks"
     },
     {
       'field': 'status',
@@ -36,9 +45,6 @@ export function AddZones() {
     }
   ]
 
-
-
-  useEffect(() => {
 
     const fetchZoneData = async () => {
       try {
@@ -50,15 +56,12 @@ export function AddZones() {
       }
     };
 
-    if (JSON.stringify(previousData) !== JSON.stringify(tableData)) {
-      fetchZoneData();
-      setPreviousData(tableData);
-    }
-  }, [tableData, previousData]);
-
+    useEffect(() =>{
+      fetchZoneData()
+    },[])
+    
 
   // add new record
-
   const handleAddNew = () => {
     setShowPopup(true)
   }
@@ -73,27 +76,20 @@ export function AddZones() {
     fetchZoneData();
   }
 
-  const onSubmit = (data) => {
-    alert();
-    console.log(data); // This will log the form data to the console
-    // Handle form data as needed
-  };
-
-
-
-
+  
   //On Edit/ update
 
   const handleEdit = (rowData) => {
-    alert(JSON.stringify(rowData));
-    console.log(JSON.stringify(rowData))
-    setShowPopup(true)
+    console.log(rowData,"selected row data")
+    const updatedCrop = {
+      ...emptyZones,
+      ...rowData,
+    };
+    setZone(updatedCrop);
+    setIsEditMode(true);
+    setmodalHeading('Edit Zones');
+    setShowPopup(true);
   }
-
-  const [date, setDate] = useState();
-  const handleSelectDate = (selectedDate) => {
-    setDate(selectedDate);
-  };
 
 
   //on delete 
@@ -103,17 +99,13 @@ export function AddZones() {
     setShowPopup(true)
   }
 
-
-  //close the modal popup
-
-  const hideDialog = () => {
-    setShowPopup(false);
+  // on change
+  const handleChange = (fieldName, value) => {
+    setZone(prevZone => ({
+      ...prevZone,
+      [fieldName]: value
+    }));
   };
-
-  //status on change
-  const handleStatusChange = (e) => {
-    setstatusValue(e.target.value);
-  }
 
   return (
     <>
@@ -121,13 +113,14 @@ export function AddZones() {
         <div class="p-0 px-0">
           <Toast ref={toast} />
           <PrimeDataTable tableHeading={'Add Zone'} tableData={tableData} tableColumns={tableColumns} showActions={true} handleAddNew={handleAddNew} handleEdit={handleEdit} handleDelete={handleDelete} handleExport={true} />
-          <Modal visible={showPopup} onHide={() => setShowPopup(false)} header={"Add New Zone"}>
+          <Modal visible={showPopup} onHide={() => setShowPopup(false)} header={modalHeading}>
             <form onSubmit={handleSubmit(saveZones)}>
 
-              <div className="my-4 flex sm:flex-row flex-col items-center gap-4 mb-8">
-
-                <FormFields type="text" id="zoneName" label="Zone Name" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter Zone name'} />
-
+              <div className="my-4 flex sm:flex-row flex-col items-center gap-4 mb-6">
+                <FormFields type="text" id="name" label="Zone Name" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter Zone name'} value={zone.name} onChange={(e) => handleChange("name", e.target.value)} />
+              </div>
+              <div className="my-4 flex sm:flex-row flex-col items-center gap-4 mb-6">   
+                <FormFields type="text" id="remarks" label="Remarks" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter Zone name'} value={zone.remarks} onChange={(e) => handleChange("remarks", e.target.value)} />
               </div>
 
               <div className="my-4 flex sm:flex-row flex-col items-center gap-4 mb-8">
@@ -143,8 +136,7 @@ export function AddZones() {
                     register={register}
                     errors={errors}
                     RequiredErrorMsg={'Select Status'}
-                    value={product.status}
-                    selectedValue={product.status}
+                    selectedValue={zone.status}
                     onChange={e => handleChange("status", e.target.value)}
                   />
                 )}
