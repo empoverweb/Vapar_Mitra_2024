@@ -180,7 +180,7 @@ export const routes = [
     pages: [
       {
         icon: <ReceiptPercentIcon {...icon} />,
-        name: "eKYC Bypass Approval",
+        name: "eKYC Approval",
         path: "/add-ekycBypassApproval",
         element: <AddEkycBypassApproval />,
       }

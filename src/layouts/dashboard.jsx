@@ -14,7 +14,8 @@ import { useNavigate } from 'react-router-dom';
 
 export function Dashboard() {
   const [controller, dispatch] = useVparmitraController(); 
-  const { sidenavType ,userSession} = controller;   
+  const { sidenavType ,userSession} = controller;
+  const {name} = userSession[0]; 
   return (
     <div className="min-h-screen bg-blue-gray-50/50">
       <Sidenav
