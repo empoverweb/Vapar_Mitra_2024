@@ -8,7 +8,7 @@ import {
     Footer,
 } from "@/widgets/layout";
 import routes from "@/routes";
-import { useMaterialTailwindController, setOpenConfigurator } from "@/context";
+import { useVparmitraController, setOpenConfigurator } from "@/context";
 
 export function EKycBypassApproval() {
     const [controller, dispatch] = useMaterialTailwindController();

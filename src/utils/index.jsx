@@ -238,3 +238,8 @@ const getApiUrlByKey = (key) => {
     return [territoryOptionsData, fetchTerritoryMasters];
   };
  
+
+  //paswword decrypt
+  export const EncryptPassword = (pswd) => {
+    return  encode(pswd);
+}
