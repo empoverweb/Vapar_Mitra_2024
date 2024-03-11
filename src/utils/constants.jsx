@@ -2,6 +2,7 @@ import { CURRENT_ENV, CONFIG } from '@/configs/config';
 
 const  BASE_URL = CONFIG[CURRENT_ENV].BASE_URL;
    
+export const login=  `${BASE_URL}login`;
 export const getProducts = `${BASE_URL}masters/getProducts`;
 export const addProduct = `${BASE_URL}masters/addProducts`;  
 export const addHeadQuarter = `${BASE_URL}masters/addHeadQuarter`;  
@@ -21,26 +22,18 @@ export const getProductionPlants = `${BASE_URL}masters/getProductionPlants`;
 export const getSeasons = `${BASE_URL}masters/getSeasons`;
 export const getHeadQuarters = `${BASE_URL}masters/getHeadQuarters`;
 export const getRoles = `${BASE_URL}masters/getRoles`;
-export const getCountries = `${BASE_URL}masters/getCountries`;
-export const getUsers = `${BASE_URL}getUsers`; 
-export const login = `${BASE_URL}login`; 
-export const addRegion = `${BASE_URL}masters/addRegion`;  
+export const getCountries = `${BASE_URL}masters/getCountries`; 
 export const addCategory = `${BASE_URL}masters/addCategory`
-export const addTeritory = `${BASE_URL}masters/addTerritory`
-
+export const addTeritory = `${BASE_URL}masters/addTerritory` 
 export const addProductionPlant= `${BASE_URL}masters/addProductionPlant`
 export const addSeasons= `${BASE_URL}masters/addSeason`
-export const addCountry= `${BASE_URL}masters/addCountry`
-
-
-
-
-
-
+export const addCountry= `${BASE_URL}masters/addCountry` 
 export const couponsGet = `${BASE_URL}masters/getCoupons`;
 export const exportCoupons = `${BASE_URL}excel/excelFileFomatForCoupons`;
 export const uploadCouponsFileApi = `${BASE_URL}excel/couponsExcelUpload`; 
-export const addSubCategory = `${BASE_URL}masters/addSubCategory`;   
-export const addHybrid = `${BASE_URL}masters/addHybrid`; // This API for add Hybrids done by ravikumar.m 
+export const addSubCategory = `${BASE_URL}masters/addSubCategory`;    
 export const addDistrict = `${BASE_URL}masters/addDistrict`; // This API for add Hybrids done by ravikumar.m 
+export const getUsers = `${BASE_URL}getUsers`;  
+export const addRegion = `${BASE_URL}masters/addRegion`;   
+export const addHybrid = `${BASE_URL}masters/addHybrid`; // This API for add Hybrids done by ravikumar.m
 

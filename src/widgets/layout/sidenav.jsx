@@ -17,10 +17,10 @@ import {
   AccordionHeader,
   AccordionBody
 } from "@material-tailwind/react";
-import { useMaterialTailwindController, setOpenSidenav } from "@/context";
+import { useVparmitraController, setOpenSidenav } from "@/context";
 
 export function Sidenav({ brandImg, brandName, routes }) {
-  const [controller, dispatch] = useMaterialTailwindController();
+  const [controller, dispatch] = useVparmitraController();
   const { sidenavColor, sidenavType, openSidenav } = controller;
   const [open, setOpen] = React.useState(null);
   const handleOpen = (index) => {

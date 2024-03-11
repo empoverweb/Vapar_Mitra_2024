@@ -7,9 +7,10 @@ module.exports = withMT({
     extend: {
       fontFamily: { inter: "Inter" } ,
       colors: {
-        primaryColor: '#4B49AC',
+        primaryColor: '#0D56C3',
         secondaryColor: '#E46722',
-        bodyColor:"#F2F4F9"
+        bodyColor:"#F2F4F9",
+
       },
       backgroundColor: {
          "yellow-800": '#DB710E',

@@ -2,7 +2,7 @@ import { useState } from "react";
 import {getStates, getSeasons,getCountries,getZones,getCrops, getTerritory, getCategories, getRegions} from "./constants";
 import { ApiService } from "@/service";
 export * from "@/utils/constants"; 
-
+import { encode, decode } from 'js-base64';
 
 export const statusDropdown = () => {
     return [
@@ -85,16 +85,16 @@ export const UseCategoryMaster =()=>{
         return [categoryMasterData,fetchCategoriesData]
 }
 //seasons dropdwon master data
-export const useGetSeasons = () =>{
-    const [seasonsMaster,setSeasonsMasters] = useState([])
-    const fetchSeasondMasters = async() =>{
-        try{
+export const useGetSeasons = () => {
+    const [seasonsMaster, setSeasonsMasters] = useState([])
+    const fetchSeasondMasters = async () => {
+        try {
             const apiUrl = getSeasons;
             const response = await ApiService.getData(apiUrl);
-           console.log(response,"seasons data");
-           setSeasonsMasters(response.response.seasonList);
-        } catch(error){
-            console.error("Error fetching seasons data",error)
+            console.log(response, "seasons data");
+            setSeasonsMasters(response.response.seasonList);
+        } catch (error) {
+            console.error("Error fetching seasons data", error)
         }
     }
    const seasonsOptionsData = seasonsMaster.filter((status) => (!status === false)).map((season) => ({
@@ -106,16 +106,16 @@ export const useGetSeasons = () =>{
 }
 
 //Zone dropdwon master data Done By Nagendra
-export const useGetZones = () =>{
-    const [zonesMaster,setZonesMasters] = useState([])
-    const fetchZonesMasters = async() =>{
-        try{
+export const useGetZones = () => {
+    const [zonesMaster, setZonesMasters] = useState([])
+    const fetchZonesMasters = async () => {
+        try {
             const apiUrl = getZones;
             const response = await ApiService.getData(apiUrl);
-           console.log(response,"Zone data");
-           setZonesMasters(response.response.zoneList);
-        } catch(error){
-            console.error("Error fetching zone data",error)
+            console.log(response, "Zone data");
+            setZonesMasters(response.response.zoneList);
+        } catch (error) {
+            console.error("Error fetching zone data", error)
         }
     }
    const zonesOptionsData = zonesMaster.filter((status) => (!status === false)).map((zone) => ({
@@ -125,22 +125,22 @@ export const useGetZones = () =>{
 
      console.log("seasonsOptionsData"+JSON.stringify(zonesOptionsData))
 
-    return [zonesOptionsData,fetchZonesMasters]
+    return [zonesOptionsData, fetchZonesMasters]
 }
 
 //Categ
 
 //country dropdwon master Done By Ravi.e
-export const useGetCountries = () =>{
-    const [countryMaster,setCountryMasters] = useState([])
-    const fetchcountryMasters = async() =>{
-        try{
+export const useGetCountries = () => {
+    const [countryMaster, setCountryMasters] = useState([])
+    const fetchcountryMasters = async () => {
+        try {
             const apiUrl = getCountries;
             const response = await ApiService.getData(apiUrl);
-           console.log(response,"country data");
-           setCountryMasters(response.response.countryList);
-        } catch(error){
-            console.error("Error fetching country data",error)
+            console.log(response, "country data");
+            setCountryMasters(response.response.countryList);
+        } catch (error) {
+            console.error("Error fetching country data", error)
         }
     }
    const countryOptionsData = countryMaster.filter((status) => (!status === false)).map((country) => ({

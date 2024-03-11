@@ -22,25 +22,35 @@ import {
   Bars3Icon,
 } from "@heroicons/react/24/solid";
 import {
-  useMaterialTailwindController,
+  useVparmitraController,
   setOpenConfigurator,
   setOpenSidenav,
+  setLogoutDetails,
 } from "@/context";
+import { useNavigate } from 'react-router-dom';
 
 export function DashboardNavbar() {
-  const [controller, dispatch] = useMaterialTailwindController();
+  const [controller, dispatch] = useVparmitraController();
   const { fixedNavbar, openSidenav } = controller;
   const { pathname } = useLocation();
   const [layout, page] = pathname.split("/").filter((el) => el !== "");
+  const navigate = useNavigate();
+
+  const handleLogout = () =>{ 
+    setLogoutDetails(dispatch,'');
+    navigate('/'); 
+  }
+
     // profile menu component
   const profileMenuItems = [
     {
       label: "My Profile",
       icon: UserCircleIcon,
+      path:'/profile'
     },
     {
       label: "Sign Out",
-      icon: PowerIcon,
+      icon: PowerIcon 
     },
   ];
 
@@ -97,6 +107,7 @@ export function DashboardNavbar() {
                 variant="small"
                 className="font-normal"
                 color={isLastItem ? "red" : "inherit"}
+                onClick={isLastItem ? handleLogout : ''}
               >
                 {label}
               </Typography>

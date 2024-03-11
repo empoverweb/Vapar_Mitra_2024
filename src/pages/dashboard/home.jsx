@@ -6,10 +6,10 @@ import { StatisticsCard } from "@/widgets/cards";
 import { StatisticsChart } from "@/widgets/charts";
 import {promotionsSliderData, statisticsCardsData,statisticsChartsData } from "@/service/data";
 import { ClockIcon } from "@heroicons/react/24/solid";
-import { Carousel } from "@material-tailwind/react";
-export function Home() {
+import { Carousel } from "@material-tailwind/react"; 
+export function Home() { 
   return (
-    <div className="mt-6">
+    <div className="mt-6"> 
      <div class="flex gap-6">
       <div class="w-1/2 mb-16">
       <Carousel className="rounded-xl" autoplay={true}>

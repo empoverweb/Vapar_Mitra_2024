@@ -8,7 +8,7 @@ import {
   Chip,
 } from "@material-tailwind/react";
 import {
-  useMaterialTailwindController,
+  useVparmitraController,
   setOpenConfigurator,
   setSidenavColor,
   setSidenavType,
@@ -16,7 +16,7 @@ import {
 } from "@/context";
  
 export function Configurator() {
-  const [controller, dispatch] = useMaterialTailwindController();
+  const [controller, dispatch] = useVparmitraController();
   const { openConfigurator, sidenavColor, sidenavType, fixedNavbar } = controller;
   
   const sidenavColors = {

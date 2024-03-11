@@ -1,5 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import { Cog6ToothIcon } from "@heroicons/react/24/solid";
+import { useEffect } from "react";
 import { IconButton, Typography } from "@material-tailwind/react";
 import {
   Sidenav,
@@ -8,12 +9,12 @@ import {
   Footer,
 } from "@/widgets/layout";
 import routes from "@/routes";
-import { useMaterialTailwindController, setOpenConfigurator } from "@/context";
+import { useVparmitraController } from "@/context";
+import { useNavigate } from 'react-router-dom';
 
 export function Dashboard() {
-  const [controller, dispatch] = useMaterialTailwindController();
-  const { sidenavType } = controller;
-
+  const [controller, dispatch] = useVparmitraController(); 
+  const { sidenavType ,userSession} = controller;   
   return (
     <div className="min-h-screen bg-blue-gray-50/50">
       <Sidenav
@@ -23,8 +24,8 @@ export function Dashboard() {
         }
       /> 
       <DashboardNavbar /> 
-      <div className="p-6 xl:ml-56 bg-bodyColor">
-        <Typography variant="h4" className="pl-4">Welcome <span className="text-primaryColor">Kumar</span></Typography>
+      <div className="p-6 xl:ml-56 bg-bodyColor"> 
+        <Typography variant="h4" className="pl-4">Welcome <span className="text-primaryColor">{name}</span></Typography> 
         <Typography variant="paragraph" className="pl-4 font-medium">Dashaboard</Typography>
         <Configurator /> 
         <Routes>

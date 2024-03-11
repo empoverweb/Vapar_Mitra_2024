@@ -13,7 +13,21 @@ import { statusDropdown,packUnits} from '@/utils';
 
 const FormFields = ({ label, type, size, color, error, register, errors, id, value, placeholder, RequiredErrorMsg, selectedValue, onChange, optionsData , selectedDate , onSelectDate ,isRequired}) => {
  
-  switch (type) {
+  switch (type) { 
+    case 'textLable':
+    return (
+    <div className="w-72">
+    <Input
+    type="email"
+    placeholder="Email Address"
+    className="!border !border-gray-300 bg-white text-gray-900 shadow-lg shadow-gray-900/5 ring-4 ring-transparent placeholder:text-gray-500 focus:!border-gray-900 focus:!border-t-gray-900 focus:ring-gray-900/10"
+    labelProps={{
+    className: "block",
+    }}
+    containerProps={{ className: "min-w-[100px]" }}
+    />
+    </div>
+    );
     case 'text':
       return (
         <div className='w-full'>
@@ -76,8 +90,12 @@ const FormFields = ({ label, type, size, color, error, register, errors, id, val
             placeholder={placeholder}
             onChange={onChange}
             onKeyDown={(e) => {
-              // Allow backspace (key 'Backspace') and numbers (key '0' to '9')
-              if (!(e.key === 'Backspace' || (e.key >= '0' && e.key <= '9'))) {
+              const allowedKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'];
+              const isNumericInput = (e.key >= '0' && e.key <= '9');
+              const isAllowedKey = allowedKeys.includes(e.key);
+              
+              // Allow Backspace, arrow keys, and numeric input
+              if (!(isNumericInput || isAllowedKey)) {
                 e.preventDefault();
               }
             }}
