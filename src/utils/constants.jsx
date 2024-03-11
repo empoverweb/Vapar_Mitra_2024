@@ -38,6 +38,8 @@ export const addCountry= `${BASE_URL}masters/addCountry`
 
 export const couponsGet = `${BASE_URL}masters/getCoupons`;
 export const exportCoupons = `${BASE_URL}excel/excelFileFomatForCoupons`;
-export const uploadCouponsFileApi = `${BASE_URL}excel/couponsExcelUpload`;
-export const addHybrid = `${BASE_URL}masters/addHybrid`; // This API for add Hybrids done by ravikumar.m
+export const uploadCouponsFileApi = `${BASE_URL}excel/couponsExcelUpload`; 
+export const addSubCategory = `${BASE_URL}masters/addSubCategory`;   
+export const addHybrid = `${BASE_URL}masters/addHybrid`; // This API for add Hybrids done by ravikumar.m 
+export const addDistrict = `${BASE_URL}masters/addDistrict`; // This API for add Hybrids done by ravikumar.m 
 

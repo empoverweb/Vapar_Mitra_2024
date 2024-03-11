@@ -15,7 +15,7 @@ export function AddRegion() {
 
   let emptyRegion = {
     id: 0,
-    regionName: '',
+    name: '',
     zoneId: '',
     remarks: '',
     status: true
@@ -35,11 +35,11 @@ export function AddRegion() {
 
   const tableColumns = [
     {
-      'field': 'regionName',
+      'field': 'name',
       'header': "Region Name"
     },
     {
-      'field': 'zone.zoneName',
+      'field': 'zone.name',
       'header': "Zone Name"
     },
     {
@@ -90,23 +90,19 @@ export function AddRegion() {
 
   //On Edit/ update
 
-  const handleEdit = (rowData) => {
-    const updatedRegion = {
-      ...emptyRegion,
-      ...rowData,
-      zoneId: rowData.zone.id
-    };
-    setRegion(updatedRegion);
-    fetchZoneMasters();
-    setIsEditMode(true);
-    setShowPopup(true);
-  }
-
-  const [date, setDate] = useState();
-  const handleSelectDate = (selectedDate) => {
-    setDate(selectedDate);
-  };
-
+    const handleEdit = (rowData) => {
+      const updatedRegion = {
+        ...emptyRegion,
+        ...rowData,
+        zoneId: rowData.zone.id
+      };
+      setRegion(updatedRegion);
+      setmodalHeading('Edit Region');
+      fetchZoneMasters();
+      setIsEditMode(true);
+      setShowPopup(true);
+    }
+ 
   //on delete product
 
   const handleDelete = (rowData) => {
@@ -114,7 +110,7 @@ export function AddRegion() {
     // Create a new object with the relevant fields and set the status to false
     const updatedRegion = {
       id: rowData.id,
-      regionName: rowData.regionName,
+      name: rowData.name,
       remarks: rowData.remarks,
       zoneId: rowData.zone.id,
       status: false
@@ -142,12 +138,7 @@ export function AddRegion() {
   const hideDeleteRegionsDialog = () => {
     setDeleteRegionsDialogVisible(false);
   };
-
-  //close the modal popup
-
-  const hideDialog = () => {
-    setShowPopup(false);
-  };
+ 
 
   ///onchange to update the new value
 
@@ -164,7 +155,7 @@ export function AddRegion() {
       <div class="relative flex flex-col w-full h-full text-gray-700 shadow-md rounded-xl bg-clip-border">
         <div class="p-0 px-0">
           <Toast ref={toast} />
-          <PrimeDataTable tableHeading={'Add Region'} tableData={tableData} tableColumns={tableColumns} showActions={true} handleAddNew={handleAddNew} handleEdit={handleEdit} handleDelete={handleDelete} handleExport={true} />
+          <PrimeDataTable tableHeading={'Add Region'} tableData={tableData} tableColumns={tableColumns} showActions={true} handleAddNew={handleAddNew} handleEdit={handleEdit} handleDelete={handleDelete} handleExport={true} handleDownload={true} handleUpload={true}/>
           <Modal visible={showPopup} onHide={() => setShowPopup(false)} header={modalHeading}>
             <form onSubmit={handleSubmit(saveRegion)}>
 
@@ -172,7 +163,7 @@ export function AddRegion() {
 
                 <FormFields type="dropdown" id="zoneId" label="Zone Name" size="md" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Select Zone'} selectedValue={region.zoneId} optionsData={zonesOptionsData} onChange={e => handleChange("zoneId", e.target.value)} />
 
-                <FormFields type="text" id="regionName" label="Region Name" size="md" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter Product name'} value={region.regionName} onChange={e => handleChange("regionName", e.target.value)} />
+                <FormFields type="text" id="name" label="Region Name" size="md" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter Product name'} value={region.name} onChange={e => handleChange("name", e.target.value)} />
 
 
               </div>
@@ -221,7 +212,7 @@ export function AddRegion() {
             header="Confirm"
             hideDeleteProductsDialog={hideDeleteRegionsDialog}
             handleDelete={handleDeleteRegion}
-            item={region.regionName}
+            item={region.name}
           />
 
 

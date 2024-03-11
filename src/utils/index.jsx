@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { exportCoupons, getCountries, getCrops, getRegions, getSeasons, getZones } from "./constants";
+import { getSeasons,getCountries,getZones,getCrops,getCategories, getStates} from "./constants";
 import { ApiService } from "@/service";
 export * from "@/utils/constants"; 
 
@@ -43,7 +44,49 @@ export const packUnits = () => {
         }
     ];
 } 
+// States
+export const UseStatesMaster=()=>{
+const [stateMaster, setStateMaster] = useState([])
+const fetchStates = async ()=>{
+    try {
+        const apiUrl = getStates
+        const response = await ApiService.getData(apiUrl)
+        setStateMaster(response.response.stateList );
+    } catch (error) {
+        console.log(error);
+    }
+}
+const stateMasterData = stateMaster.filter((states) => (!states === false)).map((state) => ({
+    id: state.id,
+    name:state.name
+}))
 
+    console.log("categoryMasterData")
+
+    return [stateMasterData,fetchStates]
+}
+// category master
+export const UseCategoryMaster =()=>{
+    const  [categoryMaster, setCategoryMaster] = useState([])
+    const fetchCategoriesData = async () => {
+        try {
+          const apiUrl = getCategories;
+          const response = await ApiService.getData(apiUrl);
+          setCategoryMaster(response.response.categoryList);
+        console.log(response,'category master Data');
+        } catch (error) {
+          console.error("Error fetching category master data:", error);
+        }
+      };
+      const categoryMasterData = categoryMaster.filter((status) => (!status === false)).map((category) => ({
+        id: category.id,
+        name:category.name
+    }))
+    
+        console.log("categoryMasterData"+JSON.stringify(categoryMasterData))
+    
+        return [categoryMasterData,fetchCategoriesData]
+}
 //seasons dropdwon master data
 export const useGetSeasons = () =>{
     const [seasonsMaster,setSeasonsMasters] = useState([])
@@ -80,13 +123,15 @@ export const useGetZones = () =>{
     }
    const zonesOptionsData = zonesMaster.filter((status) => (!status === false)).map((zone) => ({
     id: zone.id,
-    name:zone.name
+    name:zone.name 
 }))
 
      console.log("seasonsOptionsData"+JSON.stringify(zonesOptionsData))
 
     return [zonesOptionsData,fetchZonesMasters]
 }
+
+//Categ
 
 //country dropdwon master Done By Ravi.e
 export const useGetCountries = () =>{
@@ -103,7 +148,7 @@ export const useGetCountries = () =>{
     }
    const countryOptionsData = countryMaster.filter((status) => (!status === false)).map((country) => ({
     id: country.id,
-    name:country.name
+    name:country.name 
 }))
 
     console.log("countryOptionsData"+JSON.stringify(countryOptionsData))

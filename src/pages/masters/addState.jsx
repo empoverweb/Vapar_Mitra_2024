@@ -1,31 +1,29 @@
-import PrimeDataTable from "@/widgets/primedatatable";
-import React, { useState, useEffect, useRef } from 'react';
+import { ApiService } from "@/service";
+import { addStates, getStates, useGetCountries, useGetZones } from "@/utils";
+import { FormFields } from '@/widgets/FormFields';
 import Modal from "@/widgets/modal";
 import { DeleteModal } from "@/widgets/modal/deleteModal";
+import PrimeDataTable from "@/widgets/primedatatable";
 import { Button } from "@material-tailwind/react";
-import { getStates, addStates, useGetZones, useGetCountries } from "@/utils";
-import { ApiService } from "@/service";
 import { Toast } from 'primereact/toast';
-import { FormFields } from '@/widgets/FormFields';
+import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 export function AddState() {
 
   let emptyState = {
     id: 0,
-    stateName: '',
-    stateCode: '',
+    name: '',
+    code: '',
     countryId: '',
     zoneId: '',
     remarks: '',
     status: true
   };
 
-  const [tableData, setTableData] = useState(null);
-  const [previousData, setPreviousData] = useState([]);
+  const [tableData, setTableData] = useState(null); 
   const [showPopup, setShowPopup] = useState(false)
-  const [state, setState] = useState(emptyState);
-  const [submitted, setSubmitted] = useState(false);
+  const [state, setState] = useState(emptyState); 
   const [isEditMode, setIsEditMode] = useState(false);
   const [modalHeading, setmodalHeading] = useState('');
   const [deleteStatesDialogVisible, setDeleteStatesDialogVisible] = useState(false);
@@ -39,19 +37,19 @@ export function AddState() {
 
   const tableColumns = [
     {
-      'field': 'stateName',
+      'field': 'name',
       'header': "State Name"
     },
     {
-      'field': 'stateCode',
+      'field': 'code',
       'header': "State Code"
     },
     {
-      'field': 'zone.zoneName',
+      'field': 'zone.name',
       'header': "Zone Name"
     },
     {
-      'field': 'country.countryName',
+      'field': 'country.name',
       'header': "Country Name"
     },
     {
@@ -102,12 +100,12 @@ export function AddState() {
 
   //On Edit/ update
 
-  const handleEdit = (rowData) => {
+  const handleEdit = (rowData) => {  
     const updatedState = {
       ...emptyState,
       ...rowData,
-      zone: rowData.zone,
-      country: rowData.country.id
+      zoneId: rowData.zone.id,
+      countryId: rowData.country.id
     };
     setState(updatedState);
     fetchZonesMasters();
@@ -120,23 +118,17 @@ export function AddState() {
 
   //on delete state
 
-  const handleDelete = (rowData) => {
-
-    // Create a new object with the relevant fields and set the status to false
+  const handleDelete = (rowData) => { 
     const updatedState = {
       id: rowData.id,
-      stateName: rowData.stateName,
-      stateCode: rowData.stateCode,
-      country: rowData.country.id,
-      zone: rowData.zone.id,
+      name: rowData.name,
+      code: rowData.code,
+      countryId: rowData.country.id,
+      zoneId: rowData.zone.id,
       remarks: rowData.remarks,
       status: false
-    };
-
-    setState(updatedState);
-    ;
-
-    // Set the delete modal visible
+    }; 
+    setState(updatedState); 
     setDeleteStatesDialogVisible(true);
 
   }
@@ -171,23 +163,23 @@ export function AddState() {
       <div className="relative flex flex-col w-full h-full text-gray-700 shadow-md rounded-xl bg-clip-border">
         <div className="p-0 px-0">
           <Toast ref={toast} />
-          <PrimeDataTable tableHeading={'Add State'} tableData={tableData} tableColumns={tableColumns} showActions={true} handleAddNew={handleAddNew} handleEdit={handleEdit} handleDelete={handleDelete} handleExport={true} />
+          <PrimeDataTable tableHeading={'Add State'}  tableData={tableData} tableColumns={tableColumns} showActions={true} handleAddNew={handleAddNew} handleEdit={handleEdit} handleDelete={handleDelete} handleExport={true} handleDownload={true} handleUpload={true} />
           <Modal visible={showPopup} onHide={() => setShowPopup(false)} header={modalHeading}>
             <form onSubmit={handleSubmit(saveState)}>
 
               <div className="my-4 flex sm:flex-row flex-col items-center gap-4 mb-8">
                
-                <FormFields type="dropdown" id="country" label="country Name" size="md" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Select country'} selectedValue={state.countryId} optionsData={countryOptionsData} onChange={e => handleChange("countryId", e.target.value)} />
+                <FormFields type="dropdown" id="countryId" label="country Name" size="md" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Select country'} selectedValue={state.countryId} optionsData={countryOptionsData} onChange={e => handleChange("countryId", e.target.value)} />
                
-                <FormFields type="dropdown" id="zone" label="zone Name" size="md" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Select zone'} selectedValue={state.zoneId} optionsData={zonesOptionsData} onChange={e => handleChange("zoneId", e.target.value)} />
+                <FormFields type="dropdown" id="zoneId" label="zone Name" size="md" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Select zone'}  selectedValue={state.zoneId} optionsData={zonesOptionsData} onChange={e => handleChange("zoneId", e.target.value)} />
              
               </div>
 
               <div className="my-4 flex sm:flex-row flex-col items-center gap-4 mb-8">
 
-                <FormFields type="text" id="stateName" label="state Name" size="md" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter state Name'} value={state.stateName} selectedValue={state.stateName} onChange={e => handleChange("stateName", e.target.value)} />
+                <FormFields type="text" id="name" label="state Name" size="md" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter state Name'} value={state.name} selectedValue={state.name} onChange={e => handleChange("name", e.target.value)} />
 
-                <FormFields type="number" id="stateCode" label="state Code" size="md" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter state Code'} value={state.stateCode} selectedValue={state.stateCode} onChange={e => handleChange("stateCode", e.target.value)} />
+                <FormFields type="number" id="code" label="state Code" size="md" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter state Code'} value={state.code} selectedValue={state.code} onChange={e => handleChange("code", e.target.value)} />
 
                 {isEditMode && (
                   <FormFields
@@ -230,7 +222,7 @@ export function AddState() {
             header="Confirm"
             hideDeleteStatesDialog={hideDeleteStatesDialog}
             handleDelete={handleDeleteState}
-            item={state.stateName}
+            item={state.name}
           />
 
 
