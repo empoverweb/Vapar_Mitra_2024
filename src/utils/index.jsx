@@ -1,5 +1,5 @@
 import { useState } from "react";
-import {getStates, getSeasons,getCountries,getZones,getCrops, getTerritory, getCategories, getRegions} from "./constants";
+import {getStates, getSeasons,getCountries,getZones,getCrops, getTerritory, getCategories, getRegions, getDistricts} from "./constants";
 import { ApiService } from "@/service";
 export * from "@/utils/constants"; 
 import { encode, decode } from 'js-base64';
@@ -189,6 +189,26 @@ export const useGetCrops = () => {
       }));
     return [regionOptionsData, fetchRegionMasters];
   };
+
+
+    // States
+  export const UseDistrictMaster=()=>{
+    const [districtMaster, setDistrictMaster] = useState([])
+    const fetchDistricts = async ()=>{
+        try {
+            const apiUrl = getDistricts
+            const response = await ApiService.getData(apiUrl)
+            setDistrictMaster(response.response.districtList );
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    const districtMasterData = districtMaster.filter((district) => (!district === false)).map((district) => ({
+        id: district.id,
+        name:district.name
+    })) 
+        return [districtMasterData,fetchDistricts]
+    }
  
  
 

@@ -1,4 +1,4 @@
-import React,{useRef} from 'react'
+import React,{useEffect, useRef} from 'react'
 import { Img } from '@/widgets/Img';
 import { FormFields } from '@/widgets/FormFields';
 import NSLLogo from '/img/logo.png';
@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import BannerImg from '/img/banner.png';
 import { useForm } from 'react-hook-form'; 
 import { Toast } from 'primereact/toast';
+import { UseStatesMaster, useGetCountries,UseDistrictMaster } from "@/utils"; 
 import {
   Card,
   CardHeader,
@@ -19,8 +20,17 @@ import {
 export const SignUp = () => {
 
   const navigate = useNavigate();
+  const [countryOptionsData,fetchcountryMasters] = useGetCountries();
+  const [districtOptionsData , fetchdistrictMasters] = UseDistrictMaster();
+  const [statesOptionsData , fetchStatesMasters]=  UseStatesMaster();
   const toast = useRef(null);
   const { register, handleSubmit, formState: { errors } } = useForm();
+
+  useEffect(() => {
+    fetchcountryMasters();
+    fetchStatesMasters();
+    fetchdistrictMasters();
+  }, []);
 
 
   const handleLoginClick = () => {
@@ -31,6 +41,8 @@ export const SignUp = () => {
     alert(JSON.stringify(data))
     console.log(data);
   }
+
+
 
   return (
     <section class="gradient-form h-full bg-neutral-200 dark:bg-neutral-700">
@@ -88,17 +100,16 @@ export const SignUp = () => {
 
                               <FormFields type="text" id="village" label="Village/City" size="lg" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter Village/City'} />
 
-                              <FormFields type="text" id="district" label="District" size="lg" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter District'} />
-
+                              <FormFields type="dropdown" id="district" label="District" size="sm" color="teal" error={true} optionsData={districtOptionsData} register={register} errors={errors} RequiredErrorMsg={'Select State'} />
+ 
                             </div>
 
                             <div className="my-4 flex sm:flex-row flex-col items-center gap-4">
 
-                          
-                              <FormFields type="text" id="state" label="State" size="lg" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter State'} />
-
-                              <FormFields type="text" id="country" label="Country" size="lg" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter District'} />
-
+                              <FormFields type="dropdown" id="state" label="State" size="sm" color="teal" error={true} optionsData={statesOptionsData} register={register} errors={errors} RequiredErrorMsg={'Select State'} />
+ 
+                              <FormFields type="dropdown" id="countryId" label="Country Name" size="sm" color="teal" error={true} optionsData={countryOptionsData} register={register} errors={errors} RequiredErrorMsg={'Select Country'} />
+ 
                             </div>
 
                            
