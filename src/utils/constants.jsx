@@ -4,6 +4,7 @@ const  BASE_URL = CONFIG[CURRENT_ENV].BASE_URL;
    
 export const getProducts = `${BASE_URL}masters/getProducts`;
 export const addProduct = `${BASE_URL}masters/addProducts`;  
+export const addHeadQuarter = `${BASE_URL}masters/addHeadQuarter`;  
 export const getRegions = `${BASE_URL}masters/getRegions`;
 export const getZones = `${BASE_URL}masters/getZones`;
 export const addZones = `${BASE_URL}masters/masters/addZone`;// Insertion API for Zones - Amlan

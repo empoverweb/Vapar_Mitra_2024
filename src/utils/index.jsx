@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { getSeasons,getCountries,getZones,getCrops,getCategories, getStates, getRegions} from "./constants";
+import {getStates, getSeasons,getCountries,getZones,getCrops, getTerritory, getCategories, getRegions} from "./constants";
 import { ApiService } from "@/service";
 export * from "@/utils/constants"; 
 
@@ -59,9 +59,7 @@ const stateMasterData = stateMaster.filter((states) => (!states === false)).map(
     id: state.id,
     name:state.name
 }))
-
     console.log("categoryMasterData")
-
     return [stateMasterData,fetchStates]
 }
 // category master
@@ -149,7 +147,6 @@ export const useGetCountries = () =>{
     id: country.id,
     name:country.name 
 }))
-
     console.log("countryOptionsData"+JSON.stringify(countryOptionsData))
     return [countryOptionsData,fetchcountryMasters]
 }
@@ -221,3 +218,23 @@ const getApiUrlByKey = (key) => {
     };
     return [downloadUrl, fetchDownloadApi];
   };
+
+  export const getTerritoryData = () => {
+    const [territoryMasters, setTerritoryMasters] = useState([]);
+    const fetchTerritoryMasters = async () => {
+      try {
+        const apiUrl = getTerritory;
+        const response = await ApiService.getData(apiUrl);
+        console.log(response,"territory data ")
+        setTerritoryMasters(response.response.territoryList);
+      } catch (error) {
+        console.error("Error fetching getTerritories :", error);
+      }
+    };
+    const territoryOptionsData = territoryMasters.filter((status) => (!status === false)).map(territory => ({
+        id: territory.id,
+        name: territory.name,
+      }));
+    return [territoryOptionsData, fetchTerritoryMasters];
+  };
+ 
