@@ -2,41 +2,50 @@ import PrimeDataTable from "@/widgets/primedatatable";
 import React, { useState, useEffect, useRef } from 'react';
 import Modal from "@/widgets/modal";
 import { Button } from "@material-tailwind/react";
-import { getProductionPlants } from "@/utils";
+import { addProductionPlant, getProductionPlants } from "@/utils";
 import { ApiService } from "@/service";
 import { Toast } from 'primereact/toast';
 import { FormFields } from '@/widgets/FormFields';
 import { useForm } from 'react-hook-form';
+import { DeleteModal } from "@/widgets/modal/deleteModal";
 
 export function AddProductionPlants() {
 
+  let emptyProductionPlants = {
+    id: 0,
+    name: '',
+    code:'',
+    location:'',
+    address:'',
+    remarks:'',
+    status: true
+  };
+
   const [tableData, setTableData] = useState(null);
-  const [previousData, setPreviousData] = useState([]);
   const [showPopup, setShowPopup] = useState(false)
-  const [productionPlants, setproductionPlants] = useState(null);
-  const [submitted, setSubmitted] = useState(false);
+  const [productionPlants, setproductionPlants] = useState(emptyProductionPlants);
+  const [modalHeading,setModalHeading] = useState()
   const [statusValue, setstatusValue] = useState();
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [deleteProductsDialogVisible, setDeleteProductsDialogVisible] = useState(false);
   const toast = useRef(null);
   const { register, handleSubmit, formState: { errors } } = useForm();
-
 
   /////API CALL TO GET ALL THE PRODUCTIONPLANTS
 
   const tableColumns = [
     {
-      'field': 'productionName',
+      'field': 'name',
       'header': "ProductionName"
     },
- 
     {
-      'field': 'productionCode',
+      'field': 'code',
       'header': "ProductionCode"
     },
     {
       'field': 'location',
       'header': "Location"
     },
-
     {
         'field': 'address',
         'header': "Address"
@@ -48,9 +57,6 @@ export function AddProductionPlants() {
   ]
 
 
-
-  useEffect(() => {
-
     const fetchproductionPlantData = async () => {
       try {
         const apiUrl = getProductionPlants;
@@ -61,94 +67,101 @@ export function AddProductionPlants() {
       }
     };
 
-    if (JSON.stringify(previousData) !== JSON.stringify(tableData)) {
-        fetchproductionPlantData();
-      setPreviousData(tableData);
-    }
-  }, [tableData, previousData]);
 
+useEffect (() =>{
+   fetchproductionPlantData()
+},[])
+   
 
   // add new record
 
-  let emptyProductionPlants = {
-    id: 0,
-    productionPlants: '',
-    productionCode:'',
-    location:'',
-    address:'',
-    remarks:'',
-    status: true
-  };
-
-  const onSubmit = (data) => {
-    setproductionPlants(emptyProductionPlants);
-    setSubmitted(false);
-    setShowPopup(true)
+  const saveProduct = async () => {
+    const postData = productionPlants;
+    const apiUrl = addProductionPlant;
+    const response = await ApiService.postData(apiUrl, postData);
+    response.statusCode == 200 ? setShowPopup(false) : null;
+    ApiService.handleResponse(response, toast);
+    // Update table data with the new record
+  fetchproductionPlantData();
   }
 
   const handleAddNew = () => {
-    setproductionPlants(emptyProductionPlants);
-    setSubmitted(false);
     setShowPopup(true)
+    setproductionPlants(emptyProductionPlants);
+    setModalHeading('Add Production Plants');
+    setSubmitted(false);
+   
   }
-
 
   //On Edit/ update
-
   const handleEdit = (rowData) => {
-    alert(JSON.stringify(rowData));
-    console.log(JSON.stringify(rowData))
-    setShowPopup(true)
+    console.log(rowData,"roww data of product")
+    setShowPopup(true);
+    setIsEditMode(true);
+    const updatedProduct = {
+      ...emptyProductionPlants,
+      ...rowData,
+    };
+    setproductionPlants(updatedProduct);
+    setModalHeading('Edit Production Plants');
+
   }
-
-  const [date, setDate] = useState();
-  const handleSelectDate = (selectedDate) => {
-    setDate(selectedDate);
-  };
-
 
   //on delete 
-
   const handleDelete = (rowData) => {
-    alert("delete clicked")
-    setShowPopup(true)
+    const updatedProduct = {
+      id: rowData.id,
+      name: rowData.name,
+      code:rowData.code,
+      location:rowData.location,
+      address:rowData.address,
+      remarks:rowData.remarks,
+      status: false
+    };
+    setproductionPlants(updatedProduct);
+    setDeleteProductsDialogVisible(true);
   }
 
 
-  //close the modal popup
-
-  const hideDialog = () => {
-    setShowPopup(false);
+  //close the delete modal popup
+  const hideDeleteProductsDialog = () => {
+    setDeleteProductsDialogVisible(false);
   };
 
-  //status on change
-  const handleStatusChange= (e) => {
-    setstatusValue(e.target.value); 
-  }
+  // on change
+  const handleChange = (fieldName, value) => {
+    setproductionPlants(prevProduct => ({
+      ...prevProduct,
+      [fieldName]: value
+    }));
+  };
 
+  const handleDeleteProduct = async () => { 
+    const postData = productionPlants;
+    const apiUrl = addProductionPlant;
+    const response = await ApiService.postData(apiUrl, postData);
+    response.statusCode == 200 ? setShowPopup(false) : null;
+    ApiService.handleResponse(response, toast);
+    setDeleteProductsDialogVisible(false);
+    fetchproductionPlantData()
+  };
+  
   return (
     <>
       <div class="relative flex flex-col w-full h-full text-gray-700 shadow-md rounded-xl bg-clip-border">
         <div class="p-0 px-0">
           <Toast ref={toast} />
           <PrimeDataTable tableHeading={'Add ProductionPlants'} tableData={tableData} tableColumns={tableColumns} showActions={true} handleAddNew={handleAddNew} handleEdit={handleEdit} handleDelete={handleDelete} handleExport={true} />
-          <Modal visible={showPopup} onHide={() => setShowPopup(false)} header={"Add New ProductionPlants"}>
-            <form onSubmit={handleSubmit(onSubmit)}>
-
+          <Modal visible={showPopup} onHide={() => setShowPopup(false)} header={modalHeading}>
+            <form onSubmit={handleSubmit(saveProduct)}>
               <div className="my-4 flex sm:flex-row flex-col items-center gap-4">
-
-                <FormFields type="text" id="productionName" label="production Name" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter  Name'} />
-                <FormFields type="text" id="productionCode" label="production Code" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter  Code'} />
-                <FormFields type="text" id="location" label="Location" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter  Name'} />
-                <FormFields type="text" id="address" label="Address" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter  Name'} />
-                <FormFields type="text" id="remarks" label="Remarks" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter  Remarks'} />
-
-
+                <FormFields type="text" id="name" label="production Name" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter  Name'} value={productionPlants.name} onChange={e => handleChange("name", e.target.value)}  /> 
+                <FormFields type="text" id="code" label="production Code" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter  Code'} value={productionPlants.code} onChange={e => handleChange("code", e.target.value)} /> 
+                <FormFields type="text" id="location" label="Location" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter  Name'} value={productionPlants.location} onChange={e => handleChange("location", e.target.value)} /> 
+                <FormFields type="text" id="address" label="Address" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter  Name'} value={productionPlants.address} onChange={e => handleChange("address", e.target.value)} /> 
               </div>
-
               <div className="my-4 flex sm:flex-row flex-col items-center gap-4">
-
-
+              {isEditMode && (
                 <FormFields
                   label="Status"
                   type="statusDropdown"
@@ -160,19 +173,25 @@ export function AddProductionPlants() {
                   register={register}
                   errors={errors}
                   RequiredErrorMsg={"slect status"}
-                  onChange={handleStatusChange}
                   selectedValue={statusValue}
+                  onChange={e => handleChange("status", e.target.value)}
                 />
-
- 
+                )}
               </div>
-
               {/* //formfields */}
               <div className='flex justify-center items-center'>
                 <Button type='submit' variant="filled" size="md" className='bg-primaryColor'>Save</Button>
               </div>
             </form>
           </Modal>
+          <DeleteModal
+            visible={deleteProductsDialogVisible}
+            header="Confirm"
+            hideDeleteProductsDialog={hideDeleteProductsDialog}
+            handleDelete={handleDeleteProduct}
+            onHide={() => setDeleteProductsDialogVisible(false)}
+          />
+
         </div>
       </div>
     </>

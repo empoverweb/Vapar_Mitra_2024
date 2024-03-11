@@ -12,32 +12,29 @@ import { useForm } from 'react-hook-form';
 export function AddCrop() {
   let emptyCrop = {
     id: 0,
-    cropName: '',
-    cropCode: '',
+    name: '',
+    code: '',
     remarks: '',
     status: true
   };
 
   const [tableData, setTableData] = useState(null);
-  const [previousData, setPreviousData] = useState([]);
   const [showPopup, setShowPopup] = useState(false)
   const [crop, setCrop] = useState(emptyCrop);
-  const [submitted, setSubmitted] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [modalHeading, setmodalHeading] = useState('');
   const [deleteCropsDialogVisible, setDeleteCropsDialogVisible] = useState(false);
-  const [statusValue, setstatusValue] = useState();
   const toast = useRef(null);
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
 
   /////API CALL TO GET ALL THE Crops
   const tableColumns = [
     {
-      'field': 'cropName',
+      'field': 'name',
       'header': "Crop Name"
     },
     {
-      'field': 'cropCode',
+      'field': 'code',
       'header': "Crop Code"
     },
     {
@@ -98,12 +95,11 @@ export function AddCrop() {
   //on delete crops
 
   const handleDelete = (rowData) => {
-
     // Create a new object with the relevant fields and set the status to false
     const updatedCrop = {
       id: rowData.id,
-      cropName: rowData.cropName,
-      cropCode: rowData.cropCode,
+      crop: rowData.name,
+      code: rowData.code,
       remarks: rowData.remarks,
       status: false
     };
@@ -129,7 +125,6 @@ export function AddCrop() {
   };
 
   ///onchange to update the new value
-
   const handleChange = (fieldName, value) => {
     setCrop(prevCrop => ({
       ...prevCrop,
@@ -141,18 +136,16 @@ export function AddCrop() {
       <div class="relative flex flex-col w-full h-full text-gray-700 shadow-md rounded-xl bg-clip-border">
         <div class="p-0 px-0">
           <Toast ref={toast} />
-          <PrimeDataTable tableHeading={'Add Crop'} tableData={tableData} tableColumns={tableColumns} showActions={true} handleAddNew={handleAddNew} handleEdit={handleEdit} handleDelete={handleDelete} handleExport={true} />
+          <PrimeDataTable tableHeading={'Add Crop'} tableData={tableData} tableColumns={tableColumns} showActions={true} handleAddNew={handleAddNew} handleEdit={handleEdit} handleDelete={handleDelete} handleExport={true} handleDownload={true} handleUpload={true}/>
           <Modal visible={showPopup} onHide={() => setShowPopup(false)} header={modalHeading}>
             <form onSubmit={handleSubmit(saveCrop)}>
 
               <div className="my-4 flex sm:flex-row flex-col items-center gap-4 mb-8">
 
-                <FormFields type="text" id = "cropName"  label="crop Name" size="md" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter crop name'} value={crop.cropName} onChange={(e) => handleChange("cropName", e.target.value)} />
+                <FormFields type="text" id = "name"  label="crop Name" size="md" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter crop name'} value={crop.name} onChange={(e) => handleChange("name", e.target.value)} />
 
-                <FormFields type="number" id="cropCode" label="crop Code" size="md" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter Pack Size'} value={crop.cropCode} onChange={(e)=> handleChange("cropCode", e.target.value)} />
-
+                <FormFields type="text" id="code" label="crop Code" size="md" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter Pack Size'} value={crop.code} onChange={(e)=> handleChange("code", e.target.value)} />
               </div>
-
               <div className="my-4 flex sm:flex-row flex-col items-center gap-4 mb-8">
                 {isEditMode && (
                   <FormFields
@@ -193,7 +186,7 @@ export function AddCrop() {
             header="Confirm"
             hideDeleteCropsDialog={hideDeleteCropsDialog}
             handleDelete={handleDeleteCrop}
-            item={crop.cropName}
+            item={crop.name}
           />
 
           {/* ///delete modal component loading */}

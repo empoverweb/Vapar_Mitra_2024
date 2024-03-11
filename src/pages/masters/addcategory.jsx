@@ -2,29 +2,37 @@ import PrimeDataTable from "@/widgets/primedatatable";
 import React, { useState, useEffect, useRef } from 'react';
 import Modal from "@/widgets/modal";
 import { Button } from "@material-tailwind/react";
-import { getCategories } from "@/utils";
+import { addCategory, getCategories } from "@/utils";
 import { ApiService } from "@/service";
 import { Toast } from 'primereact/toast';
 import { FormFields } from '@/widgets/FormFields';
 import { useForm } from 'react-hook-form';
+import { DeleteModal } from "@/widgets/modal/deleteModal";
 export function AddCategory() {
 
+  let emptyCategory = {
+    id:0,
+    name:'',
+    status:true,
+    remarks:''
+};
+
+
   const [tableData, setTableData] = useState(null);
-  const [previousData, setPreviousData] = useState([]);
   const [showPopup, setShowPopup] = useState(false)
-  const [category, setcategory] = useState(null);
-  const [submitted, setSubmitted] = useState(false);
-  const [statusValue, setstatusValue] = useState();
+  const [category, setcategory] = useState(emptyCategory);
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [modalHeading, setmodalHeading] = useState('');
+  const [deleteProductsDialogVisible, setDeleteProductsDialogVisible] = useState(false);
   const toast = useRef(null);
   const { register, handleSubmit, formState: { errors } } = useForm();
 
 
   /////API CALL TO GET ALL THE CATEGORIES
-
   const tableColumns = [
     {
-      'field': 'categoryName',
-      'header': "CategoryName"
+      'field': 'name',
+      'header': "Category Name"
     },
  
     {
@@ -37,9 +45,10 @@ export function AddCategory() {
     }
   ]
 
-
-
   useEffect(() => {
+    fetchCategoriesData();
+  }, [category]);
+
 
     const fetchCategoriesData = async () => {
       try {
@@ -51,112 +60,113 @@ export function AddCategory() {
       }
     };
 
-    if (JSON.stringify(previousData) !== JSON.stringify(tableData)) {
-      fetchCategoriesData();
-      setPreviousData(tableData);
-    }
-  }, [tableData, previousData]);
-
 
   // add new record
-
-  let emptyCategory = {
-    id: 0,
-    categoryName: '',
-    remarks:'',
-    status: true
-  };
-
-  const onSubmit = (data) => {
-    setcategory(emptyCategory);
-    setSubmitted(false);
-    setShowPopup(true)
-  }
-
   const handleAddNew = () => {
     setcategory(emptyCategory);
-    setSubmitted(false);
     setShowPopup(true)
+    setIsEditMode(false)
+    setSubmitted(false);
   }
-
+  const saveProduct = async () => {
+    const postData = category;
+    const apiUrl = addCategory;
+    const response = await ApiService.postData(apiUrl, postData);
+    response.statusCode == 200 ? setShowPopup(false) : null;
+    ApiService.handleResponse(response, toast);
+    // Update table data with the new record
+    fetchCategoriesData();
+  }
 
   //On Edit/ update
-
   const handleEdit = (rowData) => {
-    alert(JSON.stringify(rowData));
-    console.log(JSON.stringify(rowData))
-    setShowPopup(true)
+    console.log(rowData,"category row data")
+   const updatedProduct = {
+      ...emptyCategory,
+      ...rowData,
+    };
+    setcategory(updatedProduct);
+    setIsEditMode(true);
+    setmodalHeading('Edit Category');
+    setShowPopup(true);
   }
-
-  const [date, setDate] = useState();
-  const handleSelectDate = (selectedDate) => {
-    setDate(selectedDate);
-  };
-
 
   //on delete 
-
   const handleDelete = (rowData) => {
-    alert("delete clicked")
-    setShowPopup(true)
+    const updatedProduct = {
+      id: rowData.id,
+      name: rowData.name,
+      status: false,
+      remarks: rowData.remarks,
+    };
+    setcategory(updatedProduct);
+    setDeleteProductsDialogVisible(true);
   }
-
-
+  const handleDeleteProduct = async () => { 
+    const postData = category;
+    const apiUrl = addCategory;
+    const response = await ApiService.postData(apiUrl, postData);
+    response.statusCode == 200 ? setShowPopup(false) : null;
+    ApiService.handleResponse(response, toast);
+    setDeleteProductsDialogVisible(false);
+    fetchCategoriesData();
+  };
   //close the modal popup
-
-  const hideDialog = () => {
-    setShowPopup(false);
+  const handleChange = (fieldName, value) => {
+    setcategory(prevCategory => ({
+      ...prevCategory,
+      [fieldName]: value
+    }));
   };
 
-  //status on change
-  const handleStatusChange= (e) => {
-    setstatusValue(e.target.value); 
-  }
-
+  
   return (
     <>
       <div class="relative flex flex-col w-full h-full text-gray-700 shadow-md rounded-xl bg-clip-border">
         <div class="p-0 px-0">
           <Toast ref={toast} />
-          <PrimeDataTable tableHeading={'Add Category'} tableData={tableData} tableColumns={tableColumns} showActions={true} handleAddNew={handleAddNew} handleEdit={handleEdit} handleDelete={handleDelete} handleExport={true} />
-          <Modal visible={showPopup} onHide={() => setShowPopup(false)} header={"Add New Category"}>
-            <form onSubmit={handleSubmit(onSubmit)}>
+          <PrimeDataTable tableHeading={'Add Category'} tableData={tableData} tableColumns={tableColumns} showActions={true} handleAddNew={handleAddNew} handleEdit={handleEdit} handleDelete={handleDelete} handleExport={true} handleDownload={true} handleUpload={true} />
+          <Modal visible={showPopup} onHide={() => setShowPopup(false)} header={modalHeading}>
+            <form onSubmit={handleSubmit(saveProduct)}>
 
               <div className="my-4 flex sm:flex-row flex-col items-center gap-4">
 
-                <FormFields type="text" id="categoryName" label="Category Name" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter  Name'} />
-                <FormFields type="text" id="remarks" label="Remarks" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter  Remarks'} />
-
-
+                <FormFields type="text" id="name" label="Category Name" size="sm" color="teal" error={true} register={register}  errors={errors} RequiredErrorMsg={'Enter  Name'}  value={category.name} onChange={e => handleChange("name", e.target.value)} />
+                <FormFields type="text" id="remarks" label="Remarks" size="sm" color="teal" error={true} register={register} errors={errors}  RequiredErrorMsg={'Enter  Remarks'} value={category.remarks} onChange={e => handleChange("remarks", e.target.value)} />
               </div>
-
               <div className="my-4 flex sm:flex-row flex-col items-center gap-4">
-
-
-                <FormFields
-                  label="Status"
-                  type="statusDropdown"
-                  size="lg"
-                  color="teal"
-                  id="status"
-                  placeholder="status"
-                  error={true}
-                  register={register}
-                  errors={errors}
-                  RequiredErrorMsg={"slect status"}
-                  onChange={handleStatusChange}
-                  selectedValue={statusValue}
-                />
-
- 
+              {isEditMode && (
+                  <FormFields
+                    type="statusDropdown"
+                    id="status"
+                    label="Status"
+                    size="md"
+                    color="teal"
+                    error={true}
+                    register={register}
+                    errors={errors}
+                    RequiredErrorMsg={'Select Status'}
+                    value={category.status}
+                    selectedValue={category.status}
+                    onChange={e => handleChange("status", e.target.value)}
+                  />
+                )} 
               </div>
-
               {/* //formfields */}
               <div className='flex justify-center items-center'>
                 <Button type='submit' variant="filled" size="md" className='bg-primaryColor'>Save</Button>
               </div>
             </form>
           </Modal>
+          <DeleteModal
+            visible={deleteProductsDialogVisible}
+            header="Confirm"
+            // hideDeleteProductsDialog={hideDeleteProductsDialog}
+            handleDelete={handleDeleteProduct}
+            // item={product.productName}
+            onHide={() => setDeleteProductsDialogVisible(false)}
+          />
+
         </div>
       </div>
     </>

@@ -2,20 +2,31 @@ import PrimeDataTable from "@/widgets/primedatatable";
 import React, { useState, useEffect, useRef } from 'react';
 import Modal from "@/widgets/modal";
 import { Button } from "@material-tailwind/react";
-import { getCountries } from "@/utils";
+import { addCountry, getCountries } from "@/utils";
 import { ApiService } from "@/service";
 import { Toast } from 'primereact/toast';
 import { FormFields } from '@/widgets/FormFields';
 import { useForm } from 'react-hook-form';
+import { DeleteModal } from "@/widgets/modal/deleteModal";
 
 export function AddCountry() {
 
+  let emptyCountry = {
+    id: 0,
+    name:"",
+    code:"",
+    currency:"",
+    status:true,
+    remarks:""
+  };
   const [tableData, setTableData] = useState(null);
-  const [previousData, setPreviousData] = useState([]);
+  const [country,setCountry] = useState(emptyCountry)
   const [showPopup, setShowPopup] = useState(false)
-  const [product, setproduct] = useState(null);
   const [submitted, setSubmitted] = useState(false);
   const [statusValue, setstatusValue] = useState();
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [modalHeading, setModalHeading] = useState('');
+  const [deleteCountryDialogVisible, setDeleteCountryDialogVisible] = useState(false);
   const toast = useRef(null);
   const { register, handleSubmit, formState: { errors } } = useForm();
 
@@ -24,11 +35,11 @@ export function AddCountry() {
 
   const tableColumns = [
     {
-      'field': 'countryName',
+      'field': 'name',
       'header': "Country Name"
     },
     {
-      'field': 'countryCode',
+      'field': 'code',
       'header': "Country Code"
     },
     {
@@ -45,8 +56,6 @@ export function AddCountry() {
     }
   ]
 
-  useEffect(() => {
-
     const fetchCountryData = async () => {
       try {
         const fetchUrl = getCountries;
@@ -57,68 +66,82 @@ export function AddCountry() {
       }
     };
 
-    if (JSON.stringify(previousData) !== JSON.stringify(tableData)) {
-      fetchCountryData();
-      setPreviousData(tableData);
-    }
-  }, [tableData, previousData]);
+    useEffect(() =>{
+        fetchCountryData()
+    },[country])
+
+    
 
 
   // add new record
-
-  let emptyCountry = {
-    id: 0,
-    countryCode:"",
-    countryName:"",
-    currency:"",
-    status:true,
-    remarks:""
-  };
-
-  const onSubmit = (data) => {
-    setproduct(emptyCountry);
-    setSubmitted(false);
-    setShowPopup(true)
+  const saveProduct = async () => {
+    const postData = country;
+    const apiUrl = addCountry;
+    const response = await ApiService.postData(apiUrl, postData);
+    response.statusCode == 200 ? setShowPopup(false) : null;
+    ApiService.handleResponse(response, toast);
+    // Update table data with the new record
+  fetchCountryData();
   }
 
   const handleAddNew = () => {
-    setproduct(emptyCountry);
-    setSubmitted(false);
     setShowPopup(true)
+    setCountry(emptyCountry);
+    setIsEditMode(false)
+    setSubmitted(false);
+    setModalHeading('Add Product');
   }
 
 
   //On Edit/ update
 
   const handleEdit = (rowData) => {
-    alert(JSON.stringify(rowData));
-    console.log(JSON.stringify(rowData))
     setShowPopup(true)
+    setIsEditMode(true);
+    setModalHeading('Edit Country');
+    const updatedProduct = {
+      ...emptyCountry,
+      ...rowData,
+    };
+    setCountry(updatedProduct);
+    fetchCountryData()
   }
-
-  const [date, setDate] = useState();
-  const handleSelectDate = (selectedDate) => {
-    setDate(selectedDate);
-  };
-
-
   //on delete 
 
+ 
   const handleDelete = (rowData) => {
-    alert("delete clicked")
-    setShowPopup(true)
+    const updatedCountry = {
+      id: rowData.id,
+      name: rowData.name,
+      code: rowData.code,
+      remarks: rowData.remarks,
+      status: false,
+    };
+    setCountry(updatedCountry);
+    // Set the delete modal visible
+    setDeleteCountryDialogVisible(true);
   }
 
-
-  //close the modal popup
-
-  const hideDialog = () => {
-    setShowPopup(false);
+  const handleDeleteCountry = async () => { 
+    const postData = country;
+    const apiUrl = addCountry;
+    const response = await ApiService.postData(apiUrl, postData);
+    response.statusCode == 200 ? setShowPopup(false) : null;
+    ApiService.handleResponse(response, toast);
+    setDeleteCountryDialogVisible(false);
+    fetchCountryData();
   };
 
-  //status on change
-  const handleStatusChange= (e) => {
-    setstatusValue(e.target.value); 
+  const hideDeleteCountryDialog = () => {
+    setDeleteCountryDialogVisible(false);
+  };
+
+  // on change
+  const handleChange = (fieldName,value) =>{
+    setCountry(prevProduct => ({
+      ...prevProduct,
+      [fieldName]: value
+    }));
   }
 
   return (
@@ -127,20 +150,16 @@ export function AddCountry() {
         <div class="p-0 px-0">
           <Toast ref={toast} />
           <PrimeDataTable tableHeading={'Country'} tableData={tableData} tableColumns={tableColumns} showActions={true} handleAddNew={handleAddNew} handleEdit={handleEdit} handleDelete={handleDelete} handleExport={true} />
-          <Modal visible={showPopup} onHide={() => setShowPopup(false)} header={"Add New Country"}>
-            <form onSubmit={handleSubmit(onSubmit)}>
-
+          <Modal visible={showPopup} onHide={() => setShowPopup(false)} header={modalHeading}>
+            <form onSubmit={handleSubmit(saveProduct)}>
               <div className="my-4 flex sm:flex-row flex-col items-center gap-4">
-
-                <FormFields type="text" id="countryName" label="Country Name" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter Country name'} />
-                <FormFields type="text" id="countryCode" label="Country Code" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter Country code'} />
-                <FormFields type="text" id="currency" label="Currency" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter Currency'} />
-                <FormFields type="text" id="remarks" label="Remarks" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter Remarks'} />
-
+                <FormFields type="text" id="name" label="Country Name" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter Country name'} value={country.name} onChange={e => handleChange("name", e.target.value)}  />
+                <FormFields type="text" id="code" label="Country Code" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter Country code'} value={country.code} onChange={e => handleChange("code", e.target.value)}  />
+                <FormFields type="number" id="currency" label="Currency" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter Currency'} value={country.currency} onChange={e => handleChange("currency", e.target.value)}  />
+                <FormFields type="text" id="remarks" label="Remarks" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter Remarks'} value={country.remarks} onChange={e => handleChange("remarks", e.target.value)}  />
               </div>
-
               <div className="my-4 flex sm:flex-row flex-col items-center gap-4">
-
+              {isEditMode && (
                 <FormFields
                   label="Status"
                   type="statusDropdown"
@@ -152,11 +171,9 @@ export function AddCountry() {
                   register={register}
                   errors={errors}
                   RequiredErrorMsg={"slect status"}
-                  onChange={handleStatusChange}
-                  selectedValue={statusValue}
-                />
-
- 
+                  selectedValue={country.status}
+                /> 
+                )}
               </div>
 
               {/* //formfields */}
@@ -165,6 +182,13 @@ export function AddCountry() {
               </div>
             </form>
           </Modal>
+          <DeleteModal
+            visible={deleteCountryDialogVisible}
+            header="Confirm"
+            hideDeleteProductsDialog={hideDeleteCountryDialog}
+            handleDelete={handleDeleteCountry}
+            onHide={() => setDeleteCountryDialogVisible(false)}
+          />
         </div>
       </div>
     </>

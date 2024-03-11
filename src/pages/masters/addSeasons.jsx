@@ -2,20 +2,27 @@ import PrimeDataTable from "@/widgets/primedatatable";
 import React, { useState, useEffect, useRef } from 'react';
 import Modal from "@/widgets/modal";
 import { Button } from "@material-tailwind/react";
-import { getSeasons } from "@/utils";
+import { addSeasons, getSeasons } from "@/utils";
 import { ApiService } from "@/service";
 import { Toast } from 'primereact/toast';
 import { FormFields } from '@/widgets/FormFields';
 import { useForm } from 'react-hook-form';
+import { DeleteModal } from "@/widgets/modal/deleteModal";
 
 export function AddSeasons() {
 
+  let emptySeasons = {
+    id: 0,
+    name: '',
+    remarks: '',
+    status: true
+  };
+
   const [tableData, setTableData] = useState(null);
-  const [previousData, setPreviousData] = useState([]);
   const [showPopup, setShowPopup] = useState(false)
-  const [product, setproduct] = useState(null);
-  const [submitted, setSubmitted] = useState(false);
-  const [statusValue, setstatusValue] = useState();
+  const [seasons, setSeasons] = useState(emptySeasons);
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [deleteHybridsDialogVisible, setDeleteHybridssDialogVisible] = useState(false);
   const toast = useRef(null);
   const { register, handleSubmit, formState: { errors } } = useForm();
 
@@ -24,7 +31,7 @@ export function AddSeasons() {
 
   const tableColumns = [
     {
-      'field': 'seasonName',
+      'field': 'name',
       'header': "Season Name"
     },
     {
@@ -36,10 +43,6 @@ export function AddSeasons() {
       'header': "Status"
     }
   ]
-
-
-  useEffect(() => {
-
     const fetchSeasonsData = async () => {
       try {
         const fetchUrl = getSeasons;
@@ -50,67 +53,86 @@ export function AddSeasons() {
       }
     };
 
-    if (JSON.stringify(previousData) !== JSON.stringify(tableData)) {
-      fetchSeasonsData();
-      setPreviousData(tableData);
-    }
-  }, [tableData, previousData]);
-
-
+    useEffect(() =>{
+      fetchSeasonsData()
+    },[seasons])
+    
   // add new record
 
-  let emptySeason = {
-    id: 0,
-    seasonName: '',
-    remarks: '',
-    status: true
-  };
-
-  const onSubmit = (data) => {
-    setproduct(emptySeason);
-    setSubmitted(false);
+  const handleAddNew = () => {
+    setSeasons(emptySeasons);
     setShowPopup(true)
+    setIsEditMode(false)
+    setmodalHeading('Add Product');
   }
 
-  const handleAddNew = () => {
-    setproduct(emptySeason);
-    setSubmitted(false);
-    setShowPopup(true)
+  const saveProduct = async () => {
+    const postData = seasons;
+    const apiUrl = addSeasons;
+    const response = await ApiService.postData(apiUrl, postData);
+    response.statusCode == 200 ? setShowPopup(false) : null;
+    ApiService.handleResponse(response, toast);
+    // Update table data with the new record
+  fetchSeasonsData();
   }
 
 
   //On Edit/ update
 
   const handleEdit = (rowData) => {
-    alert(JSON.stringify(rowData));
-    console.log(JSON.stringify(rowData))
-    setShowPopup(true)
+    setShowPopup(true);
+    setIsEditMode(true);
+    setModalHeading('Edit Production Plants');
+    const updatedProduct = {
+      ...emptySeasons,
+      ...rowData,
+    };
+    setSeasons(updatedProduct);
+    fetchSeasonsData()
   }
 
-  const [date, setDate] = useState();
-  const handleSelectDate = (selectedDate) => {
-    setDate(selectedDate);
-  };
 
 
   //on delete 
 
   const handleDelete = (rowData) => {
-    alert("delete clicked")
-    setShowPopup(true)
+    const updatedHybrid = {
+      id: rowData.id,
+      name: rowData.name,
+      remarks: rowData.remarks,
+      status: false,
+    };
+    setSeasons(updatedHybrid);
+ ;
+    // Set the delete modal visible
+    setDeleteHybridssDialogVisible(true);
+
   }
+  
+  const handleDeleteSeasons = async () => { 
+    const postData = seasons;
+    const apiUrl = addSeasons;
+    const response = await ApiService.postData(apiUrl, postData);
+    response.statusCode == 200 ? setShowPopup(false) : null;
+    ApiService.handleResponse(response, toast);
+    setDeleteHybridssDialogVisible(false);
+    fetchSeasonsData();
+  };
 
 
   //close the modal popup
 
-  const hideDialog = () => {
-    setShowPopup(false);
+  const hideDeleteProductsDialog = () => {
+    setDeleteHybridssDialogVisible(false);
+  };
+  // on change
+  const handleChange = (fieldName, value) => {
+    setSeasons(prevProduct => ({
+      ...prevProduct,
+      [fieldName]: value
+    }));
   };
 
-  //status on change
-  const handleStatusChange= (e) => {
-    setstatusValue(e.target.value); 
-  }
 
   return (
     <>
@@ -119,17 +141,13 @@ export function AddSeasons() {
           <Toast ref={toast} />
           <PrimeDataTable tableHeading={'Add Season'} tableData={tableData} tableColumns={tableColumns} showActions={true} handleAddNew={handleAddNew} handleEdit={handleEdit} handleDelete={handleDelete} handleExport={true} />
           <Modal visible={showPopup} onHide={() => setShowPopup(false)} header={"Add New Season"}>
-            <form onSubmit={handleSubmit(onSubmit)}>
-
+            <form onSubmit={handleSubmit(saveProduct)}>
               <div className="my-4 flex sm:flex-row flex-col items-center gap-4">
-
-                <FormFields type="text" id="seasonName" label="Season Name" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter Season name'} />
-                <FormFields type="text" id="remarks" label="Remarks" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter Remarks'} />
-
+                <FormFields type="text" id="name" label="Season Name" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter Season name'} value={seasons.name} onChange={e => handleChange("name", e.target.value)}  />
+                <FormFields type="text" id="remarks" label="Remarks" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter Remarks'} value={seasons.remarks} onChange={e => handleChange("remarks", e.target.value)} />
               </div>
-
               <div className="my-4 flex sm:flex-row flex-col items-center gap-4">
-
+              {isEditMode && (
                 <FormFields
                   label="Status"
                   type="statusDropdown"
@@ -141,10 +159,10 @@ export function AddSeasons() {
                   register={register}
                   errors={errors}
                   RequiredErrorMsg={"slect status"}
-                  onChange={handleStatusChange}
-                  selectedValue={statusValue}
+                  selectedValue={seasons.status}
+                  onChange={e => handleChange("status", e.target.value)}
                 />
-
+                )}
               </div>
 
               {/* //formfields */}
@@ -153,6 +171,14 @@ export function AddSeasons() {
               </div>
             </form>
           </Modal>
+          
+          <DeleteModal
+            visible={deleteHybridsDialogVisible}
+            header="Confirm"
+            hideDeleteProductsDialog={hideDeleteProductsDialog}
+            handleDelete={handleDeleteSeasons}
+            onHide={() => setDeleteHybridssDialogVisible(false)}
+          />
         </div>
       </div>
     </>

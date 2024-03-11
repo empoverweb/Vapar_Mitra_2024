@@ -13,7 +13,7 @@ export function AddProduct() {
 
   let emptyProduct = {
     id: 0,
-    productName: '',
+    name: '',
     packSize: '',
     packUnit: '',
     remarks: '',
@@ -31,13 +31,15 @@ export function AddProduct() {
   const [deleteProductsDialogVisible, setDeleteProductsDialogVisible] = useState(false);
   const [seasonsOptionsData, fetchSeasondMasters] = useGetSeasons();
   const toast = useRef(null);
+  const dt = useRef(null);
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
 
+ 
+  console.log(seasonsOptionsData,"options data in ")
   //tabel columns
-
   const tableColumns = [
     {
-      'field': 'productName',
+      'field': 'name',
       'header': "Product Name"
     },
     {
@@ -65,7 +67,7 @@ export function AddProduct() {
   //get all products api
   useEffect(() => {
     fetchProductsData();
-  }, []);
+  }, [product]);
 
 
   const fetchProductsData = async () => {
@@ -77,7 +79,7 @@ export function AddProduct() {
       console.error("Error fetching product master data:", error);
     }
   };
-
+  
   ///add new recrod 
 
   const handleAddNew = () => {
@@ -100,6 +102,7 @@ export function AddProduct() {
   //On Edit/ update
 
   const handleEdit = (rowData) => {
+    console.log(rowData,"roww data of product")
     const updatedProduct = {
       ...emptyProduct,
       ...rowData,
@@ -118,9 +121,10 @@ export function AddProduct() {
 
   const handleDelete = (rowData) => {
     // Create a new object with the relevant fields and set the status to false
+    alert("edited")
     const updatedProduct = {
       id: rowData.id,
-      productName: rowData.productName,
+      name: rowData.name,
       packSize: rowData.packSize,
       packUnit: rowData.packUnit,
       remarks: rowData.remarks,
@@ -154,7 +158,10 @@ export function AddProduct() {
       ...prevProduct,
       [fieldName]: value
     }));
+
+    console.log(prevProduct,"onChange value")
   };
+
 
   return (
     <>
@@ -167,7 +174,7 @@ export function AddProduct() {
 
               <div className="my-4 flex sm:flex-row flex-col items-center gap-4 mb-8">
 
-                <FormFields type="text" label="Product Name" size="md" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter Product name'} value={product.productName} onChange={e => handleChange("productName", e.target.value)} />
+                <FormFields type="text" id="name" label="Product Name" size="md" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter Product name'} value={product.name} onChange={e => handleChange("name", e.target.value)} />
 
                 <FormFields type="number" id="packSize" label="Pack Size" size="md" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter Pack Size'} value={product.packSize} onChange={e => handleChange("packSize", e.target.value)} />
 
@@ -213,7 +220,6 @@ export function AddProduct() {
               </div>
             </form>
           </Modal>
-
 
           {/* ///delete modal component loading */}
 

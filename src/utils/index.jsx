@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { getSeasons,getCountries,getZones,getCrops} from "./constants";
+import { exportCoupons, getCountries, getCrops, getRegions, getSeasons, getZones } from "./constants";
 import { ApiService } from "@/service";
 export * from "@/utils/constants"; 
 
@@ -59,11 +59,9 @@ export const useGetSeasons = () =>{
     }
    const seasonsOptionsData = seasonsMaster.filter((status) => (!status === false)).map((season) => ({
     id: season.id,
-    name:season.seasonName
+    name:season.name  
 }))
-
-    console.log("seasonsOptionsData"+JSON.stringify(seasonsOptionsData))
-
+    console.log("seasonsOptionsData"+seasonsOptionsData)
     return [seasonsOptionsData,fetchSeasondMasters]
 }
 
@@ -82,7 +80,7 @@ export const useGetZones = () =>{
     }
    const zonesOptionsData = zonesMaster.filter((status) => (!status === false)).map((zone) => ({
     id: zone.id,
-    name:zone.zoneName
+    name:zone.name
 }))
 
      console.log("seasonsOptionsData"+JSON.stringify(zonesOptionsData))
@@ -105,11 +103,10 @@ export const useGetCountries = () =>{
     }
    const countryOptionsData = countryMaster.filter((status) => (!status === false)).map((country) => ({
     id: country.id,
-    name:country.countryName
+    name:country.name
 }))
 
     console.log("countryOptionsData"+JSON.stringify(countryOptionsData))
-
     return [countryOptionsData,fetchcountryMasters]
 }
 
@@ -122,13 +119,61 @@ export const useGetCrops = () => {
         console.log(response,"crops data ")
         setCropMasters(response.response.cropsList);
       } catch (error) {
-        console.error("Error fetching regions data:", error);
+        console.error("Error fetching crops data:", error);
       }
     };
     const cropOptionsData = cropMasters.filter((status) => (!status === false)).map(crop => ({
         id: crop.id,
-        name: crop.cropName,
+        name: crop.name,
       }));
     return [cropOptionsData, fetchCropMasters];
   };
+
+
+  export const useRegions = () => {
+    const [regionMasters, setRegionMasters] = useState([]);
+    const fetchRegionMasters = async () => {
+      try {
+        const apiUrl = getRegions;
+        const response = await ApiService.getData(apiUrl);
+        console.log(response,"regions data ")
+        setRegionMasters(response.response.regionList);
+      } catch (error) {
+        console.error("Error fetching regions data:", error);
+      }
+    };
+    const regionOptionsData = regionMasters.filter((status) => (!status === false)).map(region => ({
+        id: region.id,
+        name: region.name,
+      }));
+    return [regionOptionsData, fetchRegionMasters];
+  };
  
+ 
+
+const getApiUrlByKey = (key) => {
+    const apiUrls = {
+      'coupons': exportCoupons,
+    };
+    
+    return apiUrls[key] || null; 
+  };
+  export const useDownload = (key) => {
+    const [downloadUrl,setDownloadUrl ] = useState(null);
+    const fetchDownloadApi = async () => {
+      alert("api fetch")
+      try {
+        const apiUrl = getApiUrlByKey(key); 
+        if (!apiUrl) {
+          console.error(`API URL for key "${key}" not found.`);
+          return;
+        }
+        const response = await ApiService.postData(apiUrl);
+        console.log(response, "fetch export response");
+        setDownloadUrl(response.response);
+      } catch (error) {
+        console.error(error, "Error fetching export response");
+      }
+    };
+    return [downloadUrl, fetchDownloadApi];
+  };

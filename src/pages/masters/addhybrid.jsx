@@ -13,8 +13,8 @@ export function AddHybrid() {
 
   let emptyHybrid = {
     id: 0,
-    hybridName: '',
-    hybridCode: '',
+    name: '',
+    code: '',
     remarks: '',
     cropId: '',
     status: true
@@ -22,10 +22,8 @@ export function AddHybrid() {
 
 
   const [tableData, setTableData] = useState(null);
-  const [previousData, setPreviousData] = useState([]);
+  const [hybrid, sethybrid] = useState(emptyHybrid);
   const [showPopup, setShowPopup] = useState(false)
-  const [hybrid, sethybrid] = useState(null);
-  const [submitted, setSubmitted] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [modalHeading, setmodalHeading] = useState('');
   const toast = useRef(null);
@@ -38,11 +36,11 @@ export function AddHybrid() {
 
   const tableColumns = [
     {
-      'field': 'hybridName',
+      'field': 'name',
       'header': "Hybrid Name"
     },
     {
-      'field': 'hybridCode',
+      'field': 'code',
       'header': "Hybrid Code"
     },
     {
@@ -50,7 +48,7 @@ export function AddHybrid() {
       'header': "Remarks"
     },
     {
-      'field': 'cropId.cropName',
+      'field': 'crop.name',
       'header': "Crop Name"
     },
     {
@@ -58,21 +56,10 @@ export function AddHybrid() {
       'header': "Status"
     }
   ]
-  let emptyProduct = {
-    id: 0,
-    productName: '',
-    packSize: '',
-    packUnit: '',
-    remarks: '',
-    seasonId: '',
-    status: true
-  };
-
-
   //get all Hybrids api
   useEffect(() => {
     fetchHybridsData();
-  }, []);
+  }, [hybrid]);
 
   const fetchHybridsData = async () => {
     try {
@@ -84,14 +71,13 @@ export function AddHybrid() {
     }
   };
 
-
     ///add new recrod 
 
     const handleAddNew = () => {
-      alert("clicked")
-      sethybrid(emptyProduct);
-      setmodalHeading('Add Product');
+      sethybrid(emptyHybrid);
+      setmodalHeading('Add Hybrid');
       setShowPopup(true);
+      setIsEditMode(false)
       fetchCropMasters();
     }
 
@@ -106,12 +92,12 @@ export function AddHybrid() {
   }
 
   //On Edit/ update
-
   const handleEdit = (rowData) => {
+    console.log(rowData,"{hybrid row data")
     const updatedHybrid = {
       ...emptyHybrid,
       ...rowData,
-      cropId: rowData.cropId.id
+      cropId: rowData.crop.name
     };
     sethybrid(updatedHybrid);
     fetchCropMasters();
@@ -119,24 +105,19 @@ export function AddHybrid() {
     setShowPopup(true);
   }
 
-
   //on delete hybrid
-
   const handleDelete = (rowData) => {
-
     // Create a new object with the relevant fields and set the status to false
     const updatedHybrid = {
       id: rowData.id,
-      hybridName: rowData.hybridName,
-      hybridCode: rowData.hybridCode,
+      name: rowData.name,
+      code: rowData.code,
       remarks: rowData.remarks,
-      cropId: rowData.cropId.id,
+      cropId: rowData.crop.id,
       status: false
     };
 
     sethybrid(updatedHybrid);
- ;
-
     // Set the delete modal visible
     setDeleteHybridssDialogVisible(true);
 
@@ -152,21 +133,16 @@ export function AddHybrid() {
     fetchHybridsData();
   };
 
-  const hideDeleteHybridsDialog = () => {
+  const hideDeleteProductsDialog = () => {
     setDeleteHybridssDialogVisible(false);
   };
-
   ///onchange to update the new value
-
   const handleChange = (fieldName, value) => {
     sethybrid(prevHybrid => ({
       ...prevHybrid,
       [fieldName]: value
     }));
   };
-
-
-  console.log(cropOptionsData,"response data")
   return (
     <>
       <div class="relative flex flex-col w-full h-full text-gray-700 shadow-md rounded-xl bg-clip-border">
@@ -178,15 +154,15 @@ export function AddHybrid() {
 
               <div className="my-4 flex sm:flex-row flex-col items-center gap-4">
            
-              <FormFields type="dropdown" id="cropId" label="Crop Name" size="md" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Select Crop'}  optionsData={cropOptionsData} onChange={e => handleChange("cropId", e.target.value)} />
+              <FormFields type="dropdown" id="cropId" label="Crop Name" size="md" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Select Crop'} value={hybrid.cropId}  optionsData={cropOptionsData} onChange={(e) =>handleChange("cropId", e.target.value)}  />
 
-                <FormFields type="text" id="hybridName" label="Hybrid Name" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter First name'} />
+                <FormFields type="text" id="name" label="Hybrid Name" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter First name'} value={hybrid.name} onChange={(e) =>handleChange("name", e.target.value)} />
 
               </div>
 
               <div className="my-4 flex sm:flex-row flex-col items-center gap-4">
 
-                <FormFields type="text" id="hybridCode" label="Hybrid Code" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter Last Name'} />
+                <FormFields type="text" id="code" label="Hybrid Code" size="sm" color="teal" error={true} register={register} errors={errors} RequiredErrorMsg={'Enter Last Name'} value={hybrid.code} onChange={(e) =>handleChange("code", e.target.value)} />
 
                 {isEditMode && (
                   <FormFields
@@ -199,7 +175,6 @@ export function AddHybrid() {
                     register={register}
                     errors={errors}
                     RequiredErrorMsg={'Select Status'}
-                    value={hybrid.status}
                     selectedValue={hybrid.status}
                     onChange={e => handleChange("status", e.target.value)}
                   />
@@ -225,13 +200,13 @@ export function AddHybrid() {
 
           {/* ///delete modal component loading */}
 
-          {/* <DeleteModal
+          <DeleteModal
             visible={deleteHybridsDialogVisible}
             header="Confirm"
-            hideDeleteHybridsDialog={hideDeleteHybridsDialog}
+            hideDeleteProductsDialog={hideDeleteProductsDialog}
             handleDelete={handleDeleteHybrid}
-            // item={hybrid.hybridName}
-          /> */}
+            onHide={() => setDeleteHybridssDialogVisible(false)}
+          />
         </div>
       </div>
     </>
